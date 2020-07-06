@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+    postgres:
+        image: postgres:10
+        restart: on-failure
+        environment:
+            POSTGRES_USER: notification_service
+            POSTGRES_PASSWORD: notification_service
+            POSTGRES_DB: notification_service
+        ports:
+            - 5434:5432
+        volumes:
+          - pgdata:/var/lib/postgresql/data
+        container_name: notification_service-db
+
+    django:
+        build:
+            context: .
+            target: development
+        env_file:
+            - docker-compose.env.yaml
+        environment:
+            DATABASE_URL: postgres://notification_service:notification_service@notification_service-db/notification_service
+            DATABASE_HOST: notification_service-db.helsinki
+        volumes:
+            - .:/app
+        ports:
+            - 8081:8081
+        depends_on:
+            - postgres
+        container_name: notification_service-api
+
+volumes:
+    pgdata:
+        driver: local
+
+networks:
+    default:
+        name: helsinki
