@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("users", "0002_apiuser"),
+        ("users", "0001_initial"),
     ]
 
     operations = [
@@ -38,12 +38,12 @@ class Migration(migrations.Migration):
                 ),
                 ("payload", models.TextField(blank=True, verbose_name="payload")),
                 (
-                    "api_user",
+                    "user",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="delivery_logs",
-                        to="users.ApiUser",
-                        verbose_name="api user",
+                        to="users.User",
+                        verbose_name="user",
                     ),
                 ),
             ],

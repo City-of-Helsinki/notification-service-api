@@ -1,15 +1,16 @@
 # Create your models here.
+
 from common.models import TimestampedModel, UUIDPrimaryKeyModel
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
 class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
-    api_user = models.ForeignKey(
-        "users.ApiUser",
+    user = models.ForeignKey(
+        "users.User",
         related_name="delivery_logs",
         on_delete=models.CASCADE,
-        verbose_name=_("api user"),
+        verbose_name=_("user"),
     )
     payload = models.TextField(verbose_name=_("payload"), blank=True)
 

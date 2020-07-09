@@ -1,3 +1,4 @@
-# from django.contrib import admin
+from api.models import DeliveryLog
+from django.contrib import admin
 
-# Register your models here.
+admin.site.register(DeliveryLog)

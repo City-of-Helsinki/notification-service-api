@@ -4,6 +4,7 @@ django-environ
 django-helusers
 django-ilmoitin
 django-axes
+djangorestframework
 factory-boy
 psycopg2
 sentry-sdk
