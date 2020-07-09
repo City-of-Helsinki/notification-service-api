@@ -135,6 +135,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
     "anymail",
     "mailer",
@@ -191,6 +193,15 @@ OIDC_API_TOKEN_AUTH = {
 }
 
 OIDC_AUTH = {"OIDC_LEEWAY": 60 * 60}
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ]
+}
 
 SITE_ID = 1
 
