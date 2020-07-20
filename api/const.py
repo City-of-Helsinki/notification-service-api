@@ -1,0 +1,1 @@
+NOTIFICATION_TYPE_MOBILE = "mobile"

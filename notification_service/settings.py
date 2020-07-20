@@ -55,6 +55,9 @@ env = environ.Env(
     AZURE_ACCOUNT_NAME=(str, ""),
     AZURE_ACCOUNT_KEY=(str, ""),
     AZURE_CONTAINER=(str, ""),
+    QURIIRI_API_KEY=(str, ""),
+    QURIIRI_API_URL=(str, ""),
+    QURIIRI_REPORT_URL=(str, ""),
 )
 
 if os.path.exists(env_file):
@@ -135,6 +138,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
@@ -207,6 +211,10 @@ SITE_ID = 1
 
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1  # hour after locked out, user will be able to attempt login
+
+QURIIRI_API_KEY = env.str("QURIIRI_API_KEY")
+QURIIRI_API_URL = env.str("QURIIRI_API_URL")
+QURIIRI_REPORT_URL = env.str("QURIIRI_REPORT_URL")
 
 LOGGING = {
     "version": 1,
