@@ -3,8 +3,8 @@ from rest_framework import serializers
 
 
 class DeliveryLogSerializer(serializers.ModelSerializer):
-    payload = serializers.JSONField()
+    report = serializers.JSONField()
 
     class Meta:
         model = DeliveryLog
-        fields = ("id", "payload")
+        fields = ("id", "report")
