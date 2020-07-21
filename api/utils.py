@@ -14,9 +14,7 @@ def format_destinations(recipients):
 
 def get_default_options(request, **kwargs):
     options = {}
-    relative_drurl = reverse(
-        "delivery_log_webhook", kwargs={"uuid": kwargs.get("uuid")}
-    )
+    relative_drurl = reverse("delivery_log_webhook", kwargs={"id": kwargs.get("id")})
     if DEBUG:
         # Dev setting to receive delivery log
         options["drurl"] = f"{QURIIRI_REPORT_URL}{relative_drurl}"

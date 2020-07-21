@@ -5,7 +5,8 @@ from requests import ReadTimeout
 
 
 class Sender:
-    # This is implementation from Quriiri: https://quriiri.fi/tekniset-resurssit/
+    # This implementation based from Quriiri: https://quriiri.fi/tekniset-resurssit/
+    # which has been slightly updated to pass linters
     USER_AGENT = "Quriiri-TX-Python/1.0.1 %s" % requests.utils.default_user_agent()
 
     url = None

@@ -25,7 +25,7 @@ admin.site.index_title = " ".join(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("api.urls")),
+    path("v1/", include("api.urls")),
 ]
 
 #
