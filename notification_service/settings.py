@@ -56,7 +56,7 @@ env = environ.Env(
     AZURE_ACCOUNT_KEY=(str, ""),
     AZURE_CONTAINER=(str, ""),
     QURIIRI_API_KEY=(str, ""),
-    QURIIRI_API_URL=(str, ""),
+    QURIIRI_API_URL=(str, "https://api.quriiri.fi/v1/"),
     QURIIRI_REPORT_URL=(str, ""),
 )
 
@@ -138,7 +138,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_extensions",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",

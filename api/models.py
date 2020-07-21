@@ -1,8 +1,8 @@
 # Create your models here.
-import json
 from copy import deepcopy
 
 from common.models import TimestampedModel, UUIDPrimaryKeyModel
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,7 +14,7 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         on_delete=models.CASCADE,
         verbose_name=_("user"),
     )
-    report = models.TextField(verbose_name=_("report"), blank=True)
+    report = JSONField(verbose_name=_("report"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("delivery log")
@@ -28,12 +28,12 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         :param report_data: JSON
         :return:
         """
-        report = json.loads(self.report)
+        report = self.report
         updated_messages = deepcopy(report["messages"])
         destination = report_data["destination"]
         for k, v in report["messages"].items():
             if k == destination or v["converted"] == destination:
                 updated_messages[k] = report_data
         report["messages"] = updated_messages
-        self.report = json.dumps(report)
+        self.report = report
         self.save()
