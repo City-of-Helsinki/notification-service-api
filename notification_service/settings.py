@@ -147,6 +147,7 @@ INSTALLED_APPS = [
     # local apps under this line
     "api",
     "users",
+    "utils",
 ]
 
 MIDDLEWARE = [
