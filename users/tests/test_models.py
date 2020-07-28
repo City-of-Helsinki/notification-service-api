@@ -1,6 +1,6 @@
 import pytest
-from users.factories import ApiUserFactory
-from users.models import ApiUser, User
+from users.factories import UserFactory
+from users.models import User
 
 
 @pytest.fixture(autouse=True)
@@ -9,6 +9,5 @@ def autouse_db(db):
 
 
 def test_api_user_models():
-    ApiUserFactory()
-    assert ApiUser.objects.count() == 1
+    UserFactory()
     assert User.objects.count() == 1

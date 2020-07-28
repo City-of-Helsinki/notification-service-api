@@ -1,11 +1,11 @@
 import factory
 from api.models import DeliveryLog
-from users.factories import ApiUserFactory
+from users.factories import UserFactory
 
 
 class DeliveryLogFactory(factory.django.DjangoModelFactory):
-    payload = factory.Faker("pystr", max_chars=255)
-    api_user = factory.SubFactory(ApiUserFactory)
+    report = factory.Faker("pystr", max_chars=255)
+    user = factory.SubFactory(UserFactory)
 
     class Meta:
         model = DeliveryLog
