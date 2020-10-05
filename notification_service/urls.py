@@ -28,6 +28,7 @@ urlpatterns = [
     path("v1/", include("api.urls")),
 ]
 
+
 #
 # Kubernetes liveness & readiness probes
 #
@@ -40,4 +41,3 @@ def readiness(*args, **kwargs):
 
 
 urlpatterns += [path("healthz", healthz), path("readiness", readiness)]
-
