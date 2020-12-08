@@ -4,7 +4,6 @@
 [![status](https://travis-ci.com/City-of-Helsinki/notification-service-api.svg)](https://github.com/City-of-Helsinki/notification-service-api)
 [![codecov](https://codecov.io/gh/City-of-Helsinki/notification-service-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/City-of-Helsinki/notification-service-api)
 
-
 ## Environments
 Production environment:
 - https://api.hel.fi/notification-service/v1
@@ -89,7 +88,7 @@ curl --location --request POST 'https://api.hel.fi/notification-service/v1/messa
 ```
 
 ## API Documentation
-- [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.0)
+- [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
 
 ## Keeping Python requirements up to date
 
