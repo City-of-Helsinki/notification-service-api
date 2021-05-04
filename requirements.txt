@@ -30,7 +30,7 @@ django-mailer==2.0.1
     # via django-ilmoitin
 django-parler==1.9.2
     # via django-ilmoitin
-django==2.2.13
+django==2.2.20
     # via
     #   -r requirements.in
     #   django-anymail
@@ -84,7 +84,7 @@ requests==2.22.0
     #   django-anymail
     #   django-helusers
     #   pyjwkest
-rsa==4.0
+rsa==4.7
     # via python-jose
 sentry-sdk==0.12.3
     # via -r requirements.in
