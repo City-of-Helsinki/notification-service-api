@@ -60,7 +60,7 @@ future==0.17.1
     #   python-jose
 idna==2.8
     # via requests
-jinja2==2.11.2
+jinja2==2.11.3
     # via django-ilmoitin
 lockfile==0.12.2
     # via django-mailer
