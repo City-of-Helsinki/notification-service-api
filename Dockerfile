@@ -42,7 +42,14 @@ FROM appbase as production
 
 COPY --chown=appuser:appuser . /app/
 
+# fatal: detected dubious ownership in repository at '/app'
+RUN git config --system --add safe.directory /app
+
 RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic
+
+# OpenShift write accesses, __pycache__ is created to "/app/quriiri"
+USER root
+RUN chgrp -R 0 /app/quriiri && chmod g+w -R /app/quriiri
 
 USER appuser
 EXPOSE 8000/tcp
