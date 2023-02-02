@@ -51,6 +51,5 @@ RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic
 USER root
 RUN chgrp -R 0 /app/quriiri && chmod g+w -R /app/quriiri
 
-
 USER appuser
 EXPOSE 8000/tcp
