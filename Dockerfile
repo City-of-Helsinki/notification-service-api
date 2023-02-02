@@ -48,5 +48,9 @@ RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic
 USER root
 RUN chgrp -R 0 /app/quriiri && chmod g+w -R /app/quriiri
 
+# fatal: detected dubious ownership in repository at '/app'
+WORKDIR /app
+RUN git config --global --add safe.directory /app
+
 USER appuser
 EXPOSE 8000/tcp
