@@ -34,6 +34,7 @@ env = environ.Env(
     CACHE_URL=(str, "locmemcache://"),
     MAILER_EMAIL_BACKEND=(str, "django.core.mail.backends.console.EmailBackend"),
     MAILER_LOCK_PATH=(str, "/tmp/mailer_lockfile"),
+    LOCK_PATH=(str, "/tmp/lockfile"),
     DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
     ILMOITIN_TRANSLATED_FROM_EMAIL=(dict, {}),
     MAIL_MAILGUN_KEY=(str, ""),
