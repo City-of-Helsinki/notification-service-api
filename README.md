@@ -67,7 +67,7 @@ QURIIRI_API_URL = <quriiri_api_url>
 
 _Note: You have to create API client user first, by login to Django Admin interface using Admin account 
 ```python
-$ python manager.py drf_create_token <username>
+$ python manage.py drf_create_token <username>
 ```
 
 - After that, include the auth token to the every request to Notification Service. For example:
