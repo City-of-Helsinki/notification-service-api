@@ -1,4 +1,5 @@
 import pytest
+
 from users.factories import UserFactory
 from users.models import User
 

@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from common.utils import get_api_version
 from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import include, path
 from django.utils.translation import gettext
+
+from common.utils import get_api_version
 
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]

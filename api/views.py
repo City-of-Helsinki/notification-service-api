@@ -1,11 +1,11 @@
-from api.models import DeliveryLog
-from api.serializers import DeliveryLogSerializer
-from api.utils import format_destinations, get_default_options
 from django.db import transaction
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.models import DeliveryLog
+from api.serializers import DeliveryLogSerializer
+from api.utils import format_destinations, get_default_options
 from notification_service.settings import QURIIRI_API_KEY, QURIIRI_API_URL
 from quriiri.send import Sender
 

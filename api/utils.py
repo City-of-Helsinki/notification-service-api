@@ -1,6 +1,6 @@
-from api.const import NOTIFICATION_TYPE_MOBILE
 from django.urls import reverse
 
+from api.const import NOTIFICATION_TYPE_MOBILE
 from notification_service.settings import DEBUG, QURIIRI_REPORT_URL
 
 

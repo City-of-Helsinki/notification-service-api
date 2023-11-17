@@ -1,9 +1,9 @@
 # Create your models here.
 from copy import deepcopy
-
-from common.models import TimestampedModel, UUIDPrimaryKeyModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from common.models import TimestampedModel, UUIDPrimaryKeyModel
 
 
 class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):

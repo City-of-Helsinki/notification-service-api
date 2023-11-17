@@ -1,16 +1,15 @@
-from copy import deepcopy
-
 import factory.random
 import pytest
-from api.factories import DeliveryLogFactory
-from common.tests.mock_data import QURIIRI_SMS_RESPONSE
+from copy import deepcopy
 from django.contrib.auth.models import AnonymousUser
 from freezegun import freeze_time
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
-from users.factories import UserFactory
 
 import quriiri
+from api.factories import DeliveryLogFactory
+from common.tests.mock_data import QURIIRI_SMS_RESPONSE
+from users.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)

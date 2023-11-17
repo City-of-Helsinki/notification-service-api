@@ -1,10 +1,8 @@
-import os
-import subprocess
-
 import environ
+import os
 import sentry_sdk
+import subprocess
 from django.utils.translation import gettext_lazy as _
-import sentry_sdk
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
