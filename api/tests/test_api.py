@@ -1,11 +1,11 @@
-import uuid
-
 import pytest
+import uuid
+from django.urls import reverse
+from rest_framework.authtoken.models import Token
+
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
 from common.tests.mock_data import QURIIRI_SMS_RESPONSE
-from django.urls import reverse
-from rest_framework.authtoken.models import Token
 
 
 @pytest.fixture(autouse=True)

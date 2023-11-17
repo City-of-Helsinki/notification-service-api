@@ -1,4 +1,5 @@
 import pytest
+
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
 

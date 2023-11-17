@@ -1,6 +1,5 @@
-import sys
-
 import requests
+import sys
 from requests import ReadTimeout
 
 
