@@ -1,4 +1,4 @@
-Django
+django
 django-cors-headers
 django-environ
 django-helusers
@@ -7,4 +7,4 @@ django-axes
 djangorestframework
 factory-boy
 psycopg2
-sentry-sdk
+sentry-sdk[django]

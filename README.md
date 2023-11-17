@@ -23,8 +23,8 @@ The project is now running at [localhost:8081](http://localhost:8081)
 
 Prerequisites:
 
-* PostgreSQL 10
-* Python 3.7
+* PostgreSQL 12
+* Python 3.9
 
 ### Installing Python requirements
 

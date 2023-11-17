@@ -2,9 +2,8 @@
 from copy import deepcopy
 
 from common.models import TimestampedModel, UUIDPrimaryKeyModel
-from django.contrib.postgres.fields import JSONField
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
@@ -14,7 +13,7 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         on_delete=models.CASCADE,
         verbose_name=_("user"),
     )
-    report = JSONField(verbose_name=_("report"), blank=True, null=True)
+    report = models.JSONField(verbose_name=_("report"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("delivery log")
