@@ -41,7 +41,9 @@ def mock_send_sms(monkeypatch):
         return deepcopy(QURIIRI_SMS_RESPONSE)
 
     monkeypatch.setattr(
-        quriiri.send.Sender, "send_sms", mock_send_sms,
+        quriiri.send.Sender,
+        "send_sms",
+        mock_send_sms,
     )
 
 
