@@ -17,10 +17,10 @@ from common.utils import get_api_version
 from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import include, path
-from django.utils.translation import ugettext
+from django.utils.translation import gettext
 
 admin.site.index_title = " ".join(
-    [ugettext("Notification service API"), get_api_version()]
+    [gettext("Notification service API"), get_api_version()]
 )
 
 urlpatterns = [

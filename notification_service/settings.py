@@ -3,8 +3,8 @@ import subprocess
 
 import environ
 import sentry_sdk
-from django.utils.translation import ugettext_lazy as _
-from sentry_sdk.integrations.django import DjangoIntegration
+from django.utils.translation import gettext_lazy as _
+import sentry_sdk
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
@@ -94,15 +94,15 @@ ILMOITIN_TRANSLATED_FROM_EMAIL = env("ILMOITIN_TRANSLATED_FROM_EMAIL")
 ILMOITIN_QUEUE_NOTIFICATIONS = env("ILMOITIN_QUEUE_NOTIFICATIONS")
 
 try:
-    REVISION = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip()
+    REVISION = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
 except Exception:
     REVISION = "n/a"
 
-sentry_sdk.init(
+sent = sentry_sdk.init(
     dsn=env.str("SENTRY_DSN"),
     release=REVISION,
     environment=env("SENTRY_ENVIRONMENT"),
-    integrations=[DjangoIntegration()],
+    enable_tracing=True,
 )
 
 MEDIA_ROOT = env("MEDIA_ROOT")
@@ -134,7 +134,7 @@ USE_L10N = True
 USE_TZ = True
 
 INSTALLED_APPS = [
-    "helusers",
+    "helusers.apps.HelusersConfig",
     "helusers.apps.HelusersAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -191,6 +191,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 OIDC_API_TOKEN_AUTH = {
     "AUDIENCE": env.str("TOKEN_AUTH_ACCEPTED_AUDIENCE"),

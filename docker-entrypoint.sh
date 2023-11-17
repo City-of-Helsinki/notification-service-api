@@ -19,8 +19,8 @@ fi
 
 # Create superuser
 if [[ "$CREATE_SUPERUSER" = "1" ]]; then
-    ./manage.py add_admin_user -u admin -p $ADMIN_USER_PASSWORD -e admin@example.com
-    echo "Admin user created with credentials admin:$ADMIN_USER_PASSWORD (email: admin@example.com)"
+    ./manage.py add_admin_user -u admin -p adminpass -e admin@example.com
+    echo "Admin user created with credentials admin:adminpass (email: admin@example.com)"
 fi
 
 # Start server
