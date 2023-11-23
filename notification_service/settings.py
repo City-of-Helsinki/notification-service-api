@@ -24,11 +24,7 @@ env = environ.Env(
     STATIC_URL=(str, "/static/"),
     ALLOWED_HOSTS=(list, []),
     USE_X_FORWARDED_HOST=(bool, False),
-    DATABASE_URL=(
-        str,
-        "postgres://notification_service:notification_service@localhost"
-        "/notification_service",
-    ),
+    DATABASE_URL=(str, ""),
     CACHE_URL=(str, "locmemcache://"),
     MAILER_EMAIL_BACKEND=(str, "django.core.mail.backends.console.EmailBackend"),
     MAILER_LOCK_PATH=(str, "/tmp/mailer_lockfile"),
@@ -61,13 +57,12 @@ env = environ.Env(
 
 if os.path.exists(env_file):
     env.read_env(env_file)
-
 BASE_DIR = str(checkout_dir)
 
 DEBUG = env.bool("DEBUG")
 SECRET_KEY = env.str("SECRET_KEY")
 if DEBUG and not SECRET_KEY:
-    SECRET_KEY = "xxx"
+    raise EnvironmentError("The environmental variable SECRET_KEY is not set.")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 USE_X_FORWARDED_HOST = env.bool("USE_X_FORWARDED_HOST")

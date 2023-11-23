@@ -13,7 +13,7 @@ Testing environment:
 
 ## Development with Docker
 
-1. Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed.
+1. Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed. Be sure that database variables are set (DATABASE_URL and DATABASE_HOST) because those were removed from 'docker-compose.yml' file.
 
 2. Run `docker-compose up`
 

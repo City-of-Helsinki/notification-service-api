@@ -19,9 +19,6 @@ services:
             target: development
         env_file:
             - docker-compose.env.yaml
-        environment:
-            DATABASE_URL: postgres://notification_service:notification_service@notification_service-db/notification_service
-            DATABASE_HOST: notification_service-db.helsinki
         volumes:
             - .:/app
         ports:
