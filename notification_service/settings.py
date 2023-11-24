@@ -35,6 +35,8 @@ env = environ.Env(
     MAIL_MAILGUN_API=(str, ""),
     SENTRY_DSN=(str, ""),
     SENTRY_ENVIRONMENT=(str, ""),
+    SENTRY_ENABLE_TRACING=(bool, False),
+    SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
     CORS_ORIGIN_WHITELIST=(list, []),
     CORS_ORIGIN_ALLOW_ALL=(bool, False),
     TOKEN_AUTH_ACCEPTED_AUDIENCE=(str, "https://api.hel.fi/auth/notification_service"),
@@ -95,11 +97,12 @@ try:
 except Exception:
     REVISION = "n/a"
 
-sent = sentry_sdk.init(
+sentry = sentry_sdk.init(
     dsn=env.str("SENTRY_DSN"),
     release=REVISION,
     environment=env("SENTRY_ENVIRONMENT"),
-    enable_tracing=True,
+    enable_tracing=env.bool("SENTRY_ENABLE_TRACING"),
+    traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE"),
 )
 
 MEDIA_ROOT = env("MEDIA_ROOT")
