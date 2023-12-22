@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import include, path
 from django.utils.translation import gettext
+from helusers.admin_site import admin
 
 from common.utils import get_api_version
+
 
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]
@@ -26,6 +28,8 @@ admin.site.index_title = " ".join(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('pysocial/', include('social_django.urls', namespace='social')),
+    path('helauth/', include('helusers.urls')),
     path("v1/", include("api.urls")),
 ]
 

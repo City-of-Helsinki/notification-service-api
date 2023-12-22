@@ -10,7 +10,7 @@ asgiref==3.7.2
     #   django-cors-headers
 cachetools==5.3.2
     # via django-helusers
-certifi==2023.7.22
+certifi==2023.11.17
     # via
     #   requests
     #   sentry-sdk
@@ -19,7 +19,13 @@ cffi==1.16.0
 charset-normalizer==3.3.2
     # via requests
 cryptography==41.0.5
-    # via django-anymail
+    # via
+    #   django-anymail
+    #   social-auth-core
+defusedxml==0.8.0rc2
+    # via
+    #   python3-openid
+    #   social-auth-core
 deprecation==2.1.0
     # via django-helusers
 django==4.2.7
@@ -34,6 +40,7 @@ django==4.2.7
     #   django-parler
     #   djangorestframework
     #   sentry-sdk
+    #   social-auth-app-django
 django-anymail==10.2
     # via django-ilmoitin
 django-axes==6.1.1
@@ -56,9 +63,9 @@ ecdsa==0.18.0
     # via python-jose
 factory-boy==3.3.0
     # via -r requirements.in
-faker==20.0.3
+faker==20.1.0
     # via factory-boy
-idna==3.4
+idna==3.6
     # via requests
 jinja2==3.1.2
     # via django-ilmoitin
@@ -66,34 +73,50 @@ lockfile==0.12.2
     # via django-mailer
 markupsafe==2.1.3
     # via jinja2
+oauthlib==3.2.2
+    # via
+    #   requests-oauthlib
+    #   social-auth-core
 packaging==23.2
     # via deprecation
 psycopg2==2.9.9
     # via -r requirements.in
-pyasn1==0.5.0
+pyasn1==0.5.1
     # via
     #   python-jose
     #   rsa
 pycparser==2.21
     # via cffi
+pyjwt==2.8.0
+    # via social-auth-core
 python-dateutil==2.8.2
     # via faker
 python-jose==3.3.0
     # via django-helusers
+python3-openid==3.2.0
+    # via social-auth-core
 pytz==2023.3.post1
     # via djangorestframework
 requests==2.31.0
     # via
     #   django-anymail
     #   django-helusers
+    #   requests-oauthlib
+    #   social-auth-core
+requests-oauthlib==1.3.1
+    # via social-auth-core
 rsa==4.9
     # via python-jose
-sentry-sdk[django]==1.35.0
+sentry-sdk[django]==1.37.1
     # via -r requirements.in
 six==1.16.0
     # via
     #   ecdsa
     #   python-dateutil
+social-auth-app-django==5.4.0
+    # via -r requirements.in
+social-auth-core==4.5.0
+    # via social-auth-app-django
 sqlparse==0.4.4
     # via django
 typing-extensions==4.8.0
