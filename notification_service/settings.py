@@ -16,45 +16,49 @@ else:
     default_var_root = environ.Path(checkout_dir("var"))
 
 env = environ.Env(
-    DEBUG=(bool, False),
-    SECRET_KEY=(str, ""),
-    MEDIA_ROOT=(environ.Path(), environ.Path(checkout_dir("var"))("media")),
-    STATIC_ROOT=(environ.Path(), default_var_root("static")),
-    MEDIA_URL=(str, "/media/"),
-    STATIC_URL=(str, "/static/"),
     ALLOWED_HOSTS=(list, []),
-    USE_X_FORWARDED_HOST=(bool, False),
-    DATABASE_URL=(str, ""),
+    AZURE_ACCOUNT_KEY=(str, ""),
+    AZURE_ACCOUNT_NAME=(str, ""),
+    AZURE_CONTAINER=(str, ""),
     CACHE_URL=(str, "locmemcache://"),
-    MAILER_EMAIL_BACKEND=(str, "django.core.mail.backends.console.EmailBackend"),
-    MAILER_LOCK_PATH=(str, "/tmp/mailer_lockfile"),
-    DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
-    ILMOITIN_TRANSLATED_FROM_EMAIL=(dict, {}),
-    MAIL_MAILGUN_KEY=(str, ""),
-    MAIL_MAILGUN_DOMAIN=(str, ""),
-    MAIL_MAILGUN_API=(str, ""),
-    SENTRY_DSN=(str, ""),
-    SENTRY_ENVIRONMENT=(str, ""),
-    SENTRY_ENABLE_TRACING=(bool, False),
-    SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
-    CORS_ORIGIN_WHITELIST=(list, []),
     CORS_ORIGIN_ALLOW_ALL=(bool, False),
-    TOKEN_AUTH_ACCEPTED_AUDIENCE=(str, "https://api.hel.fi/auth/notification_service"),
-    TOKEN_AUTH_ACCEPTED_SCOPE_PREFIX=(str, "notification_service"),
-    TOKEN_AUTH_REQUIRE_SCOPE_PREFIX=(bool, True),
-    TOKEN_AUTH_AUTHSERVER_URL=(str, ""),
-    ILMOITIN_QUEUE_NOTIFICATIONS=(bool, False),
+    CORS_ORIGIN_WHITELIST=(list, []),
+    DATABASE_URL=(str, ""),
+    DEBUG=(bool, False),
     DEFAULT_FILE_STORAGE=(str, "django.core.files.storage.FileSystemStorage"),
+    DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
     GS_BUCKET_NAME=(str, ""),
-    STAGING_GCS_BUCKET_CREDENTIALS=(str, ""),
     GS_DEFAULT_ACL=(str, "publicRead"),
     GS_FILE_OVERWRITE=(bool, False),
-    AZURE_ACCOUNT_NAME=(str, ""),
-    AZURE_ACCOUNT_KEY=(str, ""),
-    AZURE_CONTAINER=(str, ""),
+    HELUSERS_PASSWORD_LOGIN_DISABLED=(bool, False),
+    ILMOITIN_QUEUE_NOTIFICATIONS=(bool, False),
+    ILMOITIN_TRANSLATED_FROM_EMAIL=(dict, {}),
+    MAIL_MAILGUN_API=(str, ""),
+    MAIL_MAILGUN_DOMAIN=(str, ""),
+    MAIL_MAILGUN_KEY=(str, ""),
+    MAILER_EMAIL_BACKEND=(str, "django.core.mail.backends.console.EmailBackend"),
+    MAILER_LOCK_PATH=(str, "/tmp/mailer_lockfile"),
+    MEDIA_ROOT=(environ.Path(), environ.Path(checkout_dir("var"))("media")),
+    MEDIA_URL=(str, "/media/"),
     QURIIRI_API_KEY=(str, ""),
     QURIIRI_API_URL=(str, "https://api.quriiri.fi/v1/"),
     QURIIRI_REPORT_URL=(str, ""),
+    SECRET_KEY=(str, ""),
+    SENTRY_DSN=(str, ""),
+    SENTRY_ENABLE_TRACING=(bool, False),
+    SENTRY_ENVIRONMENT=(str, ""),
+    SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
+    SOCIAL_AUTH_TUNNISTAMO_SECRET=(str, "SECRET_UNSET"),
+    SOCIAL_AUTH_TUNNISTAMO_KEY=(str, "KEY_UNSET"),
+    SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT=(str, "OIDC_ENDPOINT_UNSET"),
+    STAGING_GCS_BUCKET_CREDENTIALS=(str, ""),
+    STATIC_ROOT=(environ.Path(), default_var_root("static")),
+    STATIC_URL=(str, "/static/"),
+    TOKEN_AUTH_ACCEPTED_AUDIENCE=(str, "https://api.hel.fi/auth/notification_service"),
+    TOKEN_AUTH_ACCEPTED_SCOPE_PREFIX=(str, "notification_service"),
+    TOKEN_AUTH_AUTHSERVER_URL=(str, ""),
+    TOKEN_AUTH_REQUIRE_SCOPE_PREFIX=(bool, True),
+    USE_X_FORWARDED_HOST=(bool, False),
 )
 
 if os.path.exists(env_file):
@@ -149,6 +153,7 @@ INSTALLED_APPS = [
     "axes",
     # local apps under this line
     "api",
+    "social_django",
     "users",
     "utils",
 ]
@@ -173,6 +178,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "helusers.context_processors.settings",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -186,12 +192,25 @@ CORS_ORIGIN_WHITELIST = env.list("CORS_ORIGIN_WHITELIST")
 CORS_ORIGIN_ALLOW_ALL = env.bool("CORS_ORIGIN_ALLOW_ALL")
 
 AUTHENTICATION_BACKENDS = [
+    "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
     "axes.backends.AxesBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+# Tunnistamo settings
+SOCIAL_AUTH_TUNNISTAMO_SECRET = env.str("SOCIAL_AUTH_TUNNISTAMO_SECRET")
+SOCIAL_AUTH_TUNNISTAMO_KEY = env.str("SOCIAL_AUTH_TUNNISTAMO_KEY")
+SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT = env.str("SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT")
+
+# A boolean that disables/enables Django admin password login
+HELUSERS_PASSWORD_LOGIN_DISABLED = env.bool("HELUSERS_PASSWORD_LOGIN_DISABLED")
+
+SOCIAL_AUTH_END_SESSION_URL = '/helauth/logout/'
+LOGIN_REDIRECT_URL = "/admin/"
+LOGOUT_REDIRECT_URL = "/admin/"
 
 OIDC_API_TOKEN_AUTH = {
     "AUDIENCE": env.str("TOKEN_AUTH_ACCEPTED_AUDIENCE"),
@@ -234,3 +253,6 @@ if os.path.exists(local_settings_path):
     with open(local_settings_path) as fp:
         code = compile(fp.read(), local_settings_path, "exec")
     exec(code, globals(), locals())
+
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
