@@ -13,10 +13,30 @@ services:
           - pgdata:/var/lib/postgresql/data
         container_name: notification_service-db
 
+    keycloak:
+        image: quay.io/keycloak/keycloak
+        restart: on-failure
+        env_file:
+          - keycloak/docker-compose.keycloak.env.yaml
+        command:
+          - start-dev
+          - --http-port=8180
+          - --spi-theme-static-max-age=-1
+          - --spi-theme-cache-themes=false
+          - --spi-theme-cache-templates=false
+          - --import-realm
+        volumes:
+            - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
+        ports:
+            - 8180:8180
+        container_name: notification-service-keycloak
+
+
     django:
         build:
             context: .
             target: development
+        restart: on-failure
         env_file:
             - docker-compose.env.yaml
         volumes:
@@ -25,6 +45,7 @@ services:
             - 8081:8081
         depends_on:
             - postgres
+            - keycloak
         container_name: notification_service-api
 
 volumes:
