@@ -208,7 +208,7 @@ SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT = env.str("SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDP
 # A boolean that disables/enables Django admin password login
 HELUSERS_PASSWORD_LOGIN_DISABLED = env.bool("HELUSERS_PASSWORD_LOGIN_DISABLED")
 
-SOCIAL_AUTH_END_SESSION_URL = '/helauth/logout/'
+SOCIAL_AUTH_END_SESSION_URL = "/helauth/logout/"
 LOGIN_REDIRECT_URL = "/admin/"
 LOGOUT_REDIRECT_URL = "/admin/"
 
@@ -255,4 +255,4 @@ if os.path.exists(local_settings_path):
     exec(code, globals(), locals())
 
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
