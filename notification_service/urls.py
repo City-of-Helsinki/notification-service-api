@@ -21,15 +21,14 @@ from helusers.admin_site import admin
 
 from common.utils import get_api_version
 
-
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]
 )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('pysocial/', include('social_django.urls', namespace='social')),
-    path('helauth/', include('helusers.urls')),
+    path("pysocial/", include("social_django.urls", namespace="social")),
+    path("helauth/", include("helusers.urls")),
     path("v1/", include("api.urls")),
 ]
 
