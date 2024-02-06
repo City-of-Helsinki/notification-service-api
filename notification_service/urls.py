@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import include, path
 from django.utils.translation import gettext
-from helusers.admin_site import admin
 
 from common.utils import get_api_version
 
