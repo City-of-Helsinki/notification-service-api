@@ -22,8 +22,8 @@ Testing environment:
 
 3. Run `docker compose up` or `docker compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
 
-The project is now running at [localhost:8081](http://localhost:8081).
-Keycloak admin interface is running at [notification-service-keycloak:8180/admin](http://notification-service-keycloak:8180/admin).
+The project is now running at http://localhost:8081.
+Keycloak admin interface is running at http://notification-service-keycloak:8180/admin.
 
 The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process. Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`. It's essential to ensure that parameters match between the configuration files and the running Keycloak instance to enable the default authentication flow properly.
 
@@ -63,7 +63,7 @@ Clone Helsinki Keycloak theme if needed.
     
     git clone git@github.com:City-of-Helsinki/helsinki-keycloak-theme.git
 
-Follow the instructions on the following website to setup and start this standalone version of Keycloak (Helsinki theme). [https://github.com/City-of-Helsinki/helsinki-keycloak-theme](http://https://github.com/City-of-Helsinki/helsinki-keycloak-theme)
+Follow the instructions on the following website to setup and start this standalone version of Keycloak (Helsinki theme). https://github.com/City-of-Helsinki/helsinki-keycloak-theme
 
 #### Original Keycloak
 
@@ -97,8 +97,8 @@ Remember to set Keycloak hostname as instructed earlier ([Development with docke
 * Set the `DEBUG` environment variable to `1`.
 * Run `python manage.py migrate`
 * Run `python manage.py runserver localhost:8081`
-* The project is now running at [localhost:8081](http://localhost:8081)
-* [When Keycloak has been started](#original-keycloak), it is running at [localhost:8180](http://localhost:8180) and at [notification-service-keycloak:8180](http://notification-service-keycloak:8180) (if hostname is set)
+* The project is now running at http://localhost:8081
+* [When Keycloak has been started](#original-keycloak), it is running at http://localhost:8180 and at http://notification-service-keycloak:8180 (if hostname is set)
 
 ### Configuration
 - At the moment the API only integrate with Quriiri SMS gateway, feel free to contribute by creating new sender
