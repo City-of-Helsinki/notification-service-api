@@ -13,7 +13,7 @@ Testing environment:
 
 1. Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed. Be sure that database variables are set (DATABASE_URL and DATABASE_HOST) because those were removed from 'docker-compose.yml' file.
 
-2. <a name="hostname1">Set keycloak hostname</a>
+2. Set keycloak hostname
 
    Add the following line to your hosts file (`/etc/hosts` on mac and linux):
     ```
@@ -25,9 +25,9 @@ Testing environment:
 The project is now running at [localhost:8081](http://localhost:8081).
 Keycloak admin interface is running at [notification-service-keycloak:8180/admin](http://notification-service-keycloak:8180/admin).
 
-The Keycloak development realm for this project is preconfigured with the name "locale-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process. Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`. It's essential to ensure that parameters match between the configuration files and the running Keycloak instance to enable the default authentication flow properly.
+The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process. Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`. It's essential to ensure that parameters match between the configuration files and the running Keycloak instance to enable the default authentication flow properly.
 
-Additionally, parameters can be set via the Keycloak admin interface. Navigate to the appropriate realm ("locale-dev") and review the parameters in the clients, users, and realm settings sections. Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
+Additionally, parameters can be set via the Keycloak admin interface. Navigate to the appropriate realm ("local-dev") and review the parameters in the clients, users, and realm settings sections. Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
 
 ## Development without Docker
 

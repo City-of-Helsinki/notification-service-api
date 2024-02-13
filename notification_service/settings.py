@@ -200,7 +200,8 @@ AUTHENTICATION_BACKENDS = [
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
-# Tunnistamo settings
+# Keycloak parameters. Reference to Tunnistamo is necessary, although
+# the naming convention is primarily historical.
 SOCIAL_AUTH_TUNNISTAMO_SECRET = env.str("SOCIAL_AUTH_TUNNISTAMO_SECRET")
 SOCIAL_AUTH_TUNNISTAMO_KEY = env.str("SOCIAL_AUTH_TUNNISTAMO_KEY")
 SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT = env.str("SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT")
@@ -243,7 +244,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "loggers": {"django": {"handlers": ["console"], "level": "ERROR"}},
+    "loggers": {"django": {"handlers": ["console"], "level": "DEBUG"}},
 }
 
 # local_settings.py can be used to override environment-specific settings
@@ -255,4 +256,6 @@ if os.path.exists(local_settings_path):
     exec(code, globals(), locals())
 
 
+# Helusers stores the access token expiration time as a datetime which is not serializable to JSON,
+# so Django needs to be configured to use the built-in PickleSerializer
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"

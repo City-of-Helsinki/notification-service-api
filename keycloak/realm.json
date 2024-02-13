@@ -1,54 +1,53 @@
 {
-    "id": "${KEYCLOAK_REALM_NAME}",
-    "realm": "${KEYCLOAK_REALM_NAME}",
-    "sslRequired": "none",
-    "enabled": true,
-    "eventsEnabled": true,
-    "eventsExpiration": 900,
-    "adminEventsEnabled": true,
-    "adminEventsDetailsEnabled": true,
-    "attributes": {
-        "adminEventsExpiration": "900"
+    "id":"${KEYCLOAK_REALM_NAME}",
+    "realm":"${KEYCLOAK_REALM_NAME}",
+    "sslRequired":"none",
+    "enabled":true,
+    "eventsEnabled":true,
+    "eventsExpiration":900,
+    "adminEventsEnabled":true,
+    "adminEventsDetailsEnabled":true,
+    "attributes":{
+        "adminEventsExpiration":"900"
     },
-    "clients": [
-    {
-        "id": "${KEYCLOAK_CLIENT_NAME}",
-        "clientId": "${KEYCLOAK_CLIENT_NAME}",
-        "name": "${KEYCLOAK_CLIENT_NAME}",
-        "clientAuthenticatorType": "client-secret",
-        "secret": "${KEYCLOAK_CLIENT_SECRET}",
-        "enabled": true,
-        "alwaysDisplayInConsole": true,
-        "publicClient": false,
-        "rootUrl": "${KEYCLOAK_CLIENT_ROOT_URL}",
-        "baseUrl": "${KEYCLOAK_CLIENT_HOME_URL}",
-        "adminUrl": "${KEYCLOAK_CLIENT_ADMIN_URL}",
-        "redirectUris": [
-        "${KEYCLOAK_CLIENT_REDIRECT_URL}/*"
-        ],
-        "webOrigins": [
-        "${KEYCLOAK_CLIENT_ROOT_URL}"
-        ]
-    }
-    ],
-    "users": [
-    {
-
-        "id": "admin",
-        "email": "no-reply@hel.fi",
-        "username": "${KEYCLOAK_CLIENT_ADMIN_USERNAME}",
-        "enabled": true,
-        "emailVerified": true,
-        "credentials": [
+    "clients":[
         {
-            "temporary": false,
-            "type": "password",
-            "value": "${KEYCLOAK_CLIENT_ADMIN_PASSWORD}"
+            "id":"${KEYCLOAK_CLIENT_NAME}",
+            "clientId":"${KEYCLOAK_CLIENT_NAME}",
+            "name":"${KEYCLOAK_CLIENT_NAME}",
+            "clientAuthenticatorType":"client-secret",
+            "secret":"${KEYCLOAK_CLIENT_SECRET}",
+            "enabled":true,
+            "alwaysDisplayInConsole":true,
+            "publicClient":false,
+            "rootUrl":"${KEYCLOAK_CLIENT_ROOT_URL}",
+            "baseUrl":"${KEYCLOAK_CLIENT_HOME_URL}",
+            "adminUrl":"${KEYCLOAK_CLIENT_ADMIN_URL}",
+            "redirectUris":[
+                "${KEYCLOAK_CLIENT_REDIRECT_URL}/*"
+            ],
+            "webOrigins":[
+                "${KEYCLOAK_CLIENT_ROOT_URL}"
+            ]
         }
-        ],
-        "realmRoles": [
-            "default-roles-${KEYCLOAK_REALM_NAME}"
-        ]
-    }
-  ]
+    ],
+    "users":[
+        {
+            "id":"admin",
+            "email":"no-reply@hel.fi",
+            "username":"${KEYCLOAK_CLIENT_ADMIN_USERNAME}",
+            "enabled":true,
+            "emailVerified":true,
+            "credentials":[
+                {
+                    "temporary":false,
+                    "type":"password",
+                    "value":"${KEYCLOAK_CLIENT_ADMIN_PASSWORD}"
+                }
+            ],
+            "realmRoles":[
+                "default-roles-${KEYCLOAK_REALM_NAME}"
+            ]
+        }
+    ]
 }
