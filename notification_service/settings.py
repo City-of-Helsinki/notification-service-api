@@ -256,6 +256,7 @@ if os.path.exists(local_settings_path):
     exec(code, globals(), locals())
 
 
-# Helusers stores the access token expiration time as a datetime which is not serializable to JSON,
-# so Django needs to be configured to use the built-in PickleSerializer
+# Helusers stores the access token expiration time as a datetime which is
+# not serializable to JSON, # so Django needs to be configured to use the
+# built-in PickleSerializer
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
