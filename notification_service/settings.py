@@ -244,7 +244,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "loggers": {"django": {"handlers": ["console"], "level": "DEBUG"}},
+    "loggers": {"django": {"handlers": ["console"], "level": "ERROR"}},
 }
 
 # local_settings.py can be used to override environment-specific settings
