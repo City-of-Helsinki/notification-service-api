@@ -13,3 +13,7 @@ the version in notification_service/__init.py__ -->
 [Unreleased]: https://github.com/City-of-Helsinki/notificartion-service/compare/release-v0.1.0...HEAD
 [0.1.0]: https://github.com/City-of-Helsinki/notification-service/releases/tag/release-v0.1.0
 
+## [0.2.0] - 26 Mar 2024
+### Added
+
+- Keycloak integration
