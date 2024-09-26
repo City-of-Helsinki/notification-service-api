@@ -20,10 +20,12 @@ Testing environment:
     127.0.0.1       notification-service-keycloak
     ```
 
-3. Run `docker compose up` or `docker compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
+3. Run `docker-compose up` or `docker-compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
 
 The project is now running at http://localhost:8081.
 Keycloak admin interface is running at http://notification-service-keycloak:8180/admin.
+
+The keycloak interface defaults to username "admin" and password "keycloak".
 
 The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process. Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`. It's essential to ensure that parameters match between the configuration files and the running Keycloak instance to enable the default authentication flow properly.
 
