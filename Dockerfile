@@ -17,7 +17,7 @@ RUN yum update -y && yum install -y \
     && pip install --no-cache-dir  -r /app/requirements-prod.txt
 
 COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
-ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
+CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 
 # ==============================
 FROM appbase as development
