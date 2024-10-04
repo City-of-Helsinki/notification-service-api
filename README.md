@@ -1,24 +1,37 @@
 # Notification service API
 
-
 [![status](https://travis-ci.com/City-of-Helsinki/notification-service-api.svg)](https://github.com/City-of-Helsinki/notification-service-api)
 [![codecov](https://codecov.io/gh/City-of-Helsinki/notification-service-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/City-of-Helsinki/notification-service-api)
 
-## Environments
 
-Testing environment:
-- https://kuva-notification-service.api.test.hel.ninja/v1/
+## Deployment environments
 
-## Development with Docker
+### TODO: FIXME!
+- [Development](https://api.hel.fi/notification-service/v1/)
+- [Staging](https://api.hel.fi/notification-service/v1/)
+- [Production](https://api.hel.fi/notification-service/v1/)
 
-### Prerequisites
+
+
+## Prerequisites
+
+These are the prerequisites to run the project. If you apply these instructions to another containerization platform, you may need to adjust the instructions accordingly.
+
+
+### Docker
+
+Version 27.3.1 has been confirmed to work at the time of this writing. You can check your version by running `docker --version`.
+
+These instructions have been confirmed to apply running Docker either at localhost or on a remote machine, including virtual machines. If you are running Docker on a remote machine, you may need to forward ports to your local machine.
+
+
+### Docker Compose
 
 If you don't have a `docker compose` subcommand, you may need to install the latest version of Docker. If you have a `docker-compose` command available but no `docker compose`, and `docker-compose` is version 2.x, you need to edit `~/.docker/config.json` in order to add its directory under the `cliPluginsExtraDirs` key (which is an array of directories).
 
-- On macOS, if you have docker installed with homebrew, that directory is `/opt/homebrew/lib/docker/cli-plugins`.
+- On macOS, if you have Docker installed with homebrew, that directory is `/opt/homebrew/lib/docker/cli-plugins`.
 - On Debian Linux, it's in the `/usr/libexec/docker/cli-plugins` directory.
-- Although the following example includes both, pick either, or what's appropriate for your distribution.
-
+- Although the following example includes both, pick either, or what's appropriate for your distribution:
 ```json
 {
   "cliPluginsExtraDirs": [
@@ -28,41 +41,55 @@ If you don't have a `docker compose` subcommand, you may need to install the lat
 }
 ```
 
-### Steps
-
-1. Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed. Be sure that database variables are set (DATABASE_URL and DATABASE_HOST) because those were removed from 'docker-compose.yml' file.
-
-2. Set keycloak hostname
-
-Add the following line to your hosts file (`/etc/hosts` on mac and linux):
-    ```
-    127.0.0.1       notification-service-keycloak
-    ```
-
-If the docker host is on a remote or virtual machine at another interface, use its IP instead of `127.0.0.1`, such as `10.211.55.20`.
 
 
-3. Run `docker compose up` or `docker compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
+## Dependencies
 
-The project is now running at http://notification-service-keycloak:8081.
-Keycloak admin interface is running at http://notification-service-keycloak:8180/admin.
+These are the basic internal dependencies of the project. If you are running the project without Docker, you may need to install these dependencies manually.
 
-The keycloak interface defaults to username "admin" and password "keycloak".
+### Python
 
-The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process. Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`. It's essential to ensure that parameters match between the configuration files and the running Keycloak instance to enable the default authentication flow properly.
+Python 3.9 is the minimum version required. You can check your version by running `python --version`.
 
-Additionally, parameters can be set via the Keycloak admin interface. Navigate to the appropriate realm ("local-dev") and review the parameters in the clients, users, and realm settings sections. Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
+If you encounter deprecation warnings on newer versions, you may need to downgrade to Python 3.9, but ideally fix the deprecation warnings and upgrade the container's python base version.
+
+### PostgreSQL
+
+Postgresql 12 is the minimum version required. You can check your version by running `psql --version`.
+
+If you are running the project without Docker, you may need to install and configure PostgreSQL manually. The default configuration file is `docker-compose.env.yaml`, which you may need to adjust for your local setup.
+
+### Keycloak
+
+Keycloak is used for authentication and authorization. You can check your version by running `docker exec notification-service-keycloak /opt/jboss/keycloak/bin/standalone.sh --version`.
+
+### Quriiri
+
+Quriiri is a Finnish SMS gateway service. You can check your version by running `curl https://api.quriiri.fi/v1/ --header "Authorization: Bearer <your_api_key>"`. You need to have an API key to use the service. The API key is set in the `docker-compose.env.yaml` file.
+
+### Other
+
+Other dependencies are listed in the `requirements.txt` and `requirements-dev.txt` files. You can install them by running `pip install -r requirements.txt` and `pip install -r requirements-dev.txt`.
+
+
+
+## Getting started
+
+These are instructions of running the project with Docker. If you are running the project without Docker, you may need to adjust the instructions accordingly. There are (likely outdated) instructions in [a separate documentiation for running without Docker](./docs/development-without-docker.md), which you can refer to.
+
 
 ### Setup the environment configuration file.
 
-Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed.
+Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml`. It does work out of the box by default, but modify it according to your specific needs, if any.
 
-If you are not running postgresql as a part of the docker compose set, ensure the database variables DATABASE_URL and DATABASE_HOST are set correctly. By default, they point to the default internal hosts of the container network of an unconfigured example.
+If you are not running postgresql as a part of the docker compose set, ensure the database variables `DATABASE_URL` and `DATABASE_HOST` are set correctly.
+
+By default, they point to the default internal hosts of the container network of an unconfigured example.
 
 
-## Configure the keycloak hostname into /etc/hosts
+### Configure the keycloak hostname into /etc/hosts
 
-### TODO: ideally get rid of this step!
+#### TODO: ideally get rid of this step!
 
 Add the following line to your hosts file (`/etc/hosts` on mac and linux):
     ```hosts
@@ -75,23 +102,36 @@ If the docker host is on a remote or virtual machine at another interface, make 
     ```
 
 
-## Run the compose file
+### Run the compose file
 
 Execute `docker compose up` in your shell.
+
 Use `docker compose up --force-recreate --build` if you have made changes to environmental variables or have made other untracked changes.
 
-The Keycloak admin interface is running at:
+
+### Inspect the services.
+
+#### The Keycloak admin interface should be available at:
  - http://notification-service-keycloak:8180/admin
  - The keycloak interface defaults to username "admin" and password "keycloak".
+ - The defaults are initially set in the [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) file.
 
- - Default login is admin:adminpass
+#### The API should be available at:
+ - http://localhost:8081/v1/
+ - It defaults to username "admin" and password "adminpass".
+ - They are automatically setup in the [`entrypoint.sh`](./entrypoint.sh) file, if `CREATE_SUPERUSER` is set in the [`docker-compose.env.yaml`](./docker-compose.env.yaml) file.
 
 
-The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process.
 
-The Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`.
+## About Keycloak
+
+The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file [`realm.json`](./keycloak/realm.json), which is imported during the build process.
+
+The Realm parameters can be modified through environmental variables in [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) and [`docker-compose.env.yaml`](./docker-compose.env.yaml).
 
 It's important to ensure matching parameters between the configuration files and the running Keycloak instance. Otherwise, the default authentication flow won't work correctly.
+
+### Configuration of additional parameters
 
 Additional parameters can be configured via the Keycloak admin interface.
 
@@ -100,43 +140,50 @@ Navigate to the appropriate realm ("local-dev") and review the parameters in the
 NOTE: Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
 
 
-
 ### Configuration
-- At the moment the API only integrate with Quriiri SMS gateway, feel free to contribute by creating new sender
-- To use the default Quriiri sender, you need to have Quriiri API Key and API URL, then add them to 
-`settings.py` or your local `.env`
-```python
+
+At the moment the API only integrate with Quriiri SMS gateway.
+
+To use the Quriiri sender, you need to have Quriiri API Key and API URL, then add them to the [docker-compose.env.yaml](./docker-compose.env.yaml). If running locally, to your local `.env`:
+```
 QURIIRI_API_KEY = <your_quriiri_api_key>
 QURIIRI_API_URL = <quriiri_api_url>
 ``` 
-### API Authentication
-- The API using default [DRF TokenAuthentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication). You need to generate an API token for each client by using CLI
- command
 
-_Note: You have to create API client user first, by login to Django Admin interface using Admin account 
-```python
-$ python manage.py drf_create_token <username>
-```
+
+### API Authentication
+
+The API using default [DRF TokenAuthentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication). You need to generate an API token for each client by using CLI
+ command.
+
+NOTE: You have to create API client user first, by login to Django Admin interface using Admin account:
+    ```shell
+    python manage.py drf_create_token <username>
+    ```
 
 - After that, include the auth token to the every request to Notification Service. For example:
-```curl
-curl --location --request POST 'https://api.hel.fi/notification-service/v1/message/send' \
---header 'Authorization: Token <Auth Token>' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "sender": "Hel.fi",
-  "to": [
-    {
-      "destination": "+012345678",
-      "format": "MOBILE"
-    }
-  ],
-  "text": "SMS message"
-}'
-```
+    ```shell
+    curl --location --request POST 'https://api.hel.fi/notification-service/v1/message/send' \
+    --header 'Authorization: Token <Auth Token>' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+      "sender": "Hel.fi",
+      "to": [
+        {
+          "destination": "+012345678",
+          "format": "MOBILE"
+        }
+      ],
+      "text": "SMS message"
+    }'
+    ```
+
 
 ## API Documentation
+
+### TODO: FIXME!
 - [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
+
 
 ## Keeping Python requirements up to date
 
@@ -148,8 +195,8 @@ curl --location --request POST 'https://api.hel.fi/notification-service/v1/messa
 
 3. Update `.txt` file for the changed requirements file:
 
-    * `pip-compile requirements.in`
-    * `pip-compile requirements-dev.in`
+    - `pip-compile requirements.in`
+    - `pip-compile requirements-dev.in`
 
 4. If you want to update dependencies to their newest versions, run:
 
@@ -159,15 +206,22 @@ curl --location --request POST 'https://api.hel.fi/notification-service/v1/messa
 
     * `pip-sync requirements.txt`
 
-## Code format
+6. To install Python development requirements run:
+
+    * `pip-sync requirements-dev.txt`
+
+7. To install Python production requirements run:
+
+    * `pip-sync requirements.txt requirements-prod.txt`
+
+
+## Code formatting
 
 This project uses [`black`](https://github.com/ambv/black) for Python code formatting.
 We follow the basic config, without any modifications. Basic `black` commands:
 
 * To let `black` do its magic: `black .`
 * To see which files `black` would change: `black --check .`
-
-Or you can use [`pre-commit`](https://pre-commit.com/) to quickly format your code before committing.
 
 
 1. Install `pre-commit` (there are many ways to do but let's use pip as an example):
