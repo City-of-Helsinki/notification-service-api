@@ -53,76 +53,53 @@ The Keycloak development realm for this project is preconfigured with the name "
 
 Additionally, parameters can be set via the Keycloak admin interface. Navigate to the appropriate realm ("local-dev") and review the parameters in the clients, users, and realm settings sections. Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
 
-## Development without Docker
+### Setup the environment configuration file.
 
-Prerequisites:
+Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed.
 
-* PostgreSQL 12
-* Python 3.9
-* Keycloak 
+If you are not running postgresql as a part of the docker compose set, ensure the database variables DATABASE_URL and DATABASE_HOST are set correctly. By default, they point to the default internal hosts of the container network of an unconfigured example.
 
-### Installing Python requirements
 
-* Run `pip install -r requirements.txt`
-* Run `pip install -r requirements-dev.txt` (development requirements)
+## Configure the keycloak hostname into /etc/hosts
 
-### Database
+### TODO: ideally get rid of this step!
 
-To setup a database compatible with default database settings:
+Add the following line to your hosts file (`/etc/hosts` on mac and linux):
+    ```hosts
+    127.0.0.1       notification-service-keycloak
+    ```
 
-Create user and database
+If the docker host is on a remote or virtual machine at another interface, make ssh tunnels to the virtual machine, forwarding the required ports (8081 and 8180) to your localhost, such as:
+    ```shell
+    ssh -L8081:localhost:8081 -L8180:localhost:8180 container_host
+    ```
 
-    sudo -u postgres createuser -P -R -S notification_service  # use password `notification_service`
-    sudo -u postgres createdb -O notification_service notification_service
 
-Allow user to create test database
+## Run the compose file
 
-    sudo -u postgres psql -c "ALTER USER notification_service CREATEDB;"
-    
-### Keycloak
+Execute `docker compose up` in your shell.
+Use `docker compose up --force-recreate --build` if you have made changes to environmental variables or have made other untracked changes.
 
-#### Helsinki Keycloak theme
+The Keycloak admin interface is running at:
+ - http://notification-service-keycloak:8180/admin
+ - The keycloak interface defaults to username "admin" and password "keycloak".
 
-Clone Helsinki Keycloak theme if needed.
-    
-    git clone git@github.com:City-of-Helsinki/helsinki-keycloak-theme.git
+ - Default login is admin:adminpass
 
-Follow the instructions on the following website to setup and start this standalone version of Keycloak (Helsinki theme). https://github.com/City-of-Helsinki/helsinki-keycloak-theme
 
-#### Original Keycloak
+The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file `realm.json`, which is imported during the build process.
 
-After setting up the theme, start the "original" Keycloak container using the provided script below. Keep in mind that the included volumes reference the Helsinki theme and development realm parameters from the Notification service project.
+The Realm parameters can be modified through environmental variables in `docker-compose.keycloak.env.yaml` and `docker-compose.env.yaml`.
 
-```
-docker run --name notification-service-keycloak \
-  -e KEYCLOAK_ADMIN=admin \
-  -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-  -v /path/to/notification_service/keycloak/realm.json:/opt/keycloak/data/import/realm.json \
-  -v /path/to/helsinki-keycloak-theme/helsinki:/opt/keycloak/themes/helsinki \
-  --network=helsinki \
-  quay.io/keycloak/keycloak \
-  start-dev \
-  --http-port=8180 \
-  --spi-theme-static-max-age=-1 \
-  --spi-theme-cache-themes=false \
-  --spi-theme-cache-templates=false \
-  --import-realm
-```
+It's important to ensure matching parameters between the configuration files and the running Keycloak instance. Otherwise, the default authentication flow won't work correctly.
 
-When the container have started, you can copy Helsinki theme. Please ensure that both the original and Helsinki theme Keycloak containers are running simultaneously.
+Additional parameters can be configured via the Keycloak admin interface.
 
-    docker cp /path/to/helsinki-keycloak-theme/helsinki/. keycloak:/opt/keycloak/themes/helsinki
+Navigate to the appropriate realm ("local-dev") and review the parameters in the clients, users, and realm settings sections.
 
-Remember to set Keycloak hostname as instructed earlier ([Development with docker -> Set hostname](#development-with-docker)).
+NOTE: Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
 
-### Daily running, Debugging
 
-* Create `.env` file: `touch .env` or make a copy of `.env.example` 
-* Set the `DEBUG` environment variable to `1`.
-* Run `python manage.py migrate`
-* Run `python manage.py runserver localhost:8081`
-* The project is now running at http://localhost:8081
-* [When Keycloak has been started](#original-keycloak), it is running at http://localhost:8180 and at http://notification-service-keycloak:8180 (if hostname is set)
 
 ### Configuration
 - At the moment the API only integrate with Quriiri SMS gateway, feel free to contribute by creating new sender
