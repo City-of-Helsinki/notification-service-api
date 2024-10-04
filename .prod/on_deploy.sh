@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-./manage.py migrate --noinput
+python manage.py migrate --noinput
