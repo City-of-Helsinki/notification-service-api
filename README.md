@@ -11,18 +11,40 @@ Testing environment:
 
 ## Development with Docker
 
+### Prerequisites
+
+If you don't have a `docker compose` subcommand, you may need to install the latest version of Docker. If you have a `docker-compose` command available but no `docker compose`, and `docker-compose` is version 2.x, you need to edit `~/.docker/config.json` in order to add its directory under the `cliPluginsExtraDirs` key (which is an array of directories).
+
+- On macOS, if you have docker installed with homebrew, that directory is `/opt/homebrew/lib/docker/cli-plugins`.
+- On Debian Linux, it's in the `/usr/libexec/docker/cli-plugins` directory.
+- Although the following example includes both, pick either, or what's appropriate for your distribution.
+
+```json
+{
+  "cliPluginsExtraDirs": [
+    "/opt/homebrew/lib/docker/cli-plugins",
+    "/usr/libexec/docker/cli-plugins"
+  ]
+}
+```
+
+### Steps
+
 1. Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml` and modify it if needed. Be sure that database variables are set (DATABASE_URL and DATABASE_HOST) because those were removed from 'docker-compose.yml' file.
 
 2. Set keycloak hostname
 
-   Add the following line to your hosts file (`/etc/hosts` on mac and linux):
+Add the following line to your hosts file (`/etc/hosts` on mac and linux):
     ```
     127.0.0.1       notification-service-keycloak
     ```
 
-3. Run `docker-compose up` or `docker-compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
+If the docker host is on a remote or virtual machine at another interface, use its IP instead of `127.0.0.1`, such as `10.211.55.20`.
 
-The project is now running at http://localhost:8081.
+
+3. Run `docker compose up` or `docker compose up --force-recreate --build` if you have made changes, for example,  to environmental variables.
+
+The project is now running at http://notification-service-keycloak:8081.
 Keycloak admin interface is running at http://notification-service-keycloak:8180/admin.
 
 The keycloak interface defaults to username "admin" and password "keycloak".
