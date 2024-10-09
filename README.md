@@ -3,6 +3,8 @@
 [![status](https://travis-ci.com/City-of-Helsinki/notification-service-api.svg)](https://github.com/City-of-Helsinki/notification-service-api)
 [![codecov](https://codecov.io/gh/City-of-Helsinki/notification-service-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/City-of-Helsinki/notification-service-api)
 
+The Notification service API is a Django REST Framework API for sending notifications via SMS, email, and push notifications. The API is designed to be used by other services to send notifications to users.
+
 
 ## Deployment environments
 
