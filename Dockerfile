@@ -5,8 +5,6 @@ FROM registry.access.redhat.com/ubi9/python-39 as appbase
 USER root
 WORKDIR /app
 
-RUN mkdir /entrypoint
-
 COPY --chown=default:root requirements.txt /app/requirements.txt
 COPY --chown=default:root requirements-prod.txt /app/requirements-prod.txt
 
@@ -16,8 +14,15 @@ RUN yum update -y && yum install -y \
     && pip install --no-cache-dir -r /app/requirements.txt \
     && pip install --no-cache-dir  -r /app/requirements-prod.txt
 
+# Entrypoint:
+# - checks db connectivity
+# - does migration if requested
+# - does initial admin account setup if requested
+# - starts the server (runs manage.py or wcgi)
+RUN mkdir /entrypoint
+
 COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
-ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
+CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 
 # ==============================
 FROM appbase as development
