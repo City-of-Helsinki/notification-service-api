@@ -1,5 +1,5 @@
 # ==============================
-FROM registry.access.redhat.com/ubi9/python-39 as appbase
+FROM registry.access.redhat.com/ubi9/python-39 AS appbase
 # ==============================
 
 USER root
@@ -8,24 +8,25 @@ WORKDIR /app
 COPY --chown=default:root requirements.txt /app/requirements.txt
 COPY --chown=default:root requirements-prod.txt /app/requirements-prod.txt
 
+
 RUN yum update -y && yum install -y \
     nc \
     && pip install -U pip setuptools wheel \
     && pip install --no-cache-dir -r /app/requirements.txt \
-    && pip install --no-cache-dir  -r /app/requirements-prod.txt
-
-# Entrypoint:
-# - checks db connectivity
-# - does migration if requested
-# - does initial admin account setup if requested
-# - starts the server (runs manage.py or wcgi)
-RUN mkdir /entrypoint
+    && pip install --no-cache-dir  -r /app/requirements-prod.txt \
+    # Entrypoint:
+    # - checks db connectivity
+    # - does migration if requested
+    # - does initial admin account setup if requested
+    # - starts the server (runs manage.py or wcgi)
+    # Use && for sonarlint(docker:S7031)
+    && mkdir /entrypoint
 
 COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 
 # ==============================
-FROM appbase as development
+FROM appbase AS development
 # ==============================
 
 COPY --chown=default:root requirements-dev.txt /app/requirements-dev.txt
@@ -41,15 +42,16 @@ USER default
 EXPOSE 8081/tcp
 
 # ==============================
-FROM appbase as production
+FROM appbase AS production
 # ==============================
 
 COPY --chown=default:root . /app/
 
 # fatal: detected dubious ownership in repository at '/app'
-RUN git config --system --add safe.directory /app
-
-RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic
+RUN git config --system --add safe.directory /app \ 
+    # Collect the static files (for django admin)
+    # Use && for sonarlint(docker:S7031)
+    && SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic
 
 # OpenShift write accesses, __pycache__ is created to "/app/quriiri"
 USER root
