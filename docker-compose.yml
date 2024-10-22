@@ -1,64 +1,63 @@
 services:
-    postgres:
-        image: postgres:12
-        restart: on-failure
-        environment:
-            POSTGRES_USER: notification_service
-            POSTGRES_PASSWORD: notification_service
-            POSTGRES_DB: notification_service
-        ports:
-            - 5434:5432
-#        networks:
-#            - helsinki
-        volumes:
-          - pgdata:/var/lib/postgresql/data
-        container_name: notification_service-db
+  postgres:
+    image: postgres:12
+    restart: on-failure
+    environment:
+      POSTGRES_USER: notification_service
+      POSTGRES_PASSWORD: notification_service
+      POSTGRES_DB: notification_service
+    ports:
+      - 5434:5432
+    #        networks:
+    #            - helsinki
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    container_name: notification_service-db
 
-    keycloak:
-        image: quay.io/keycloak/keycloak
-        restart: on-failure
-        env_file:
-          - keycloak/docker-compose.keycloak.env.yaml
-        command:
-          - start-dev
-          - --http-port=8180
-          - --spi-theme-static-max-age=-1
-          - --spi-theme-cache-themes=false
-          - --spi-theme-cache-templates=false
-          - --import-realm
-#        networks:
-#          - helsinki
-        volumes:
-            - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
-        ports:
-            - 8180:8180
-        container_name: notification-service-keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    restart: on-failure
+    env_file:
+      - keycloak/docker-compose.keycloak.env.yaml
+    command:
+      - start-dev
+      - --http-port=8180
+      - --spi-theme-static-max-age=-1
+      - --spi-theme-cache-themes=false
+      - --spi-theme-cache-templates=false
+      - --import-realm
+    #        networks:
+    #          - helsinki
+    volumes:
+      - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
+    ports:
+      - 8180:8180
+    container_name: notification-service-keycloak
 
-
-    django:
-        build:
-            context: .
-            target: development
-        restart: on-failure
-        env_file:
-            - docker-compose.env.yaml
-        volumes:
-            - djangodata:/app
-#        networks:
-#            - helsinki
-        ports:
-            - 8081:8081
-        depends_on:
-            - postgres
-            - keycloak
-        container_name: notification_service-api
+  django:
+    build:
+      context: .
+      target: ${DOCKER_TARGET:-development}
+    restart: on-failure
+    env_file:
+      - docker-compose.env.yaml
+    volumes:
+      - djangodata:/app
+    #        networks:
+    #            - helsinki
+    ports:
+      - 8081:8081
+      - 8000:8000
+    depends_on:
+      - postgres
+      - keycloak
+    container_name: notification_service-api
 
 volumes:
-    djangodata:
-        driver: local
-    pgdata:
-        driver: local
-
+  djangodata:
+    driver: local
+  pgdata:
+    driver: local
 #networks:
 #    helsinki:
 #        driver: bridge
