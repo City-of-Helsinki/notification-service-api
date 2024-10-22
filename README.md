@@ -111,8 +111,9 @@ Use `docker compose up --force-recreate --build` if you have made changes to env
 #### The API should be available at:
 
 - http://localhost:8081/v1/
-- It defaults to username "admin" and password "adminpass".
-- They are automatically setup in the [`entrypoint.sh`](./entrypoint.sh) file, if `CREATE_SUPERUSER` is set in the [`docker-compose.env.yaml`](./docker-compose.env.yaml) file.
+
+The django admin page is available in http://localhost:8081/admin.
+An admin user can be created with `python manage.py add_admin_user -u admin -p adminpass -e admin@example.com`. To run the same command into a Docker container, use `docker exec -it django python manage.py add_admin_user -u admin -p adminpass -e admin@example.com`.
 
 ## About Keycloak
 
