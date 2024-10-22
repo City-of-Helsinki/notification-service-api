@@ -5,27 +5,23 @@
 
 The Notification service API is a Django REST Framework API for sending notifications via SMS, email, and push notifications. The API is designed to be used by other services to send notifications to users.
 
-
 ## Deployment environments
 
 ### TODO: FIXME!
+
 - [Development](https://api.hel.fi/notification-service/v1/)
 - [Staging](https://api.hel.fi/notification-service/v1/)
 - [Production](https://api.hel.fi/notification-service/v1/)
 
-
-
 ## Prerequisites
 
 These are the prerequisites to run the project. If you apply these instructions to another containerization platform, you may need to adjust the instructions accordingly.
-
 
 ### Docker
 
 Version 27.3.1 has been confirmed to work at the time of this writing. You can check your version by running `docker --version`.
 
 These instructions have been confirmed to apply running Docker either at localhost or on a remote machine, including virtual machines. If you are running Docker on a remote machine, you may need to forward ports to your local machine.
-
 
 ### Docker Compose
 
@@ -34,6 +30,7 @@ If you don't have a `docker compose` subcommand, you may need to install the lat
 - On macOS, if you have Docker installed with homebrew, that directory is `/opt/homebrew/lib/docker/cli-plugins`.
 - On Debian Linux, it's in the `/usr/libexec/docker/cli-plugins` directory.
 - Although the following example includes both, pick either, or what's appropriate for your distribution:
+
 ```json
 {
   "cliPluginsExtraDirs": [
@@ -43,17 +40,15 @@ If you don't have a `docker compose` subcommand, you may need to install the lat
 }
 ```
 
-
-
 ## Dependencies
 
 These are the basic internal dependencies of the project. If you are running the project without Docker, you may need to install these dependencies manually.
 
 ### Python
 
-Python 3.9 is the minimum version required. You can check your version by running `python --version`.
+Python 3.11 is the minimum version required. You can check your version by running `python --version`.
 
-If you encounter deprecation warnings on newer versions, you may need to downgrade to Python 3.9, but ideally fix the deprecation warnings and upgrade the container's python base version.
+If you encounter deprecation warnings on newer versions, you may need to downgrade to Python 3.11, but ideally fix the deprecation warnings and upgrade the container's python base version.
 
 ### PostgreSQL
 
@@ -73,12 +68,9 @@ Quriiri is a Finnish SMS gateway service. You can check your version by running 
 
 Other dependencies are listed in the `requirements.txt` and `requirements-dev.txt` files. You can install them by running `pip install -r requirements.txt` and `pip install -r requirements-dev.txt`.
 
-
-
 ## Getting started
 
 These are instructions of running the project with Docker. If you are running the project without Docker, you may need to adjust the instructions accordingly. There are (likely outdated) instructions in [a separate documentiation for running without Docker](./docs/development-without-docker.md), which you can refer to.
-
 
 ### Setup the environment configuration file.
 
@@ -88,21 +80,19 @@ If you are not running postgresql as a part of the docker compose set, ensure th
 
 By default, they point to the default internal hosts of the container network of an unconfigured example.
 
-
 ### Configure the keycloak hostname into /etc/hosts
 
 #### TODO: ideally get rid of this step!
 
 Add the following line to your hosts file (`/etc/hosts` on mac and linux):
-    ```hosts
+`hosts
     127.0.0.1       notification-service-keycloak
-    ```
+    `
 
 If the docker host is on a remote or virtual machine at another interface, make ssh tunnels to the virtual machine, forwarding the required ports (8081 and 8180) to your localhost, such as:
-    ```shell
+`shell
     ssh -L8081:localhost:8081 -L8180:localhost:8180 container_host
-    ```
-
+    `
 
 ### Run the compose file
 
@@ -110,20 +100,19 @@ Execute `docker compose up` in your shell.
 
 Use `docker compose up --force-recreate --build` if you have made changes to environmental variables or have made other untracked changes.
 
-
 ### Inspect the services.
 
 #### The Keycloak admin interface should be available at:
- - http://notification-service-keycloak:8180/admin
- - The keycloak interface defaults to username "admin" and password "keycloak".
- - The defaults are initially set in the [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) file.
+
+- http://notification-service-keycloak:8180/admin
+- The keycloak interface defaults to username "admin" and password "keycloak".
+- The defaults are initially set in the [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) file.
 
 #### The API should be available at:
- - http://localhost:8081/v1/
- - It defaults to username "admin" and password "adminpass".
- - They are automatically setup in the [`entrypoint.sh`](./entrypoint.sh) file, if `CREATE_SUPERUSER` is set in the [`docker-compose.env.yaml`](./docker-compose.env.yaml) file.
 
-
+- http://localhost:8081/v1/
+- It defaults to username "admin" and password "adminpass".
+- They are automatically setup in the [`entrypoint.sh`](./entrypoint.sh) file, if `CREATE_SUPERUSER` is set in the [`docker-compose.env.yaml`](./docker-compose.env.yaml) file.
 
 ## About Keycloak
 
@@ -141,94 +130,90 @@ Navigate to the appropriate realm ("local-dev") and review the parameters in the
 
 NOTE: Keep in mind that any changes made to parameters will be lost if you recreate and rebuild the containers without exporting the realm(s) first.
 
-
 ### Configuration
 
 At the moment the API only integrate with Quriiri SMS gateway.
 
 To use the Quriiri sender, you need to have Quriiri API Key and API URL, then add them to the [docker-compose.env.yaml](./docker-compose.env.yaml). If running locally, to your local `.env`:
+
 ```
 QURIIRI_API_KEY = <your_quriiri_api_key>
 QURIIRI_API_URL = <quriiri_api_url>
-``` 
-
+```
 
 ### API Authentication
 
 The API using default [DRF TokenAuthentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication). You need to generate an API token for each client by using CLI
- command.
+command.
 
 NOTE: You have to create API client user first, by login to Django Admin interface using Admin account:
-    ```shell
+`shell
     python manage.py drf_create_token <username>
-    ```
+    `
 
 - After that, include the auth token to the every request to Notification Service. For example:
-    ```shell
-    curl --location --request POST 'https://api.hel.fi/notification-service/v1/message/send' \
-    --header 'Authorization: Token <Auth Token>' \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-      "sender": "Hel.fi",
-      "to": [
-        {
-          "destination": "+012345678",
-          "format": "MOBILE"
-        }
-      ],
-      "text": "SMS message"
-    }'
-    ```
-
+  ```shell
+  curl --location --request POST 'https://api.hel.fi/notification-service/v1/message/send' \
+  --header 'Authorization: Token <Auth Token>' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "sender": "Hel.fi",
+    "to": [
+      {
+        "destination": "+012345678",
+        "format": "MOBILE"
+      }
+    ],
+    "text": "SMS message"
+  }'
+  ```
 
 ## API Documentation
 
 ### TODO: FIXME!
-- [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
 
+- [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
 
 ## Keeping Python requirements up to date
 
 1. Install `pip-tools`:
 
-    * `pip install pip-tools`
+   - `pip install pip-tools`
 
 2. Add new packages to `requirements.in` or `requirements-dev.in`
 
 3. Update `.txt` file for the changed requirements file:
 
-    - `pip-compile requirements.in`
-    - `pip-compile requirements-dev.in`
+   - `pip-compile requirements.in`
+   - `pip-compile requirements-dev.in`
 
 4. If you want to update dependencies to their newest versions, run:
 
-    * `pip-compile --upgrade requirements.in`
+   - `pip-compile --upgrade requirements.in`
 
 5. To install Python requirements run:
 
-    * `pip-sync requirements.txt`
+   - `pip-sync requirements.txt`
 
 6. To install Python development requirements run:
 
-    * `pip-sync requirements-dev.txt`
+   - `pip-sync requirements-dev.txt`
 
 7. To install Python production requirements run:
 
-    * `pip-sync requirements.txt requirements-prod.txt`
-
+   - `pip-sync requirements.txt requirements-prod.txt`
 
 ## Code formatting
 
 This project uses [`black`](https://github.com/ambv/black) for Python code formatting.
 We follow the basic config, without any modifications. Basic `black` commands:
 
-* To let `black` do its magic: `black .`
-* To see which files `black` would change: `black --check .`
-
+- To let `black` do its magic: `black .`
+- To see which files `black` would change: `black --check .`
 
 1. Install `pre-commit` (there are many ways to do but let's use pip as an example):
-    * `pip install pre-commit`
+   - `pip install pre-commit`
 2. Set up git hooks from `.pre-commit-config.yaml`, run this command from project root:
-    * `pre-commit install`
+   - `pre-commit install`
 
 After that, formatting hooks will run against all changed files before committing

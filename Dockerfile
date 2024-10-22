@@ -1,5 +1,5 @@
 # ==============================
-FROM registry.access.redhat.com/ubi9/python-39 as appbase
+FROM registry.access.redhat.com/ubi9/python-311 AS appbase
 # ==============================
 
 USER root
@@ -23,7 +23,7 @@ COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 
 # ==============================
-FROM appbase as development
+FROM appbase AS development
 # ==============================
 
 COPY --chown=default:root requirements-dev.txt /app/requirements-dev.txt
@@ -39,7 +39,7 @@ USER default
 EXPOSE 8081/tcp
 
 # ==============================
-FROM appbase as production
+FROM appbase AS production
 # ==============================
 
 COPY --chown=default:root . /app/
