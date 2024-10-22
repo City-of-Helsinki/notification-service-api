@@ -1,9 +1,7 @@
-black
-flake8
 freezegun
 ipython
-isort
 pytest
 pytest-cov
 pytest-django
 snapshottest
+ruff
