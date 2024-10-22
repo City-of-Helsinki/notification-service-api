@@ -7,3 +7,4 @@ pytest
 pytest-cov
 pytest-django
 snapshottest
+drf-spectacular

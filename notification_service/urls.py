@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import include, path
 from django.utils.translation import gettext
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 from common.utils import get_api_version
 
@@ -29,6 +30,10 @@ urlpatterns = [
     path("pysocial/", include("social_django.urls", namespace="social")),
     path("helauth/", include("helusers.urls")),
     path("v1/", include("api.urls")),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 
