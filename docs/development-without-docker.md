@@ -6,14 +6,14 @@ Please refer to the [main README](/README.md) for the latest instructions.
 
 Prerequisites:
 
-* PostgreSQL 12
-* Python 3.9
-* Keycloak
+- PostgreSQL 12
+- Python 3.11
+- Keycloak
 
 ### Installing Python requirements
 
-* Run `pip install -r requirements.txt`
-* Run `pip install -r requirements-dev.txt` (development requirements)
+- Run `pip install -r requirements.txt`
+- Run `pip install -r requirements-dev.txt` (development requirements)
 
 ### Database
 
@@ -66,9 +66,9 @@ Remember to set Keycloak hostname as instructed earlier ([Development with docke
 
 ### Daily running, Debugging
 
-* Create `.env` file: `touch .env` or make a copy of `.env.example`
-* Set the `DEBUG` environment variable to `1`.
-* Run `python manage.py migrate`
-* Run `python manage.py runserver localhost:8081`
-* The project is now running at http://localhost:8081
-* [When Keycloak has been started](#original-keycloak), it is running at http://localhost:8180 and at http://notification-service-keycloak:8180 (if hostname is set)
+- Create `.env` file: `touch .env` or make a copy of `.env.example`
+- Set the `DEBUG` environment variable to `1`.
+- Run `python manage.py migrate`
+- Run `python manage.py runserver localhost:8081`
+- The project is now running at http://localhost:8081
+- [When Keycloak has been started](#original-keycloak), it is running at http://localhost:8180 and at http://notification-service-keycloak:8180 (if hostname is set)
