@@ -1,6 +1,7 @@
+from copy import deepcopy
+
 import factory.random
 import pytest
-from copy import deepcopy
 from django.contrib.auth.models import AnonymousUser
 from freezegun import freeze_time
 from rest_framework.authtoken.models import Token
