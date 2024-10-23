@@ -52,7 +52,7 @@ If you encounter deprecation warnings on newer versions, you may need to downgra
 
 ### PostgreSQL
 
-Postgresql 12 is the minimum version required. You can check your version by running `psql --version`.
+Postgresql 13 is the minimum version required. You can check your version by running `psql --version`.
 
 If you are running the project without Docker, you may need to install and configure PostgreSQL manually. The default configuration file is `docker-compose.env.yaml`, which you may need to adjust for your local setup.
 
