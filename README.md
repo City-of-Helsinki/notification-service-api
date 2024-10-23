@@ -205,11 +205,28 @@ NOTE: You have to create API client user first, by login to Django Admin interfa
 
 ## Code formatting
 
-This project uses [`black`](https://github.com/ambv/black) for Python code formatting.
-We follow the basic config, without any modifications. Basic `black` commands:
+This project uses [`ruff`](https://docs.astral.sh/ruff/formatter/) for Python code formatting. Basic `ruff` commands:
 
-- To let `black` do its magic: `black .`
-- To see which files `black` would change: `black --check .`
+`ruff format` is the primary entrypoint to the formatter. It accepts a list of files or directories, and formats all discovered Python files:
+
+```
+ruff format                   # Format all files in the current directory.
+ruff format path/to/code/     # Format all files in `path/to/code` (and any subdirectories).
+ruff format path/to/file.py   # Format a single file.
+```
+
+> Similar to Black, running ruff format /path/to/file.py will format the given file or directory in-place, while ruff format --check /path/to/file.py will avoid writing any formatted files back, and instead exit with a non-zero status code upon detecting any unformatted files.
+
+To run the Ruff Linter use `ruff check`.
+
+> `ruff check` is the primary entrypoint to the Ruff linter. It accepts a list of files or directories, and lints all discovered Python files, optionally fixing any fixable errors:
+
+```
+ruff check                  # Lint all files in the current directory.
+ruff check --fix            # Lint all files in the current directory, and fix any fixable errors.
+ruff check --watch          # Lint all files in the current directory, and re-lint on change.
+ruff check path/to/code/    # Lint all files in `path/to/code` (and any subdirectories).
+```
 
 1. Install `pre-commit` (there are many ways to do but let's use pip as an example):
    - `pip install pre-commit`
