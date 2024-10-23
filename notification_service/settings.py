@@ -17,19 +17,12 @@ else:
 
 env = environ.Env(
     ALLOWED_HOSTS=(list, []),
-    AZURE_ACCOUNT_KEY=(str, ""),
-    AZURE_ACCOUNT_NAME=(str, ""),
-    AZURE_CONTAINER=(str, ""),
     CACHE_URL=(str, "locmemcache://"),
     CORS_ORIGIN_ALLOW_ALL=(bool, False),
     CORS_ORIGIN_WHITELIST=(list, []),
     DATABASE_URL=(str, ""),
     DEBUG=(bool, False),
-    DEFAULT_FILE_STORAGE=(str, "django.core.files.storage.FileSystemStorage"),
     DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
-    GS_BUCKET_NAME=(str, ""),
-    GS_DEFAULT_ACL=(str, "publicRead"),
-    GS_FILE_OVERWRITE=(bool, False),
     HELUSERS_PASSWORD_LOGIN_DISABLED=(bool, False),
     ILMOITIN_QUEUE_NOTIFICATIONS=(bool, False),
     ILMOITIN_TRANSLATED_FROM_EMAIL=(dict, {}),
@@ -51,7 +44,6 @@ env = environ.Env(
     SOCIAL_AUTH_TUNNISTAMO_KEY=(str, "KEY_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT=(str, "OIDC_ENDPOINT_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_SECRET=(str, "SECRET_UNSET"),
-    STAGING_GCS_BUCKET_CREDENTIALS=(str, ""),
     STATIC_ROOT=(environ.Path(), default_var_root("static")),
     STATIC_URL=(str, "/static/"),
     TOKEN_AUTH_ACCEPTED_AUDIENCE=(str, "https://api.hel.fi/auth/notification_service"),
@@ -113,19 +105,6 @@ MEDIA_ROOT = env("MEDIA_ROOT")
 STATIC_ROOT = env("STATIC_ROOT")
 MEDIA_URL = env.str("MEDIA_URL")
 STATIC_URL = env.str("STATIC_URL")
-
-# For staging env, we use Google Cloud Storage
-DEFAULT_FILE_STORAGE = env("DEFAULT_FILE_STORAGE")
-if DEFAULT_FILE_STORAGE == "storages.backends.gcloud.GoogleCloudStorage":
-    GS_BUCKET_NAME = env("GS_BUCKET_NAME")
-    GOOGLE_APPLICATION_CREDENTIALS = env("STAGING_GCS_BUCKET_CREDENTIALS")
-    GS_DEFAULT_ACL = env("GS_DEFAULT_ACL")
-    GS_FILE_OVERWRITE = env("GS_FILE_OVERWRITE")
-# For prod, it's Azure Storage
-elif DEFAULT_FILE_STORAGE == "storages.backends.azure_storage.AzureStorage":
-    AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
-    AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY")
-    AZURE_CONTAINER = env("AZURE_CONTAINER")
 
 ROOT_URLCONF = "notification_service.urls"
 WSGI_APPLICATION = "notification_service.wsgi.application"
