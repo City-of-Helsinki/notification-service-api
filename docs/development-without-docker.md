@@ -6,7 +6,7 @@ Please refer to the [main README](/README.md) for the latest instructions.
 
 Prerequisites:
 
-- PostgreSQL 12
+- PostgreSQL 13
 - Python 3.11
 - Keycloak
 
