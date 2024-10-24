@@ -30,18 +30,12 @@ deprecation==2.1.0
 django==5.1.2
     # via
     #   -r requirements.in
-    #   django-anymail
     #   django-axes
     #   django-cors-headers
     #   django-helusers
-    #   django-ilmoitin
-    #   django-mailer
-    #   django-parler
     #   djangorestframework
     #   sentry-sdk
     #   social-auth-app-django
-django-anymail==12.0
-    # via django-ilmoitin
 django-axes==7.0.0
     # via -r requirements.in
 django-cors-headers==4.5.0
@@ -50,12 +44,6 @@ django-environ==0.11.2
     # via -r requirements.in
 django-helusers==0.13.0
     # via -r requirements.in
-django-ilmoitin==0.7.1
-    # via -r requirements.in
-django-mailer==2.3.2
-    # via django-ilmoitin
-django-parler==2.3
-    # via django-ilmoitin
 djangorestframework==3.15.2
     # via -r requirements.in
 ecdsa==0.19.0
@@ -66,12 +54,6 @@ faker==30.8.0
     # via factory-boy
 idna==3.10
     # via requests
-jinja2==3.1.4
-    # via django-ilmoitin
-lockfile==0.12.2
-    # via django-mailer
-markupsafe==3.0.2
-    # via jinja2
 oauthlib==3.2.2
     # via
     #   requests-oauthlib
@@ -96,7 +78,6 @@ python3-openid==3.2.0
     # via social-auth-core
 requests==2.32.3
     # via
-    #   django-anymail
     #   django-helusers
     #   requests-oauthlib
     #   social-auth-core
@@ -120,6 +101,5 @@ typing-extensions==4.12.2
     # via faker
 urllib3==2.2.3
     # via
-    #   django-anymail
     #   requests
     #   sentry-sdk

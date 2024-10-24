@@ -25,13 +25,6 @@ env = environ.Env(
     DEBUG=(bool, False),
     DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
     HELUSERS_PASSWORD_LOGIN_DISABLED=(bool, False),
-    ILMOITIN_QUEUE_NOTIFICATIONS=(bool, False),
-    ILMOITIN_TRANSLATED_FROM_EMAIL=(dict, {}),
-    MAIL_MAILGUN_API=(str, ""),
-    MAIL_MAILGUN_DOMAIN=(str, ""),
-    MAIL_MAILGUN_KEY=(str, ""),
-    MAILER_EMAIL_BACKEND=(str, "django.core.mail.backends.console.EmailBackend"),
-    MAILER_LOCK_PATH=(str, "/tmp/mailer_lockfile"),
     MEDIA_ROOT=(environ.Path(), environ.Path(checkout_dir("var"))("media")),
     MEDIA_URL=(str, "/media/"),
     QURIIRI_API_KEY=(str, ""),
@@ -69,21 +62,6 @@ USE_X_FORWARDED_HOST = env.bool("USE_X_FORWARDED_HOST")
 DATABASES = {"default": env.db()}
 
 CACHES = {"default": env.cache()}
-
-if env.str("DEFAULT_FROM_EMAIL"):
-    DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
-if env("MAIL_MAILGUN_KEY"):
-    ANYMAIL = {
-        "MAILGUN_API_KEY": env("MAIL_MAILGUN_KEY"),
-        "MAILGUN_SENDER_DOMAIN": env("MAIL_MAILGUN_DOMAIN"),
-        "MAILGUN_API_URL": env("MAIL_MAILGUN_API"),
-    }
-EMAIL_BACKEND = "mailer.backend.DbBackend"
-MAILER_EMAIL_BACKEND = env.str("MAILER_EMAIL_BACKEND")
-if env("MAILER_LOCK_PATH"):
-    MAILER_LOCK_PATH = env.str("MAILER_LOCK_PATH")
-ILMOITIN_TRANSLATED_FROM_EMAIL = env("ILMOITIN_TRANSLATED_FROM_EMAIL")
-ILMOITIN_QUEUE_NOTIFICATIONS = env("ILMOITIN_QUEUE_NOTIFICATIONS")
 
 try:
     REVISION = (
@@ -127,8 +105,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
-    "anymail",
-    "mailer",
     "axes",
     # local apps under this line
     "api",
