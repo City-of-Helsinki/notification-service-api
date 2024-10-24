@@ -43,6 +43,10 @@ services:
       - docker-compose.env.yaml
     volumes:
       - djangodata:/app
+      # Prevent sharing the following directories between host and container
+      # to avoid ownership and/or platform issues:
+      - /app/.ruff_cache
+      - /app/.pytest_cache
     #        networks:
     #            - helsinki
     ports:
