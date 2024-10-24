@@ -35,6 +35,11 @@ COPY --chown=default:root . /app/
 RUN pip install --no-cache-dir -r /app/requirements-dev.txt && \
     git config --system --add safe.directory /app
 
+# Set permissions for cache directories
+RUN mkdir -p /app/.pytest_cache /app/.ruff_cache && \
+    chown -R default:root /app/.pytest_cache /app/.ruff_cache && \
+    chmod -R a+rwx /app/.pytest_cache /app/.ruff_cache
+
 USER default
 EXPOSE 8081/tcp
 
