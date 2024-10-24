@@ -2,7 +2,6 @@ django
 django-cors-headers
 django-environ
 django-helusers
-django-ilmoitin
 django-axes
 djangorestframework
 factory-boy
