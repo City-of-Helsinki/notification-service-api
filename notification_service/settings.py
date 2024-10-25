@@ -106,11 +106,13 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "axes",
+    "health_check",
     # local apps under this line
     "api",
     "social_django",
     "users",
     "utils",
+    "custom_health_checks",
 ]
 
 MIDDLEWARE = [
@@ -216,3 +218,8 @@ if os.path.exists(local_settings_path):
 # helusers.sessions.TunnistamoOIDCSerializer.
 # Rrf. https://github.com/City-of-Helsinki/django-helusers
 SESSION_SERIALIZER = "helusers.sessions.TunnistamoOIDCSerializer"
+
+# Configure `health_check` app
+HEALTH_CHECK = {
+    "DATABASE": "custom_health_checks.backends.DatabaseHealthCheck",
+}

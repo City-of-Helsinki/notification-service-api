@@ -20,6 +20,7 @@ from django.urls import include, path
 from django.utils.translation import gettext
 
 from common.utils import get_api_version
+from custom_health_checks.views import HealthCheckJSONView
 
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]
@@ -36,12 +37,11 @@ urlpatterns = [
 #
 # Kubernetes liveness & readiness probes
 #
-def healthz(*args, **kwargs):
-    return HttpResponse(status=200)
-
-
 def readiness(*args, **kwargs):
     return HttpResponse(status=200)
 
 
-urlpatterns += [path("healthz", healthz), path("readiness", readiness)]
+urlpatterns += [
+    path(r"healthz", HealthCheckJSONView.as_view(), name="healthz"),
+    path("readiness", readiness),
+]
