@@ -32,6 +32,7 @@ django==5.1.2
     #   -r requirements.in
     #   django-axes
     #   django-cors-headers
+    #   django-health-check
     #   django-helusers
     #   djangorestframework
     #   sentry-sdk
@@ -41,6 +42,8 @@ django-axes==7.0.0
 django-cors-headers==4.5.0
     # via -r requirements.in
 django-environ==0.11.2
+    # via -r requirements.in
+django-health-check==3.18.3
     # via -r requirements.in
 django-helusers==0.13.0
     # via -r requirements.in
