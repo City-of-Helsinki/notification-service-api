@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.3.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.0...notification-service-api-v0.3.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* **release:** Trigger a new release with release-please ([3488748](https://github.com/City-of-Helsinki/notification-service-api/commit/3488748871ec9ec3f7ec7500b4f1d2b2483eb22a))
+
 ## [0.3.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.2.0...notification-service-api-v0.3.0) (2024-10-29)
 
 
