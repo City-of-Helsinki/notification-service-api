@@ -1,0 +1,12 @@
+{
+  "bootstrap-sha": "fc0853daa3f3bcd949d6265c617e7ca15a2bad5b",
+  "sequential-calls": true,
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "package-name": "notification-service-api",
+      "extra-files": ["pyproject.toml"]
+    }
+  },
+  "plugins": ["sentence-case"]
+}
