@@ -1,6 +1,34 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.3.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.2.0...notification-service-api-v0.3.0) (2024-10-29)
+
+
+### Features
+
+* **deps:** Remove unused dependency to django-ilmoitin ([4a082a9](https://github.com/City-of-Helsinki/notification-service-api/commit/4a082a93f649eeee0c8e16be15ef58dfc18cac17))
+* Healthz-endpoint checks the database connection ([0e88293](https://github.com/City-of-Helsinki/notification-service-api/commit/0e882939a88c182c4317b0e03b6557ac61a7a2ea))
+
+
+### Bug Fixes
+
+* Cache directory permission errors when running ruff & pytest ([cd3902d](https://github.com/City-of-Helsinki/notification-service-api/commit/cd3902d11eff6e40f10189f161ec5e55e0d9331b))
+* Chained even more RUNs to make SonarCloud happy. ([a4d51ea](https://github.com/City-of-Helsinki/notification-service-api/commit/a4d51ea12fee5182d4afb5fad2278c712fac35d3))
+* Compatibility with podman 5.2.3 ([3ed0300](https://github.com/City-of-Helsinki/notification-service-api/commit/3ed0300b7822428c2a379aa8ad7c99bf58f741ec))
+* Manage.py can't be assumed to be executable. ([a12ea37](https://github.com/City-of-Helsinki/notification-service-api/commit/a12ea373ff9d96f771e3980926db762b53208c52))
+* The 'version' attribute is deprecated ([e429802](https://github.com/City-of-Helsinki/notification-service-api/commit/e429802078926bc10d033b25fd0f818338c4a310))
+* The entrypoint script calls manage.py, therefore it can't exist before /app. ([ded8a54](https://github.com/City-of-Helsinki/notification-service-api/commit/ded8a540db46c74ce701281c2d708ff5934d672f))
+
+
+### Documentation
+
+* Added description of what the project is about. ([910f8c0](https://github.com/City-of-Helsinki/notification-service-api/commit/910f8c0eb82b772f3ab4f95a06c22d9adca96a64))
+* Bringing README up to date and adding details, as well as fixmes. ([6965dd6](https://github.com/City-of-Helsinki/notification-service-api/commit/6965dd6d5f21b98fc1b18e10f733f75a346e4bf3))
+* Code formatting with ruff ([b322767](https://github.com/City-of-Helsinki/notification-service-api/commit/b322767cd486c1e2431cf63d2ce808b41a1e2b4c))
+* Docker-compose is still by default a separate command ([81b63b6](https://github.com/City-of-Helsinki/notification-service-api/commit/81b63b6bc956b0516eb19d0d17947c724c819f30))
+* Notes about docker-compose configuration and minor fixes. ([7e5fca5](https://github.com/City-of-Helsinki/notification-service-api/commit/7e5fca52067407b7b33e24bdd10874bef810bf95))
+* Separated instructions without docker; possibly outdated. ([9930279](https://github.com/City-of-Helsinki/notification-service-api/commit/99302798b4d446551cd63d3787d6bc3d7020713d))
+
 ## [0.2.0] - 26 Mar 2024
 
 ### Added
