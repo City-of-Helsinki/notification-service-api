@@ -21,6 +21,15 @@ pr:
   branches:
     include:
     - master
+  paths:
+    exclude:
+    - '*release-please*'
+    - '**/*.md'
+    - '.github/'
+    - 'azure-pipelines-notification-service-api-release.yml'
+    - 'azure-pipelines-notification-service-api-test.yml'
+    - 'docker-compose*'
+
 
 # By default, use self-hosted agents
 pool: Default
