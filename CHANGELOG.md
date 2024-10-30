@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.4.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.3...notification-service-api-v0.4.0) (2024-10-30)
+
+
+### Features
+
+* Add build and release information to the readiness probe ([f76cfe3](https://github.com/City-of-Helsinki/notification-service-api/commit/f76cfe32a050472b36874448640911895721ed38))
+
 ## [0.3.3](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.2...notification-service-api-v0.3.3) (2024-10-30)
 
 
