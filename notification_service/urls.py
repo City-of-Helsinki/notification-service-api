@@ -15,12 +15,13 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.urls import include, path
 from django.utils.translation import gettext
 
 from common.utils import get_api_version
 from custom_health_checks.views import HealthCheckJSONView
+from notification_service import __version__, settings
 
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]
@@ -38,10 +39,17 @@ urlpatterns = [
 # Kubernetes liveness & readiness probes
 #
 def readiness(*args, **kwargs):
-    return HttpResponse(status=200)
+    response_json = {
+        "status": "ok",
+        "release": settings.APP_RELEASE,
+        "packageVersion": __version__,
+        "commitHash": settings.REVISION,
+        "buildTime": settings.APP_BUILD_TIME.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+    }
+    return JsonResponse(response_json, status=200)
 
 
 urlpatterns += [
     path(r"healthz", HealthCheckJSONView.as_view(), name="healthz"),
-    path("readiness", readiness),
+    path(r"readiness", readiness),
 ]
