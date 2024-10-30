@@ -1,3 +1,8 @@
+[project]
+name = "notification-service"
+version = "0.3.2"
+requires-python = ">= 3.11"
+
 [tool.ruff]
 extend-exclude = ["migrations", "snapshots"]
 
