@@ -1,6 +1,18 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.3.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.1...notification-service-api-v0.3.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* **release:** Set release version to Django project ([5463ad2](https://github.com/City-of-Helsinki/notification-service-api/commit/5463ad2a44992855d4e3f1bfc1562580bf88e0ae))
+
+
+### Documentation
+
+* Releasing with release-please process and deploying ([a336ccb](https://github.com/City-of-Helsinki/notification-service-api/commit/a336ccb5ecb2b7eeb849d102bd6aacdc326b2207))
+
 ## [0.3.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.0...notification-service-api-v0.3.1) (2024-10-29)
 
 
