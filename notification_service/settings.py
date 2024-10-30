@@ -4,6 +4,7 @@ import subprocess
 import environ
 import sentry_sdk
 from django.utils.translation import gettext_lazy as _
+from sentry_sdk.integrations.django import DjangoIntegration
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
@@ -78,6 +79,7 @@ sentry = sentry_sdk.init(
     environment=env("SENTRY_ENVIRONMENT"),
     enable_tracing=env.bool("SENTRY_ENABLE_TRACING"),
     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE"),
+    integrations=[DjangoIntegration()],
 )
 
 MEDIA_ROOT = env("MEDIA_ROOT")
