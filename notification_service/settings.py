@@ -1,5 +1,6 @@
 import os
 import subprocess
+from datetime import datetime
 
 import environ
 import sentry_sdk
@@ -45,6 +46,7 @@ env = environ.Env(
     TOKEN_AUTH_AUTHSERVER_URL=(str, ""),
     TOKEN_AUTH_REQUIRE_SCOPE_PREFIX=(bool, True),
     USE_X_FORWARDED_HOST=(bool, False),
+    APP_RELEASE=(str, ""),
 )
 
 if os.path.exists(env_file):
@@ -223,3 +225,8 @@ SESSION_SERIALIZER = "helusers.sessions.TunnistamoOIDCSerializer"
 HEALTH_CHECK = {
     "DATABASE": "custom_health_checks.backends.DatabaseHealthCheck",
 }
+
+# release information
+APP_RELEASE = env("APP_RELEASE")
+# get build time from a file in docker image
+APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
