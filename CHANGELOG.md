@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.4.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.4.0...notification-service-api-v0.4.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* Add DjangoIntegration to Sentry settings ([6438ca0](https://github.com/City-of-Helsinki/notification-service-api/commit/6438ca0605c045c23604aa9f586b005ef3b5b044))
+
 ## [0.4.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.3.3...notification-service-api-v0.4.0) (2024-10-30)
 
 
