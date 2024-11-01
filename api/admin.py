@@ -33,6 +33,7 @@ class DeliveryLogAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "get_number", "get_status", "created_at"]
     list_filter = [MessageStatusListFilter, "created_at"]
     date_hierarchy = "created_at"
+    ordering = ["-created_at"]
 
     def get_number(self, obj):
         try:
