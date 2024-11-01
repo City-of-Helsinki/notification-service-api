@@ -30,10 +30,9 @@ class MessageStatusListFilter(admin.SimpleListFilter):
 
 class DeliveryLogAdmin(admin.ModelAdmin):
     search_fields = ["report", "user__email"]
-    list_display = ["id", "user", "get_number", "get_status"]
-    list_filter = [
-        MessageStatusListFilter,
-    ]
+    list_display = ["id", "user", "get_number", "get_status", "created_at"]
+    list_filter = [MessageStatusListFilter, "created_at"]
+    date_hierarchy = "created_at"
 
     def get_number(self, obj):
         try:
