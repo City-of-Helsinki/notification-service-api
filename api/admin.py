@@ -29,7 +29,7 @@ class MessageStatusListFilter(admin.SimpleListFilter):
 
 
 class DeliveryLogAdmin(admin.ModelAdmin):
-    search_fields = ["report"]
+    search_fields = ["report", "user__email"]
     list_display = ["id", "user", "get_number", "get_status"]
     list_filter = [
         MessageStatusListFilter,
