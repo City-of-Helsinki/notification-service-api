@@ -19,9 +19,9 @@ from django.http import JsonResponse
 from django.urls import include, path
 from django.utils.translation import gettext
 
-from common.utils import get_api_version
 from custom_health_checks.views import HealthCheckJSONView
 from notification_service import __version__, settings
+from notification_service.utils import get_api_version
 
 admin.site.index_title = " ".join(
     [gettext("Notification service API"), get_api_version()]

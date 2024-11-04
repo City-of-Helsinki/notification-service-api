@@ -7,6 +7,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from notification_service.cors_utils import check_cors_setting
+
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
 
@@ -33,7 +35,7 @@ env = environ.Env(
     QURIIRI_API_URL=(str, "https://api.quriiri.fi/v1/"),
     QURIIRI_REPORT_URL=(str, ""),
     SECRET_KEY=(str, ""),
-    SENTRY_DSN=(str, ""),
+    SENTRY_DSN=(str, None),
     SENTRY_ENABLE_TRACING=(bool, False),
     SENTRY_ENVIRONMENT=(str, ""),
     SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
@@ -149,8 +151,9 @@ TEMPLATES = [
     }
 ]
 
-CORS_ORIGIN_WHITELIST = env.list("CORS_ORIGIN_WHITELIST")
+CORS_ALLOWED_ORIGINS = env.list("CORS_ORIGIN_WHITELIST")
 CORS_ORIGIN_ALLOW_ALL = env.bool("CORS_ORIGIN_ALLOW_ALL")
+CORS_ALLOW_CREDENTIALS = True
 
 AUTHENTICATION_BACKENDS = [
     "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
@@ -232,3 +235,6 @@ HEALTH_CHECK = {
 APP_RELEASE = env("APP_RELEASE")
 # get build time from a file in docker image
 APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
+
+# Checks if auth service URL is in CORS_ALLOWED_ORIGINS. Warn if not.
+check_cors_setting()
