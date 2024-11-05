@@ -7,6 +7,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from notification_service.constants import CSP
+
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
 
@@ -109,6 +111,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "csp",
     "axes",
     "health_check",
     # local apps under this line
@@ -123,6 +126,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -152,6 +156,12 @@ TEMPLATES = [
 CORS_ALLOWED_ORIGINS = env.list("CORS_ORIGIN_WHITELIST")
 CORS_ORIGIN_ALLOW_ALL = env.bool("CORS_ORIGIN_ALLOW_ALL")
 CORS_ALLOW_CREDENTIALS = True
+
+# Configure the default CSP rule for different source types
+CSP_DEFAULT_SRC = [CSP.SELF]
+# NOTE: CSP_STYLE_SRC="'unsafe-inline'" is needed for the inline styles that are added
+# by the `django-helusers` to the base_admin_site.html
+CSP_STYLE_SRC = [CSP.SELF, CSP.UNSAFE_INLINE]
 
 AUTHENTICATION_BACKENDS = [
     "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
