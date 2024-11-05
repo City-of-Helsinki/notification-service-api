@@ -7,8 +7,6 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from notification_service.cors_utils import check_cors_setting
-
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
 
@@ -235,6 +233,3 @@ HEALTH_CHECK = {
 APP_RELEASE = env("APP_RELEASE")
 # get build time from a file in docker image
 APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
-
-# Checks if auth service URL is in CORS_ALLOWED_ORIGINS. Warn if not.
-check_cors_setting()
