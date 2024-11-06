@@ -53,3 +53,8 @@ def _create_api_client_with_user(user=None):
         token, _ = Token.objects.get_or_create(user=user)
         client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
     return client
+
+
+@pytest.fixture
+def audit_log_configure(settings):
+    settings.AUDIT_LOG = {"ENABLED": True}

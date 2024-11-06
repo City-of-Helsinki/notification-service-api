@@ -50,6 +50,7 @@ env = environ.Env(
     TOKEN_AUTH_REQUIRE_SCOPE_PREFIX=(bool, True),
     USE_X_FORWARDED_HOST=(bool, False),
     APP_RELEASE=(str, ""),
+    AUDIT_LOG_ENABLED=(bool, True),
 )
 
 if os.path.exists(env_file):
@@ -120,6 +121,7 @@ INSTALLED_APPS = [
     "users",
     "utils",
     "custom_health_checks",
+    "audit_log",
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "axes.middleware.AxesMiddleware",
+    "audit_log.middleware.AuditLogMiddleware",
 ]
 
 TEMPLATES = [
@@ -243,3 +246,9 @@ HEALTH_CHECK = {
 APP_RELEASE = env("APP_RELEASE")
 # get build time from a file in docker image
 APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
+
+# Audit logging
+AUDIT_LOG = {
+    "ENABLED": env("AUDIT_LOG_ENABLED"),
+    "ORIGIN": "notification_service",
+}
