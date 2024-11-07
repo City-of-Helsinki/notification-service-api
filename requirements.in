@@ -10,3 +10,4 @@ factory-boy
 psycopg2
 sentry-sdk[django]
 social-auth-app-django
+phonenumberslite

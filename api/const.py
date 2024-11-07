@@ -1,1 +1,2 @@
 NOTIFICATION_TYPE_MOBILE = "mobile"
+REGION = "FI"

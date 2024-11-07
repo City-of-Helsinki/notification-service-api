@@ -66,6 +66,8 @@ oauthlib==3.2.2
     #   social-auth-core
 packaging==24.1
     # via deprecation
+phonenumberslite==8.13.49
+    # via -r requirements.in
 psycopg2==2.9.10
     # via -r requirements.in
 pyasn1==0.6.1
