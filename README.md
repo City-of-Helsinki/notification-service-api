@@ -173,6 +173,20 @@ NOTE: You have to create API client user first, by login to Django Admin interfa
 
 ## API Documentation
 
+### Phone Number Processing
+
+This application provides tools for validating and formatting phone numbers using the [phonenumberslite](https://pypi.org/project/phonenumberslite/) library. It's designed to handle a variety of phone number formats and ensure accurate processing.
+
+Features:
+
+- **Phone Number Validation:** Accurately validates phone numbers using the `phonenumberslite` library, ensuring they are in a valid format and potentially even checking their reachability. The phone number parser region is set to "FI".
+- **Invalid Number Filtering:** Identifies and filters out invalid phone numbers, including those with invalid characters or formats.
+- **Letter Filtering:** Specifically handles and rejects phone numbers containing letters to prevent unintended conversions.
+- **Internationalization:** Converts phone numbers to international format for consistency and global compatibility.
+- **Error Handling:** Includes robust error handling to gracefully manage invalid input and provide informative logging for debugging.
+
+> The phone numbers that are set as destination but are not valid, are filtered out from the list of recipients.
+
 ### TODO: FIXME!
 
 - [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
@@ -213,9 +227,11 @@ This project uses [`ruff`](https://docs.astral.sh/ruff/formatter/) for Python co
 `ruff format` is the primary entrypoint to the formatter. It accepts a list of files or directories, and formats all discovered Python files:
 
 ```
-ruff format                   # Format all files in the current directory.
-ruff format path/to/code/     # Format all files in `path/to/code` (and any subdirectories).
-ruff format path/to/file.py   # Format a single file.
+
+ruff format # Format all files in the current directory.
+ruff format path/to/code/ # Format all files in `path/to/code` (and any subdirectories).
+ruff format path/to/file.py # Format a single file.
+
 ```
 
 > Similar to Black, running ruff format /path/to/file.py will format the given file or directory in-place, while ruff format --check /path/to/file.py will avoid writing any formatted files back, and instead exit with a non-zero status code upon detecting any unformatted files.
@@ -225,10 +241,12 @@ To run the Ruff Linter use `ruff check`.
 > `ruff check` is the primary entrypoint to the Ruff linter. It accepts a list of files or directories, and lints all discovered Python files, optionally fixing any fixable errors:
 
 ```
-ruff check                  # Lint all files in the current directory.
-ruff check --fix            # Lint all files in the current directory, and fix any fixable errors.
-ruff check --watch          # Lint all files in the current directory, and re-lint on change.
-ruff check path/to/code/    # Lint all files in `path/to/code` (and any subdirectories).
+
+ruff check # Lint all files in the current directory.
+ruff check --fix # Lint all files in the current directory, and fix any fixable errors.
+ruff check --watch # Lint all files in the current directory, and re-lint on change.
+ruff check path/to/code/ # Lint all files in `path/to/code` (and any subdirectories).
+
 ```
 
 1. Install `pre-commit` (there are many ways to do but let's use pip as an example):
@@ -305,3 +323,7 @@ There's also a CLI for debugging and manually running releases available for rel
 When a Release-Please pull request is merged and a version tag is created (or a proper tag name for a commit is manually created), this tag will be picked by Azure pipeline, which then triggers a new deployment to staging. From there, the deployment needs to be manually approved to allow it to proceed to the production environment.
 
 The tag name is defined in the [azure-pipelines-notification-service-api-release.yml](./azure-pipelines-notification-service-api-release.yml).
+
+```
+
+```

@@ -1,19 +1,22 @@
 from django.db import transaction
+from django.http import HttpResponseBadRequest
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.models import DeliveryLog
 from api.serializers import DeliveryLogSerializer
-from api.utils import format_destinations, get_default_options
+from api.types import SendMessagePayload
+from api.utils import (
+    collect_destinations,
+    filter_valid_destinations,
+    get_default_options,
+    validate_send_message_payload,
+)
 from notification_service.settings import QURIIRI_API_KEY, QURIIRI_API_URL
 from quriiri.send import Sender
 
 sms_sender = Sender(QURIIRI_API_KEY, QURIIRI_API_URL)
-
-
-def validate_data(post_data):
-    pass
 
 
 @api_view(["POST"])
@@ -23,34 +26,49 @@ def send_message(request):
     """
     Payload example
     {
-      "sender": "Hel.fi",
-      "to": [
-        {
-          "destination": "string",
-          "format": "MOBILE",
-        },
-        {
-          "destination": "string",
-          "format": "MOBILE",
-        },
-        {
-          "destination": "string",
-          "format": "MOBILE",
-        }
-      ],
-      "text": "SMS message"
+        "sender": "Hel.fi",
+        "to": [
+            {
+                "destination": "string",
+                "format": "MOBILE",
+            },
+            {
+                "destination": "string",
+                "format": "MOBILE",
+            },
+            {
+                "destination": "string",
+                "format": "MOBILE",
+            }
+        ],
+        "text": "SMS message"
     }
     """
-    data = request.data
-    # TODO: Validate payload
-    validate_data(data)
+    data: SendMessagePayload = request.data
+    try:
+        validate_send_message_payload(data)
+    except ValueError as e:
+        return HttpResponseBadRequest(e)
+
+    destinations = collect_destinations(recipients=data["to"], number_type=None)
+    # Get unique list of phone numbers converted to international format
+    unique_valid_destinations = list(
+        set(
+            filter_valid_destinations(
+                destinations, convert_to_international_format=True
+            )
+        )
+    )
+
+    if not unique_valid_destinations:
+        return HttpResponseBadRequest("No valid destinations for SMS sender.")
 
     log = DeliveryLog.objects.create(user=request.user)
-
     options = get_default_options(request, id=log.id)
-    destination = format_destinations(data["to"])
 
-    resp = sms_sender.send_sms(data["sender"], destination, data["text"], **options)
+    resp = sms_sender.send_sms(
+        data["sender"], unique_valid_destinations, data["text"], **options
+    )
 
     log.report = resp
     log.save()

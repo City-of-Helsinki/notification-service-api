@@ -6,21 +6,23 @@ from rest_framework.authtoken.models import Token
 
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
+from api.types import MessageWebhookPayload, SendMessagePayload
 from common.tests.mock_data import QURIIRI_SMS_RESPONSE
 
 
 @pytest.fixture(autouse=True)
 def autouse_db(db):
+    """Rename the db fixture"""
     pass
 
 
-SMS_PAYLOAD = {
+SMS_PAYLOAD: SendMessagePayload = {
     "sender": "Hel.fi",
     "to": [{"destination": "+358461231231", "format": "MOBILE"}],
     "text": "SMS message",
 }
 
-SMS_WEBHOOK_DATA = {
+SMS_WEBHOOK_DATA: MessageWebhookPayload = {
     "sender": "hel.fi",
     "destination": "+358461231231",
     "status": "DELIVERED",
@@ -43,6 +45,40 @@ def test_send_sms(token_api_client, snapshot, mock_send_sms):
     )
     assert DeliveryLog.objects.count() == 1
     snapshot.assert_match(response.data["report"])
+
+
+def test_send_sms_bad_request_as_recipients_missing(
+    token_api_client, snapshot, mock_send_sms
+):
+    response = token_api_client.post(
+        reverse("send_message"),
+        {
+            "sender": "Hel.fi",
+            "text": "Missing the 'to' from data.",
+        },
+        format="json",
+    )
+    assert response.status_code == 400
+    assert DeliveryLog.objects.count() == 0
+    assert (
+        response.content.decode()
+        == "Missing required keys: 'sender', 'to', and 'text' are required."
+    )  # Check the error message
+
+
+def test_send_sms_bad_request_as_no_valid_phone_numbers(
+    token_api_client, snapshot, mock_send_sms
+):
+    response = token_api_client.post(
+        reverse("send_message"),
+        {**SMS_PAYLOAD, "to": [{"destination": "invalid", "format": "MOBILE"}]},
+        format="json",
+    )
+    assert response.status_code == 400
+    assert DeliveryLog.objects.count() == 0
+    assert (
+        response.content.decode() == "No valid destinations for SMS sender."
+    )  # Check the error message
 
 
 def test_webhook_delivery_log(
