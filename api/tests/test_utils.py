@@ -4,6 +4,7 @@ from api.utils import filter_valid_destinations, validate_send_message_payload
 
 REGION_FI_VALID_PHONE_NUMBERS = [
     "+358 40 123 4567",
+    "00358 40 123 4567",
     "+358 50 123 4567",
     "+358 5 0 1 2 3 4 5 6 7",
     "+358 5 0 123 4 56 7",
@@ -32,6 +33,19 @@ REGION_FI_VALID_PHONE_NUMBERS = [
     "+492511793147",
     "+46806519853",
     "+4567044733",
+    "004567044733",
+]
+
+INVALID_PHONE_NUMBERS = [
+    None,
+    "",
+    "invalid",
+    "12345",
+    "011 390141",  # Invalid area code (011), 9 digits
+    "012 123 4567",  # Invalid area code (012), 10 digits
+    "00004567044733",  # Invalid country code 00
+    "+004567044733",  # Invalid country code 00
+    "00456x7044733",  # Invalid character "x"
 ]
 
 
@@ -128,13 +142,15 @@ def test_filter_valid_destinations_different_valid_formats(phone_number):
     assert filter_valid_destinations([phone_number])
 
 
+@pytest.mark.parametrize("phone_number", INVALID_PHONE_NUMBERS)
+def test_filter_valid_destinations_invalid_number(phone_number):
+    """Test with invalid phone number."""
+    assert filter_valid_destinations([phone_number]) == []
+
+
 def test_filter_valid_destinations_invalid_numbers():
-    """Test with invalid phone numbers."""
-    destinations = [
-        "invalid",
-        "12345",
-    ]
-    valid_numbers = filter_valid_destinations(destinations)
+    """Test with more than one invalid phone numbers."""
+    valid_numbers = filter_valid_destinations(INVALID_PHONE_NUMBERS)
     assert len(valid_numbers) == 0  # No valid numbers
 
 
