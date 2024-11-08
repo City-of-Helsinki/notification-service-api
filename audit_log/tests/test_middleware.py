@@ -14,7 +14,7 @@ def get_response_function(status_code=200):
 def test_middleware_audit_log_setting(settings, audit_log_enabled):
     settings.AUDIT_LOG = {"ENABLED": audit_log_enabled}
 
-    with patch("audit_log.middleware.commit_to_audit_log") as mocked:
+    with patch("audit_log.middleware.audit_log_service.commit_to_audit_log") as mocked:
         middleware = AuditLogMiddleware(get_response_function())
         middleware(Mock(path="/v1/"))
         assert mocked.called is audit_log_enabled
@@ -32,7 +32,7 @@ def test_middleware_audit_log_setting(settings, audit_log_enabled):
     ],
 )
 def test_middleware_audit_logged_paths(settings, path, expected_called):
-    with patch("audit_log.middleware.commit_to_audit_log") as mocked:
+    with patch("audit_log.middleware.audit_log_service.commit_to_audit_log") as mocked:
         middleware = AuditLogMiddleware(get_response_function())
         middleware(Mock(path=path))
         assert mocked.called is expected_called
@@ -52,7 +52,7 @@ def test_middleware_audit_logged_paths(settings, path, expected_called):
     ],
 )
 def test_middleware_audit_logged_statuses(settings, status_code, expected_called):
-    with patch("audit_log.middleware.commit_to_audit_log") as mocked:
+    with patch("audit_log.middleware.audit_log_service.commit_to_audit_log") as mocked:
         middleware = AuditLogMiddleware(get_response_function(status_code=status_code))
         middleware(Mock(path="/v1/endpoint"))
         assert mocked.called is expected_called
