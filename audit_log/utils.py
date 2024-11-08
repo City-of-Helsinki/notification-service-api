@@ -1,8 +1,30 @@
-from typing import Optional
+from dataclasses import asdict
+from typing import Optional, Union
 
+from django.utils import timezone
 from rest_framework import status
 
-from audit_log.enums import Role, Status
+from audit_log.enums import Operation, Role, Status
+from audit_log.settings import audit_logging_settings
+from audit_log.types import AuditActorData, AuditTarget
+
+
+def is_list_of_strings(value):
+    """
+    Checks if a value is a list of strings.
+
+    Args:
+        value: The value to check.
+
+    Returns:
+        True if the value is a list of strings, False otherwise.
+    """
+    if not isinstance(value, list):
+        return False
+    for item in value:
+        if not isinstance(item, str):
+            return False
+    return True
 
 
 def get_remote_address(request):
@@ -69,3 +91,24 @@ def get_response_status(response) -> Optional[str]:
         return Status.FORBIDDEN.value
 
     return None
+
+
+def create_commit_message(
+    status: Optional[str] = None,
+    operation: Optional[Union[Operation, str]] = None,
+    actor: Optional[AuditActorData] = None,
+    target: Optional[AuditTarget] = None,
+):
+    current_time = timezone.now()
+    iso_8601_datetime = f"{current_time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"  # noqa: E501
+    return {
+        "audit_event": {
+            "origin": audit_logging_settings.ORIGIN,
+            "date_time_epoch": int(current_time.timestamp() * 1000),
+            "date_time": iso_8601_datetime,
+            "status": status,
+            "operation": operation,
+            "actor": asdict(actor) if actor else None,
+            "target": asdict(target) if target else None,
+        }
+    }
