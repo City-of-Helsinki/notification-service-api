@@ -38,9 +38,9 @@ def _create_default_request_mock(user):
 
 
 def _assert_target_data(target_data, expected_path, expected_object_ids):
-    assert len(target_data.keys()) == 2
-    assert target_data["path"] == expected_path
-    assert Counter(target_data["object_ids"]) == Counter(expected_object_ids)
+    assert len(target_data.__dict__.keys()) == 2
+    assert target_data.path == expected_path
+    assert Counter(target_data.object_ids) == Counter(expected_object_ids)
 
 
 @freeze_time("2023-10-17 13:30:00+02:00")
@@ -105,7 +105,7 @@ def test_commit_to_audit_log_crud_operations(http_method, audit_operation):
     log_entry = AuditLogEntry.objects.first()
     assert log_entry.message["audit_event"]["operation"] == audit_operation
     assert log_entry.message["audit_event"]["target"]["path"] == "/v1/endpoint"
-    assert log_entry.message["audit_event"]["target"]["object_ids"] == [1]
+    assert log_entry.message["audit_event"]["target"]["object_ids"] == ["1"]
     _assert_basic_log_entry_data(log_entry)
 
 
@@ -173,14 +173,14 @@ def test_get_target_queryset(queryset_type):
     if queryset_type == "queryset":
         UserFactory()
         instances = User.objects.all()
-        object_ids = [user.pk for user in instances]
+        object_ids = [str(user.pk) for user in instances]
     else:
         instances = User.objects.none()
         object_ids = []
 
     audit_log_service.add_audit_logged_object_ids(req_mock, instances)
 
-    target_data = audit_log_service._get_target(req_mock._request)
+    target_data = audit_log_service.get_target(req_mock._request)
     _assert_target_data(target_data, req_mock.path, object_ids)
 
 
@@ -209,11 +209,11 @@ def test_get_target_list(list_type):
         "empty_list": [],
     }
     instances = list_type_mapping[list_type]
-    object_ids = [user.pk for user in instances] if list_type == "list" else []
+    object_ids = [str(user.pk) for user in instances] if list_type == "list" else []
 
     audit_log_service.add_audit_logged_object_ids(req_mock, instances)
 
-    target_data = audit_log_service._get_target(req_mock._request)
+    target_data = audit_log_service.get_target(req_mock._request)
     _assert_target_data(target_data, req_mock.path, object_ids)
 
 
@@ -238,9 +238,9 @@ def test_get_target_object(object_type):
         "none": None,
     }
     instances = object_type_mapping[object_type]
-    object_ids = [user.pk] if object_type == "object" else []
+    object_ids = [str(user.pk)] if object_type == "object" else []
 
     audit_log_service.add_audit_logged_object_ids(req_mock, instances)
 
-    target_data = audit_log_service._get_target(req_mock._request)
+    target_data = audit_log_service.get_target(req_mock._request)
     _assert_target_data(target_data, req_mock.path, object_ids)
