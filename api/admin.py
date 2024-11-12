@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from api.models import DeliveryLog
+from audit_log.admin import AuditLogModelAdminMixin
 
 
 class MessageStatusListFilter(admin.SimpleListFilter):
@@ -28,7 +29,7 @@ class MessageStatusListFilter(admin.SimpleListFilter):
         return queryset
 
 
-class DeliveryLogAdmin(admin.ModelAdmin):
+class DeliveryLogAdmin(AuditLogModelAdminMixin, admin.ModelAdmin):
     search_fields = ["report", "user__email"]
     list_display = ["id", "user", "get_number", "get_status", "created_at"]
     list_filter = [MessageStatusListFilter, "created_at"]

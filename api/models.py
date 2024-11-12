@@ -4,6 +4,7 @@ from copy import deepcopy
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from audit_log.managers import AuditLogManager
 from common.models import TimestampedModel, UUIDPrimaryKeyModel
 
 
@@ -15,6 +16,8 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         verbose_name=_("user"),
     )
     report = models.JSONField(verbose_name=_("report"), blank=True, null=True)
+
+    objects = AuditLogManager()
 
     class Meta:
         verbose_name = _("delivery log")
