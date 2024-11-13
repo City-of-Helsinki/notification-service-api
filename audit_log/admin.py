@@ -8,9 +8,70 @@ from django.utils.functional import cached_property
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
+from audit_log.enums import Operation, Status
 from audit_log.models import AuditLogEntry
+from audit_log.services import audit_log_service
+from audit_log.types import AuditCommitMessage
+from audit_log.utils import create_commit_message, get_remote_address
 
 logger = logging.getLogger(__name__)
+
+
+class AuditLogModelAdminMixin:
+    def get_queryset(self, request):
+        """Write audit logs of the queryset read."""
+        return (
+            super()
+            .get_queryset(request)
+            .with_audit_log_and_request(
+                request=request,
+                operation=Operation.READ.value,
+            )
+        )
+
+    def save_model(self, request, obj, form, change):
+        """
+        Given a model instance save it to the database.
+        """
+        # TODO: add a change log to the audit log message
+        message = create_commit_message(
+            status=Status.SUCCESS.value,
+            operation=Operation.CREATE.value,
+            actor=audit_log_service._get_actor_data(
+                user=request.user, ip_address=get_remote_address(request)
+            ),
+            target=audit_log_service._get_target(
+                path=request.path, object_ids=[str(obj.pk)]
+            ),
+        )
+        audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
+        super().save_model(request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        """
+        Given a model instance delete it from the database.
+        """
+        message = create_commit_message(
+            status=Status.SUCCESS.value,
+            operation=Operation.DELETE.value,
+            actor=audit_log_service._get_actor_data(
+                user=request.user, ip_address=get_remote_address(request)
+            ),
+            target=audit_log_service._get_target(
+                path=request.path, object_ids=[str(obj.pk)]
+            ),
+        )
+        audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
+        super().delete_model(request, obj)
+
+    def delete_queryset(self, request, queryset):
+        """Given a queryset, delete it from the database."""
+        super().delete_queryset(
+            request,
+            queryset.with_audit_log_and_request(
+                request=request, operation=Operation.DELETE.value
+            ),
+        )
 
 
 class LargeTablePaginator(Paginator):
