@@ -1,3 +1,5 @@
+import logging
+
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from rest_framework.decorators import api_view, permission_classes
@@ -13,8 +15,12 @@ from api.utils import (
     get_default_options,
     validate_send_message_payload,
 )
+from audit_log.enums import Operation
+from audit_log.services import audit_log_service, create_api_commit_message_from_request
 from notification_service.settings import QURIIRI_API_KEY, QURIIRI_API_URL
 from quriiri.send import Sender
+
+logger = logging.getLogger(__name__)
 
 sms_sender = Sender(QURIIRI_API_KEY, QURIIRI_API_URL)
 
@@ -73,6 +79,18 @@ def send_message(request):
     log.report = resp
     log.save()
 
+    try:
+        # Write audit log of the action
+        audit_log_service._commit_to_audit_log(
+            message=create_api_commit_message_from_request(
+                request,
+                Operation.CREATE.value,
+                [str(log.pk)],
+            )
+        )
+    except Exception as e:  # This Exception handling was especially wanted in a review.
+        logger.error(f"Committing to audit log failed: {e}")
+
     return Response(DeliveryLogSerializer(log).data)
 
 
@@ -84,6 +102,16 @@ def get_delivery_log(request, id):
         log = user.delivery_logs.get(id=id)
     except DeliveryLog.DoesNotExist:
         return Response(status=404, data={"error": f" Message ID: {id} does not exist"})
+
+    # Write audit log of the action
+    audit_log_service._commit_to_audit_log(
+        message=create_api_commit_message_from_request(
+            request,
+            Operation.READ.value,
+            [str(id)],
+        )
+    )
+
     data = DeliveryLogSerializer(log).data
     return Response(data=data)
 
@@ -97,5 +125,14 @@ def delivery_log_webhook(request, id):
         # Response error so Quriiri will retry to send the report several times
         return Response(status=404, data={"error": f" Message ID: {id} does not exist"})
     log.update_report(request.data)
+
+    # Write audit log of the action
+    audit_log_service._commit_to_audit_log(
+        message=create_api_commit_message_from_request(
+            request,
+            Operation.UPDATE.value,
+            [str(id)],
+        )
+    )
 
     return Response(status=200)
