@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 class AuditLogModelAdminMixin:
     def get_queryset(self, request):
         """Write audit logs of the queryset read."""
+        # NOTE: Fetching a single object's edit page reuses the list view queryset
         return (
             super()
             .get_queryset(request)
