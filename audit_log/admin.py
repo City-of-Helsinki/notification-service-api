@@ -36,7 +36,9 @@ class AuditLogModelAdminMixin:
         # TODO: add a change log to the audit log message
         message = create_commit_message(
             status=Status.SUCCESS.value,
-            operation=Operation.CREATE.value,
+            operation=Operation.CREATE.value
+            if obj.pk is None
+            else Operation.UPDATE.value,
             actor=audit_log_service._get_actor_data(
                 user=request.user, ip_address=get_remote_address(request)
             ),
