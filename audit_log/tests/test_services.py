@@ -16,6 +16,8 @@ from users.factories import UserFactory
 
 User = get_user_model()
 
+TEST_IP_ADDRESS = "1.2.3.4"
+
 
 def _assert_basic_log_entry_data(log_entry):
     current_time = datetime.now(tz=timezone.utc)
@@ -33,7 +35,7 @@ def _create_default_request_mock(user):
         method="GET",
         user=user,
         path="/v1/endpoint",
-        headers={"x-forwarded-for": "1.2.3.4:80"},
+        headers={"x-forwarded-for": f"{TEST_IP_ADDRESS}:80"},
     )
 
 
@@ -93,7 +95,7 @@ def test_commit_to_audit_log_crud_operations(http_method, audit_operation):
         method=http_method,
         user=user,
         path="/v1/endpoint",
-        headers={"x-forwarded-for": "1.2.3.4:80"},
+        headers={"x-forwarded-for": TEST_IP_ADDRESS},
         **{audit_logging_settings.REQUEST_AUDIT_LOG_VAR: {1}},
     )
     res_mock = Mock(status_code=200)
@@ -137,7 +139,7 @@ def test_commit_to_audit_log_actor_data(user_role, audit_role):
     assert AuditLogEntry.objects.count() == 1
     log_entry = AuditLogEntry.objects.first()
     assert log_entry.message["audit_event"]["actor"]["role"] == audit_role
-    assert log_entry.message["audit_event"]["actor"]["ip_address"] == "1.2.3.4"
+    assert log_entry.message["audit_event"]["actor"]["ip_address"] == TEST_IP_ADDRESS
     if hasattr(user, "uuid"):
         assert log_entry.message["audit_event"]["actor"]["uuid"] == str(user.uuid)
     _assert_basic_log_entry_data(log_entry)

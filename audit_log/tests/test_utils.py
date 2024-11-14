@@ -9,26 +9,29 @@ from audit_log.utils import (
     get_response_status,
 )
 
+TEST_IP_ADDRESS_V4 = "1.2.3.4"
+TEST_IP_ADDRESS_v6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+
 
 @pytest.mark.parametrize(
     "remote_address,expected,x_forwarded_for",
     [
-        ("1.2.3.4:443", "1.2.3.4", True),
-        ("1.2.3.4", "1.2.3.4", True),
+        (f"{TEST_IP_ADDRESS_V4}:443", TEST_IP_ADDRESS_V4, True),
+        (TEST_IP_ADDRESS_V4, TEST_IP_ADDRESS_V4, True),
         (
-            "[2001:0db8:85a3:0000:0000:8a2e:0370:7334]:443",
-            "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+            f"[{TEST_IP_ADDRESS_v6}]:443",
+            TEST_IP_ADDRESS_v6,
             True,
         ),
         (
-            "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
-            "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+            TEST_IP_ADDRESS_v6,
+            TEST_IP_ADDRESS_v6,
             True,
         ),
-        ("1.2.3.4", "1.2.3.4", False),
+        (TEST_IP_ADDRESS_V4, TEST_IP_ADDRESS_V4, False),
         (
-            "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
-            "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+            TEST_IP_ADDRESS_v6,
+            TEST_IP_ADDRESS_v6,
             False,
         ),
     ],
