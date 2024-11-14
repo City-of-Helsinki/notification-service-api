@@ -7,7 +7,7 @@ from typing import List, Optional
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 
-from audit_log.enums import Operation
+from audit_log.enums import Operation, Status
 from audit_log.exceptions import AuditLoggingDisabledError
 from audit_log.models import AuditLogEntry
 from audit_log.settings import audit_logging_settings
@@ -300,3 +300,35 @@ class AuditLogApiService(AuditLogServiceBase):
 
 
 audit_log_service = AuditLogApiService()
+
+
+def create_api_commit_message_from_request(
+    request: HttpRequest, operation: Operation, object_ids: List[str]
+) -> AuditCommitMessage:
+    """
+    A shortcut function to create an audit log message from a request for API endpoints.
+
+    This function is used for logging actions performed through the API,
+    where a response object isn't available. It assumes a successful operation
+    (Status.SUCCESS).
+
+    Args:
+        request: The Django request object.
+        operation: The operation performed, either an Operation enum value or a string.
+        object_ids: A list of object IDs involved in the operation.
+
+    Returns:
+        AuditCommitMessage: The formatted audit log message.
+    """
+    return AuditCommitMessage(
+        **create_commit_message(
+            operation=operation,
+            status=Status.SUCCESS.value,
+            actor=audit_log_service._get_actor_data(
+                user=request.user, ip_address=get_remote_address(request)
+            ),
+            target=audit_log_service._get_target(
+                path=request.path, object_ids=object_ids
+            ),
+        )
+    )

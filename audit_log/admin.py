@@ -8,11 +8,9 @@ from django.utils.functional import cached_property
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from audit_log.enums import Operation, Status
+from audit_log.enums import Operation
 from audit_log.models import AuditLogEntry
-from audit_log.services import audit_log_service
-from audit_log.types import AuditCommitMessage
-from audit_log.utils import create_commit_message, get_remote_address
+from audit_log.services import audit_log_service, create_api_commit_message_from_request
 
 logger = logging.getLogger(__name__)
 
@@ -34,36 +32,22 @@ class AuditLogModelAdminMixin:
         Given a model instance save it to the database.
         """
         # TODO: add a change log to the audit log message
-        message = create_commit_message(
-            status=Status.SUCCESS.value,
-            operation=Operation.CREATE.value
-            if obj.pk is None
-            else Operation.UPDATE.value,
-            actor=audit_log_service._get_actor_data(
-                user=request.user, ip_address=get_remote_address(request)
-            ),
-            target=audit_log_service._get_target(
-                path=request.path, object_ids=[str(obj.pk)]
-            ),
+        message = create_api_commit_message_from_request(
+            request,
+            Operation.UPDATE.value if change else Operation.CREATE.value,
+            [str(obj.pk)],
         )
-        audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
+        audit_log_service._commit_to_audit_log(message=message)
         super().save_model(request, obj, form, change)
 
     def delete_model(self, request, obj):
         """
         Given a model instance delete it from the database.
         """
-        message = create_commit_message(
-            status=Status.SUCCESS.value,
-            operation=Operation.DELETE.value,
-            actor=audit_log_service._get_actor_data(
-                user=request.user, ip_address=get_remote_address(request)
-            ),
-            target=audit_log_service._get_target(
-                path=request.path, object_ids=[str(obj.pk)]
-            ),
+        message = create_api_commit_message_from_request(
+            request, Operation.DELETE.value, [str(obj.pk)]
         )
-        audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
+        audit_log_service._commit_to_audit_log(message=message)
         super().delete_model(request, obj)
 
     def delete_queryset(self, request, queryset):
