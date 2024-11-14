@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+from functools import partial
 from urllib.parse import urlparse
 
 
@@ -38,3 +40,7 @@ def get_origin_from_url(url: str) -> str:
         )
 
     return f"{parsed_url.scheme}://{parsed_url.netloc}"
+
+
+# Create datetime with UTC timezone
+utc_datetime = partial(datetime, tzinfo=timezone.utc)
