@@ -31,6 +31,10 @@ def test_visiting_delivery_log_admin_view_writes_read_log(admin_user):
         str(log.pk) for log in delivery_logs
     ]
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
+    assert (
+        audit_log_entry.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log_entry.message["audit_event"]["operation"] == Operation.READ.value
 
 
@@ -66,6 +70,10 @@ def test_creating_delivery_log_writes_create_log(admin_user):
         str(delivery_log.pk)
     ]
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
+    assert (
+        audit_log_entry.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log_entry.message["audit_event"]["operation"] == Operation.CREATE.value
 
 
@@ -102,6 +110,10 @@ def test_updating_delivery_log_writes_update_log(admin_user):
         str(delivery_log.pk)
     ]
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
+    assert (
+        audit_log_entry.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log_entry.message["audit_event"]["operation"] == Operation.UPDATE.value
 
 
@@ -134,6 +146,10 @@ def test_deleting_delivery_log_writes_delete_log(admin_user):
         str(delivery_log.pk)
     ]
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
+    assert (
+        audit_log_entry.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log_entry.message["audit_event"]["operation"] == Operation.DELETE.value
     assert DeliveryLog.objects.count() == 0
 
@@ -173,4 +189,8 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
     # Verify the audit log entry details
     assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == COUNT
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
+    assert (
+        audit_log_entry.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log_entry.message["audit_event"]["operation"] == Operation.DELETE.value

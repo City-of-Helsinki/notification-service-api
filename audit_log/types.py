@@ -23,10 +23,13 @@ class AuditActorData:
 class AuditTarget:
     path: str
     object_ids: List[str]
+    model_name: Optional[str] = None
 
     def __post_init__(self):
         from audit_log.utils import is_list_of_strings
 
+        if self.model_name and not isinstance(self.model_name, str):
+            raise TypeError("Model_name must be a string or None")
         if not isinstance(self.path, str):
             raise TypeError("Path must be a string")
         if not is_list_of_strings(self.object_ids):

@@ -35,9 +35,10 @@ class AuditLogModelAdminMixin:
         """
         # TODO: add a change log to the audit log message
         message = create_api_commit_message_from_request(
-            request,
-            Operation.UPDATE.value if change else Operation.CREATE.value,
-            [str(obj.pk)],
+            request=request,
+            operation=Operation.UPDATE.value if change else Operation.CREATE.value,
+            object_ids=[str(obj.pk)],
+            model_name=obj._meta.model_name,
         )
         audit_log_service._commit_to_audit_log(message=message)
         super().save_model(request, obj, form, change)
@@ -47,7 +48,10 @@ class AuditLogModelAdminMixin:
         Given a model instance delete it from the database.
         """
         message = create_api_commit_message_from_request(
-            request, Operation.DELETE.value, [str(obj.pk)]
+            request=request,
+            operation=Operation.DELETE.value,
+            object_ids=[str(obj.pk)],
+            model_name=obj._meta.model_name,
         )
         audit_log_service._commit_to_audit_log(message=message)
         super().delete_model(request, obj)
@@ -139,6 +143,7 @@ class AuditLogEntryAdmin(admin.ModelAdmin):
         "id",
         "get_audit_event_actor_role",
         "get_audit_event_operation",
+        "get_audit_event_target_model",
         "get_audit_event_target_path",
         "get_audit_event_target_objects_count",
         "get_audit_event_status",
@@ -181,6 +186,14 @@ class AuditLogEntryAdmin(admin.ModelAdmin):
             return ""
 
     get_audit_event_status.short_description = _("status")
+
+    def get_audit_event_target_model(self, obj):
+        try:
+            return obj.message["audit_event"]["target"]["model"]
+        except (TypeError, KeyError):
+            return ""
+
+    get_audit_event_target_model.short_description = _("target model")
 
     def get_audit_event_target_path(self, obj):
         try:
