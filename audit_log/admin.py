@@ -29,41 +29,55 @@ class AuditLogModelAdminMixin:
             )
         )
 
-    def save_model(self, request, obj, form, change):
+    def log_addition(self, request, obj, message):
         """
-        Given a model instance save it to the database.
+        Log that an object has been successfully added.
+        Write audit log of the addition.
+        Call the default implementation (that creates LogEntry object)
+        """
+        audit_message = create_api_commit_message_from_request(
+            request=request,
+            operation=Operation.CREATE.value,
+            object_ids=[str(obj.pk)],
+            _type=obj._meta.model_name,
+        )
+        audit_log_service._commit_to_audit_log(message=audit_message)
+        return super().log_addition(request, obj, message)
+
+    def log_change(self, request, obj, message):
+        """
+        Log that an object has been successfully changed.
+        Write audit log of the update.
+        Call the default implementation (that created LogEntry object)
         """
         # TODO: add a change log to the audit log message
-        message = create_api_commit_message_from_request(
+        audit_message = create_api_commit_message_from_request(
             request=request,
-            operation=Operation.UPDATE.value if change else Operation.CREATE.value,
+            operation=Operation.UPDATE.value,
             object_ids=[str(obj.pk)],
             _type=obj._meta.model_name,
         )
-        audit_log_service._commit_to_audit_log(message=message)
-        super().save_model(request, obj, form, change)
+        audit_log_service._commit_to_audit_log(message=audit_message)
+        return super().log_change(request, obj, message)
 
-    def delete_model(self, request, obj):
+    def log_deletions(self, request, queryset):
         """
-        Given a model instance delete it from the database.
+        Log that an object will be deleted.
+        Create audit log of the deletion.
+        Call the default implementation that creates an admin LogEntry object.
+        Note that this method must be called before the deletion.
         """
-        message = create_api_commit_message_from_request(
-            request=request,
-            operation=Operation.DELETE.value,
-            object_ids=[str(obj.pk)],
-            _type=obj._meta.model_name,
-        )
-        audit_log_service._commit_to_audit_log(message=message)
-        super().delete_model(request, obj)
-
-    def delete_queryset(self, request, queryset):
-        """Given a queryset, delete it from the database."""
-        super().delete_queryset(
-            request,
-            queryset.with_audit_log_and_request(
-                request=request, operation=Operation.DELETE.value
-            ),
-        )
+        # NOTE: The queryset argument is a primitive list (not queryset)
+        # when deleting a single object.
+        for obj in list(queryset):
+            audit_message = create_api_commit_message_from_request(
+                request=request,
+                operation=Operation.DELETE.value,
+                object_ids=[str(obj.pk)],
+                _type=obj._meta.model_name,
+            )
+            audit_log_service._commit_to_audit_log(message=audit_message)
+        return super().log_deletions(request, queryset)
 
 
 class AuditLogMessageOperationListFilter(admin.SimpleListFilter):

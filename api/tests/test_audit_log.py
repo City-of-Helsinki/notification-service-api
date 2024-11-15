@@ -183,11 +183,11 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
         message__audit_event__target__path=url,
         message__audit_event__operation=Operation.DELETE.value,
     )
-    assert qs.count() == 1
+    assert qs.count() == COUNT
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == COUNT
+    assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == 1
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
     assert (
         audit_log_entry.message["audit_event"]["target"]["type"]
