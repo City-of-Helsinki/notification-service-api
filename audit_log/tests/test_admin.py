@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 from django.contrib.admin import AdminSite
 
-from audit_log.admin import AuditLogEntryAdmin, LargeTablePaginator
+from audit_log.admin import AuditLogEntryAdmin, FastImpreciseTablePaginator
 from audit_log.models import AuditLogEntry
 
 
@@ -35,7 +35,7 @@ def test_audit_log_admin_permissions(superuser):
 def test_large_table_paginator_count_without_data():
     qs = AuditLogEntry.objects.all().order_by("created_at")
 
-    paginator = LargeTablePaginator(qs, per_page=1)
+    paginator = FastImpreciseTablePaginator(qs, per_page=1)
 
     # Paginator's count is just an estimate, but it should be >= 0
     assert paginator.count >= 0
@@ -48,7 +48,7 @@ def test_large_table_paginator_count_with_data():
     )
     qs = AuditLogEntry.objects.all().order_by("created_at")
 
-    paginator = LargeTablePaginator(qs, per_page=1)
+    paginator = FastImpreciseTablePaginator(qs, per_page=1)
 
     # Paginator's count is just an estimate, but it should be >= 0
     assert paginator.count >= 0

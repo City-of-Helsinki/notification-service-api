@@ -131,7 +131,7 @@ class AuditLogMessageRoleListFilter(admin.SimpleListFilter):
         return queryset
 
 
-class LargeTablePaginator(Paginator):
+class FastImpreciseTablePaginator(Paginator):
     """
     Paginator that uses PostgreSQL `reltuples` for queryset size.
 
@@ -186,7 +186,7 @@ class AuditLogEntryAdmin(admin.ModelAdmin):
 
     # For increasing listing performance
     show_full_result_count = False
-    paginator = LargeTablePaginator
+    paginator = FastImpreciseTablePaginator
 
     ordering = ["-created_at"]
 
