@@ -76,7 +76,7 @@ class AuditLogServiceBase:
         )
 
     def _get_target(
-        self, path: str, object_ids: List[str], model_name: Optional[str] = None
+        self, path: str, object_ids: List[str], _type: Optional[str] = None
     ) -> AuditTarget:
         """
         Create an AuditTarget object from path and object IDs.
@@ -84,12 +84,13 @@ class AuditLogServiceBase:
         Args:
             path: The request path.
             object_ids: A list of object IDs involved in the operation.
-            model_name: The name of the model involved in the operation (optional).
+            _type: Actor type, e.g. the name of the model involved
+                            in the operation (optional).
 
         Returns:
             AuditTarget: An AuditTarget object.
         """
-        return AuditTarget(path=path, model_name=model_name, object_ids=object_ids)
+        return AuditTarget(path=path, type=_type, object_ids=object_ids)
 
     def _commit_to_audit_log(self, message: AuditCommitMessage) -> None:
         """
@@ -309,7 +310,7 @@ def create_api_commit_message_from_request(
     request: HttpRequest,
     operation: Operation,
     object_ids: List[str],
-    model_name: Optional[str] = None,
+    _type: Optional[str] = None,
 ) -> AuditCommitMessage:
     """
     A shortcut function to create an audit log message from a request for API endpoints.
@@ -322,6 +323,8 @@ def create_api_commit_message_from_request(
         request: The Django request object.
         operation: The operation performed, either an Operation enum value or a string.
         object_ids: A list of object IDs involved in the operation.
+        _type: Actor type, e.g. the name of the model involved
+            in the operation (optional).
 
     Returns:
         AuditCommitMessage: The formatted audit log message.
@@ -334,7 +337,7 @@ def create_api_commit_message_from_request(
                 user=request.user, ip_address=get_remote_address(request)
             ),
             target=audit_log_service._get_target(
-                path=request.path, model_name=model_name, object_ids=object_ids
+                path=request.path, _type=_type, object_ids=object_ids
             ),
         )
     )

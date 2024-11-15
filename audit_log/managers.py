@@ -20,7 +20,7 @@ class AuditLogQuerySet(models.QuerySet):
         status: Union[Status, str] = Status.SUCCESS.value,
         ip_address="",
         path="",
-        model_name: Optional[str] = None,
+        _type: Optional[str] = None,
     ):
         if not user:
             raise ValueError("User cannot be set to None.")
@@ -32,8 +32,8 @@ class AuditLogQuerySet(models.QuerySet):
             raise ValueError("Status cannot be None or an empty string.")
 
         # Use the model name as a path if it is not given
-        if not model_name:
-            model_name = self.model._meta.model_name
+        if not _type:
+            _type = self.model._meta.model_name
 
         # Get the affected object ids as a list of strings
         object_ids = [str(pk_tuple[0]) for pk_tuple in self.values_list("pk")]
@@ -44,7 +44,7 @@ class AuditLogQuerySet(models.QuerySet):
             operation=operation,
             actor=audit_log_service._get_actor_data(user=user, ip_address=ip_address),
             target=audit_log_service._get_target(
-                path=path, model_name=model_name, object_ids=object_ids
+                path=path, _type=_type, object_ids=object_ids
             ),
         )
         audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
