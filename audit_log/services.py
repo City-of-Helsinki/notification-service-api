@@ -323,7 +323,7 @@ def create_api_commit_message_from_request(
 
     Args:
         request: The Django request object.
-        operation: The operation performed, either an Operation enum value or a string.
+        operation: The operation performed, either an Operation enum value.
         object_ids: A list of object IDs involved in the operation.
         _type: Actor type, e.g. the name of the model involved
             in the operation (optional).

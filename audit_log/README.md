@@ -104,18 +104,20 @@ Audit log messages are stored in a JSON format with the following structure:
 Fields:
 
 - `audit_event`: Contains the details of the audit event.
-- `actor`: Information about the user who performed the action.
-- `ip_address`: The IP address of the actor.
-- `role`: The role of the actor (e.g., "ADMIN", "USER").
-- `uuid`: The unique identifier of the actor.
-- `date_time`: The date and time of the event in ISO 8601 format.
-- `date_time_epoch`: The date and time of the event in Unix epoch milliseconds.
-- `operation`: The type of operation performed (e.g., "READ", "CREATE", "UPDATE", "DELETE").
-- `origin`: The origin of the event (e.g., "notification_service").
-- `status`: The status of the operation (e.g., "SUCCESS", "FAILURE").
-- `target`: Information about the object(s) affected by the operation.
-- `object_ids`: A list of unique identifiers of the affected objects.
-- `path`: The request path associated with the operation.
+  - `actor`: Information about the user who performed the action.
+    - `ip_address`: The IP address of the actor.
+    - `role`: The role of the actor (e.g., "ADMIN", "USER").
+    - `uuid`: The unique identifier of the actor. UUID is provided by the `django-helusers`.
+    - `user_id`: The unique database primary key identifier of the actor.
+  - `date_time`: The date and time of the event in ISO 8601 format.
+  - `date_time_epoch`: The date and time of the event in Unix epoch milliseconds.
+  - `operation`: The type of operation performed (e.g., "READ", "CREATE", "UPDATE", "DELETE").
+  - `origin`: The origin of the event (e.g., "notification_service").
+  - `status`: The status of the operation (e.g., "SUCCESS", "FAILURE").
+  - `target`: Information about the object(s) affected by the operation.
+    - `object_ids`: A list of unique identifiers of the affected objects.
+    - `path`: The request path associated with the operation.
+    - `type`: Type of the traced object, e.g. a model name.
 
 This standardized format ensures consistency and facilitates analysis of audit log data.
 
