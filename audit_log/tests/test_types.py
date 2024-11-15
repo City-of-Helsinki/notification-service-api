@@ -9,7 +9,9 @@ TEST_IP_ADDRESS = "127.0.0.1"
 # Create fixtures for reusable components
 @pytest.fixture
 def valid_actor():
-    return AuditActorData(role="user", uuid="123", ip_address=TEST_IP_ADDRESS)
+    return AuditActorData(
+        role="user", uuid="123", user_id="123", ip_address=TEST_IP_ADDRESS
+    )
 
 
 @pytest.fixture
@@ -34,20 +36,22 @@ def valid_event(valid_actor, valid_target):
 def test_audit_actor_data_valid(valid_actor):
     assert valid_actor.role == "user"
     assert valid_actor.uuid == "123"
+    assert valid_actor.user_id == "123"
     assert valid_actor.ip_address == TEST_IP_ADDRESS
 
 
 @pytest.mark.parametrize(
-    "role, uuid, ip_address",
+    "role, uuid, user_id, ip_address",
     [
-        (123, "123", TEST_IP_ADDRESS),
-        ("user", 123, TEST_IP_ADDRESS),
-        ("user", "123", 123),
+        (123, "123", "123", TEST_IP_ADDRESS),
+        ("user", 123, "123", TEST_IP_ADDRESS),
+        ("user", "123", 123, TEST_IP_ADDRESS),
+        ("user", "123", "123", 123),
     ],
 )
-def test_audit_actor_data_invalid_types(role, uuid, ip_address):
+def test_audit_actor_data_invalid_types(role, uuid, user_id, ip_address):
     with pytest.raises(TypeError):
-        AuditActorData(role=role, uuid=uuid, ip_address=ip_address)
+        AuditActorData(role=role, uuid=uuid, user_id=user_id, ip_address=ip_address)
 
 
 # Tests for AuditTarget
@@ -85,7 +89,12 @@ def test_audit_event_valid_actor_dict(valid_target):
         date_time_epoch=1234567890,
         date_time="2024-11-14T16:00:00Z",
         status="success",
-        actor={"role": "user", "uuid": "123", "ip_address": TEST_IP_ADDRESS},
+        actor={
+            "role": "user",
+            "uuid": "123",
+            "user_id": "123",
+            "ip_address": TEST_IP_ADDRESS,
+        },
         operation=Operation.CREATE,
         target=valid_target,
     )

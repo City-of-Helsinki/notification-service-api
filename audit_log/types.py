@@ -7,12 +7,15 @@ from audit_log.enums import Operation
 @dataclass
 class AuditActorData:
     role: str
+    user_id: str
     uuid: Optional[str]
     ip_address: str
 
     def __post_init__(self):
         if not isinstance(self.role, str):
             raise TypeError("Role must be a string")
+        if not isinstance(self.user_id, str):
+            raise TypeError("User id must be a string")
         if not isinstance(self.ip_address, str):
             raise TypeError("Ip_address must be a string")
         if self.uuid and not isinstance(self.uuid, str):
