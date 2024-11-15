@@ -104,7 +104,7 @@ class AuditLogMessageOperationListFilter(admin.SimpleListFilter):
     options = [operation.value for operation in Operation]
 
     def lookups(self, request, model_admin):
-        return map(lambda o: (o, o.upper()), self.options)
+        return [(option, option.upper()) for option in self.options]
 
     def queryset(self, request, queryset):
         if self.value() in self.options:
@@ -123,7 +123,7 @@ class AuditLogMessageRoleListFilter(admin.SimpleListFilter):
     options = [role.value for role in Role]
 
     def lookups(self, request, model_admin):
-        return map(lambda o: (o, o.upper()), self.options)
+        return [(option, option.upper()) for option in self.options]
 
     def queryset(self, request, queryset):
         if self.value() in self.options:
