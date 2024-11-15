@@ -40,7 +40,6 @@ def _create_default_request_mock(user):
 
 
 def _assert_target_data(target_data, expected_path, expected_object_ids):
-    assert len(target_data.__dict__.keys()) == 2
     assert target_data.path == expected_path
     assert Counter(target_data.object_ids) == Counter(expected_object_ids)
 

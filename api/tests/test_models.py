@@ -31,7 +31,11 @@ def test_delivery_log_manager_with_audit_log():
     assert audit_log.message["audit_event"]["origin"] == "notification_service"
     assert audit_log.message["audit_event"]["operation"] == Operation.READ.value
     assert audit_log.message["audit_event"]["status"] == Status.SUCCESS.value
-    assert audit_log.message["audit_event"]["target"]["path"] == DeliveryLog.__name__
+    assert audit_log.message["audit_event"]["target"]["path"] == ""
+    assert (
+        audit_log.message["audit_event"]["target"]["model_name"]
+        == DeliveryLog._meta.model_name
+    )
     assert audit_log.message["audit_event"]["target"]["object_ids"] == [
         str(delivery_log.pk)
     ]
