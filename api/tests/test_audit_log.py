@@ -27,9 +27,9 @@ def test_visiting_delivery_log_admin_view_writes_read_log(admin_user):
     assert qs.count() == 1
     audit_log_entry = qs.first()
     # The audit log entry should have all the delivery log ids in it
-    assert audit_log_entry.message["audit_event"]["target"]["object_ids"] == [
-        str(log.pk) for log in delivery_logs
-    ]
+    assert sorted(
+        audit_log_entry.message["audit_event"]["target"]["object_ids"]
+    ) == sorted([str(log.pk) for log in delivery_logs])
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
     assert (
         audit_log_entry.message["audit_event"]["target"]["type"]
