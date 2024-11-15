@@ -38,7 +38,7 @@ class AuditLogModelAdminMixin:
             request=request,
             operation=Operation.UPDATE.value if change else Operation.CREATE.value,
             object_ids=[str(obj.pk)],
-            model_name=obj._meta.model_name,
+            _type=obj._meta.model_name,
         )
         audit_log_service._commit_to_audit_log(message=message)
         super().save_model(request, obj, form, change)
@@ -51,7 +51,7 @@ class AuditLogModelAdminMixin:
             request=request,
             operation=Operation.DELETE.value,
             object_ids=[str(obj.pk)],
-            model_name=obj._meta.model_name,
+            _type=obj._meta.model_name,
         )
         audit_log_service._commit_to_audit_log(message=message)
         super().delete_model(request, obj)

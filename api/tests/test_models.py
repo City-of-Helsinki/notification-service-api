@@ -33,7 +33,7 @@ def test_delivery_log_manager_with_audit_log():
     assert audit_log.message["audit_event"]["status"] == Status.SUCCESS.value
     assert audit_log.message["audit_event"]["target"]["path"] == ""
     assert (
-        audit_log.message["audit_event"]["target"]["model_name"]
+        audit_log.message["audit_event"]["target"]["type"]
         == DeliveryLog._meta.model_name
     )
     assert audit_log.message["audit_event"]["target"]["object_ids"] == [
