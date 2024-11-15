@@ -71,6 +71,8 @@ class AuditLogServiceBase:
         """
         return AuditActorData(
             role=get_user_role(user),
+            user_id=str(user.pk),
+            # `django-helusers` provides an uuid field for the User.
             uuid=str(user.uuid) if hasattr(user, "uuid") else None,
             ip_address=ip_address,
         )
