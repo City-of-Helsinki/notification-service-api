@@ -36,7 +36,7 @@ class AuditLogQuerySet(models.QuerySet):
             _type = self.model._meta.model_name
 
         # Get the affected object ids as a list of strings
-        object_ids = [str(pk_tuple[0]) for pk_tuple in self.values_list("pk")]
+        object_ids = [str(pk) for pk in self.values_list("pk", flat=True)]
 
         # Log the queryset retrieval
         message = create_commit_message(

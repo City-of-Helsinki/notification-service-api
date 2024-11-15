@@ -188,6 +188,9 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
 
     # Verify the audit log entry details
     assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == COUNT
+    assert sorted(
+        audit_log_entry.message["audit_event"]["target"]["object_ids"]
+    ) == sorted(object_ids)
     assert audit_log_entry.message["audit_event"]["target"]["path"] == url
     assert (
         audit_log_entry.message["audit_event"]["target"]["type"]
