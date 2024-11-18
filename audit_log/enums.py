@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
@@ -20,3 +22,12 @@ class Role(TextChoices):
 class Status(TextChoices):
     SUCCESS = "SUCCESS", _("Success")
     FORBIDDEN = "FORBIDDEN", _("Forbidden")
+
+
+class StoreObjectState(Enum):
+    NONE = "none"
+    OLD_ONLY = "old-only"
+    NEW_ONLY = "new-only"
+    OLD_AND_NEW_BOTH = "old-and-new"
+    DIFF = "diff"
+    ALL = "all"

@@ -1,13 +1,22 @@
 from dataclasses import asdict
-from typing import Optional, Union
+from itertools import zip_longest
+from typing import Any, Dict, List, Optional, Union
 
+from django.db.models import Model, QuerySet
 from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import status
 
-from audit_log.enums import Operation, Role, Status
+from audit_log.enums import Operation, Role, Status, StoreObjectState
+from audit_log.serializers import ObjectStateSerializer
 from audit_log.settings import audit_logging_settings
-from audit_log.types import AuditActorData, AuditTarget
+from audit_log.types import (
+    AuditActorData,
+    AuditTarget,
+    ObjectState,
+    ObjectStateDiff,
+    ObjectStateWithDiff,
+)
 
 
 def is_list_of_strings(value):
@@ -92,6 +101,64 @@ def get_response_status(response: HttpResponse) -> Optional[str]:
         return Status.FORBIDDEN.value
 
     return None
+
+
+def diff_dicts(old_dict: Dict[str, Any], new_dict: Dict[str, Any]) -> Dict[str, Any]:
+    """Calculates the difference between two dictionaries.
+
+    Returns a new dictionary containing only the changed keys and values.
+    """
+    diff = {}
+    for key in new_dict:
+        if key not in old_dict or new_dict[key] != old_dict[key]:
+            diff[key] = new_dict[key]
+    return diff
+
+
+def create_object_states(
+    new_objects: Optional[Union[QuerySet, List[Model]]] = None,
+    old_objects: Optional[Union[QuerySet, List[Model]]] = None,
+) -> Optional[List[ObjectState | ObjectStateDiff | ObjectStateWithDiff]]:
+    if audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.NONE:
+        return None
+
+    if not new_objects and not old_objects:
+        return None
+
+    new_object_state = (
+        ObjectStateSerializer.get_fields_states(new_objects) if new_objects else []
+    )
+    old_object_state = (
+        ObjectStateSerializer.get_fields_states(old_objects) if old_objects else []
+    )
+
+    if audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.DIFF:
+        return [
+            ObjectStateDiff(object_state_diff=diff_dicts(old_entry, new_entry))
+            for old_entry, new_entry in zip_longest(
+                old_object_state, new_object_state, fillvalue={}
+            )
+            if diff_dicts(old_entry, new_entry)
+        ]
+
+    elif audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.ALL:
+        return [
+            ObjectStateWithDiff(
+                old_object_state=old_entry,
+                new_object_state=new_entry,
+                object_state_diff=diff_dicts(old_entry, new_entry),
+            )
+            for old_entry, new_entry in zip_longest(
+                old_object_state, new_object_state, fillvalue={}
+            )
+        ]
+
+    return [
+        ObjectState(old_object_state=old_entry, new_object_state=new_entry)
+        for old_entry, new_entry in zip_longest(
+            old_object_state, new_object_state, fillvalue={}
+        )
+    ]
 
 
 def create_commit_message(

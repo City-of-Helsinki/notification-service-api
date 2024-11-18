@@ -83,12 +83,12 @@ def send_message(request):
         # Write audit log of the action
         audit_log_service._commit_to_audit_log(
             message=create_api_commit_message_from_request(
-                request,
-                Operation.CREATE.value,
-                [str(log.pk)],
+                request=request,
+                operation=Operation.CREATE.value,
+                object_ids=[str(log.pk)],
             )
         )
-    except Exception as e:
+    except Exception as e:  # This Exception handling was especially wanted in a review.
         logger.error(f"Committing to audit log failed: {e}")
 
     return Response(DeliveryLogSerializer(log).data)
@@ -106,9 +106,9 @@ def get_delivery_log(request, id):
     # Write audit log of the action
     audit_log_service._commit_to_audit_log(
         message=create_api_commit_message_from_request(
-            request,
-            Operation.READ.value,
-            [str(id)],
+            request=request,
+            operation=Operation.READ.value,
+            object_ids=[str(id)],
         )
     )
 
@@ -129,9 +129,9 @@ def delivery_log_webhook(request, id):
     # Write audit log of the action
     audit_log_service._commit_to_audit_log(
         message=create_api_commit_message_from_request(
-            request,
-            Operation.UPDATE.value,
-            [str(id)],
+            request=request,
+            operation=Operation.UPDATE.value,
+            object_ids=[str(id)],
         )
     )
 
