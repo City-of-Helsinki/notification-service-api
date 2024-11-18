@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List, Optional, Union
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional, Union
 
 from audit_log.enums import Operation
 
@@ -23,10 +23,29 @@ class AuditActorData:
 
 
 @dataclass
+class ObjectState:
+    old_object_state: Optional[Dict[str, Any]] = field(default_factory=dict)
+    new_object_state: Optional[Dict[str, Any]] = field(default_factory=dict)
+
+
+@dataclass
+class ObjectStateDiff:
+    object_state_diff: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class ObjectStateWithDiff(ObjectState, ObjectStateDiff):
+    pass
+
+
+@dataclass
 class AuditTarget:
     path: str
     object_ids: List[str]
     type: Optional[str] = None
+    object_states: Optional[
+        List[ObjectState | ObjectStateDiff | ObjectStateWithDiff]
+    ] = None
 
     def __post_init__(self):
         from audit_log.utils import is_list_of_strings

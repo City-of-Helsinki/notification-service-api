@@ -4,6 +4,8 @@ from django.conf import settings
 from django.core.signals import setting_changed
 from django.dispatch import receiver
 
+from audit_log.enums import StoreObjectState
+
 _defaults = dict(
     ENABLED=True,
     ORIGIN="service",
@@ -11,6 +13,7 @@ _defaults = dict(
     REQUEST_AUDIT_LOG_VAR="_audit_logged_object_ids",
     LOG_TO_DB_ENABLED=True,
     LOG_TO_LOGGER_ENABLED=False,
+    STORE_OBJECT_STATE=StoreObjectState.NONE,
 )
 
 _import_strings = []

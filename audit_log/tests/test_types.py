@@ -1,7 +1,16 @@
+from dataclasses import replace
+
 import pytest
 
 from audit_log.enums import Operation
-from audit_log.types import AuditActorData, AuditCommitMessage, AuditEvent, AuditTarget
+from audit_log.types import (
+    AuditActorData,
+    AuditCommitMessage,
+    AuditEvent,
+    AuditTarget,
+    ObjectState,
+    ObjectStateDiff,
+)
 
 TEST_IP_ADDRESS = "127.0.0.1"
 
@@ -115,6 +124,44 @@ def test_audit_event_valid_target_dict(valid_actor):
 
 
 @pytest.mark.parametrize(
+    "object_states",
+    [
+        [{"old_object_state": {"number": 123, "string": "xyz"}}],
+        [{"new_object_state": {"number": 123, "string": "xyz"}}],
+        [{"object_state_diff": {"number": 123, "string": "xyz"}}],
+        [
+            {"old_object_state": {"number": 123, "string": "xyz"}},
+            {"old_object_state": {"number": 321, "string": "zyx"}},
+        ],
+        [
+            {
+                "old_object_state": {"number": 123, "string": "old"},
+                "new_object_state": {"number": 1234, "string": "new"},
+            },
+            {"old_object_state": {"number": 321, "string": "zyx"}},
+            {"object_state_diff": {"number": 321, "string": "zyx"}},
+        ],
+        None,
+    ],
+)
+def test_audit_event_valid_target_dict_with_object_states(object_states, valid_actor):
+    event = AuditEvent(
+        origin="test",
+        date_time_epoch=1234567890,
+        date_time="2024-11-14T16:00:00Z",
+        status="success",
+        actor=valid_actor,
+        operation=Operation.CREATE,
+        target={
+            "path": "/test",
+            "object_ids": ["1", "2", "3"],
+            "object_states": object_states,
+        },
+    )
+    assert isinstance(event.target, AuditTarget)
+
+
+@pytest.mark.parametrize(
     "field, invalid_value",
     [
         ("origin", 123),
@@ -139,6 +186,35 @@ def test_audit_event_invalid_fields(valid_actor, valid_target, field, invalid_va
     kwargs[field] = invalid_value
     with pytest.raises(TypeError):
         AuditEvent(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "object_states",
+    [
+        [ObjectState(old_object_state={"number": 123, "string": "xyz"})],
+        [ObjectState(new_object_state={"number": 123, "string": "xyz"})],
+        [ObjectStateDiff(object_state_diff={"number": 123, "string": "xyz"})],
+        [
+            ObjectState(
+                old_object_state={"number": 123, "string": "xyz"},
+                new_object_state={"number": 321, "string": "zyx"},
+            )
+        ],
+        [
+            ObjectState(
+                old_object_state={"number": 123, "string": "old"},
+                new_object_state={"number": 1234, "string": "new"},
+            ),
+            ObjectState(old_object_state={"number": 123, "string": "xyz"}),
+            [ObjectStateDiff(object_state_diff={"number": 321, "string": "xyz"})],
+        ],
+        [],
+        None,
+    ],
+)
+def test_valid_audit_target_object_states(object_states, valid_target):
+    target = replace(valid_target, object_states=object_states)
+    assert isinstance(target, AuditTarget)
 
 
 # Tests for AuditCommitMessage

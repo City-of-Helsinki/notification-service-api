@@ -2,18 +2,26 @@ import json
 import logging
 import re
 from dataclasses import asdict
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from django.db.models import QuerySet
+from django.db.models import Model, QuerySet
 from django.http import HttpRequest, HttpResponse
 
-from audit_log.enums import Operation, Status
+from audit_log.enums import Operation, Status, StoreObjectState
 from audit_log.exceptions import AuditLoggingDisabledError
 from audit_log.models import AuditLogEntry
 from audit_log.settings import audit_logging_settings
-from audit_log.types import AuditActorData, AuditCommitMessage, AuditTarget
+from audit_log.types import (
+    AuditActorData,
+    AuditCommitMessage,
+    AuditTarget,
+    ObjectState,
+    ObjectStateDiff,
+    ObjectStateWithDiff,
+)
 from audit_log.utils import (
     create_commit_message,
+    create_object_states,
     get_remote_address,
     get_response_status,
     get_user_role,
@@ -78,7 +86,13 @@ class AuditLogServiceBase:
         )
 
     def _get_target(
-        self, path: str, object_ids: List[str], _type: Optional[str] = None
+        self,
+        path: str,
+        object_ids: List[str],
+        _type: Optional[str] = None,
+        object_states: Optional[
+            List[ObjectState | ObjectStateDiff | ObjectStateWithDiff]
+        ] = None,
     ) -> AuditTarget:
         """
         Create an AuditTarget object from path and object IDs.
@@ -92,7 +106,9 @@ class AuditLogServiceBase:
         Returns:
             AuditTarget: An AuditTarget object.
         """
-        return AuditTarget(path=path, type=_type, object_ids=object_ids)
+        return AuditTarget(
+            path=path, type=_type, object_ids=object_ids, object_states=object_states
+        )
 
     def _commit_to_audit_log(self, message: AuditCommitMessage) -> None:
         """
@@ -128,6 +144,9 @@ class AuditLogServiceBase:
 
     def is_log_to_logger_enabled(self) -> bool:
         return bool(audit_logging_settings.LOG_TO_LOGGER_ENABLED)
+
+    def should_store_object_state(self) -> bool:
+        return audit_logging_settings.STORE_OBJECT_STATE != StoreObjectState.NONE
 
 
 class AuditLogApiService(AuditLogServiceBase):
@@ -313,24 +332,46 @@ def create_api_commit_message_from_request(
     operation: Operation,
     object_ids: List[str],
     _type: Optional[str] = None,
+    new_objects: Optional[Union[QuerySet, List[Model]]] = None,
+    old_objects: Optional[Union[QuerySet, List[Model]]] = None,
 ) -> AuditCommitMessage:
-    """
-    A shortcut function to create an audit log message from a request for API endpoints.
+    """Create an audit log message from an API request.
 
-    This function is used for logging actions performed through the API,
-    where a response object isn't available. It assumes a successful operation
-    (Status.SUCCESS).
+    This function generates an audit log message for actions performed through the API,
+    especially when a response object isn't available. It simplifies the logging process
+    by assuming a successful operation (Status.SUCCESS) and extracting relevant
+    information from the request.
 
     Args:
-        request: The Django request object.
-        operation: The operation performed, either an Operation enum value.
+        request: The Django HttpRequest object.
+        operation: The operation performed (an Operation enum value).
         object_ids: A list of object IDs involved in the operation.
-        _type: Actor type, e.g. the name of the model involved
-            in the operation (optional).
+        _type: The type of actor (e.g., the model name) (optional).
+        new_objects: A QuerySet or list of new model instances after
+            the operation (optional).
+        old_objects: A QuerySet or list of old model instances before
+            the operation (optional).
 
     Returns:
         AuditCommitMessage: The formatted audit log message.
+
+    Example:
+        >>> # doctest: +SKIP
+        ... create_api_commit_message_from_request(
+        ...     request=request,
+        ...     operation=Operation.UPDATE,
+        ...     object_ids=["123"],
+        ...     _type="MyModel",
+        ... )
     """
+    object_states = None
+
+    if old_objects or new_objects:
+        if audit_logging_settings.STORE_OBJECT_STATE != StoreObjectState.NONE:
+            object_states = create_object_states(
+                new_objects=new_objects, old_objects=old_objects
+            )
+
     return AuditCommitMessage(
         **create_commit_message(
             operation=operation,
@@ -339,7 +380,10 @@ def create_api_commit_message_from_request(
                 user=request.user, ip_address=get_remote_address(request)
             ),
             target=audit_log_service._get_target(
-                path=request.path, _type=_type, object_ids=object_ids
+                path=request.path,
+                _type=_type,
+                object_ids=object_ids,
+                object_states=object_states,
             ),
         )
     )
