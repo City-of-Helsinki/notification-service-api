@@ -63,8 +63,8 @@ class AuditLogModelAdminMixin:
             object_ids=[str(obj.pk)],
             _type=obj._meta.model_name,
         )
-        audit_log_service._commit_to_audit_log(message=message)
         super().save_model(request, obj, form, change)
+        audit_log_service._commit_to_audit_log(message=message)
 
     def delete_model(self, request, obj):
         """
@@ -77,8 +77,8 @@ class AuditLogModelAdminMixin:
             object_ids=[str(obj.pk)],
             _type=obj._meta.model_name,
         )
-        audit_log_service._commit_to_audit_log(message=message)
         super().delete_model(request, obj)
+        audit_log_service._commit_to_audit_log(message=message)
 
     def delete_queryset(self, request, queryset):
         """
