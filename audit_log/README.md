@@ -46,20 +46,11 @@ This module provides a comprehensive audit logging service for Django applicatio
   - Disables creation, modification, and deletion of audit logs through the admin interface.
   - Displays the audit log message in a user-friendly format.
 
-## Key Features
-
-- **Flexible Logging:** Logs audit events to both a dedicated logger and/or a database based on configuration settings.
-- **Request-Aware:** Extracts relevant information from Django requests to enrich audit log entries.
-- **Configurable:** Allows customization of logged endpoints, request variables, and logging destinations.
-- **Extensible:** Provides a base class for creating custom audit log services tailored to specific needs.
-- **Admin Integration:** Seamlessly integrates with Django admin to audit model operations.
-- **Optimized for Performance:** Includes a specialized paginator for handling large audit log tables.
-
 ### Audit Log Model
 
-The `AuditLogEntry` [model](./models.py) stores audit log entries in the database. Each entry represents a single audit event and contains the following fields:
+> A reference to structure requirements is here https://github.com/City-of-Helsinki/structured-log-transfer.
 
-Fields:
+The `AuditLogEntry` [model](./models.py) stores audit log entries in the database. Each entry represents a single audit event and contains the following fields:
 
 - `is_sent`: Indicates whether the audit log entry has been sent to an external system or processed in any way.
 - `message`: Stores the audit log message in a JSON format (see the ["Audit Log Message Format"](#audit-log-message-format) section for details). This field contains the core information about the audit event, including the actor, action, target, and timestamp.
