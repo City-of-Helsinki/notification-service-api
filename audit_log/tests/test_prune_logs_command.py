@@ -82,3 +82,30 @@ class PruneAuditLogEntriesTests(TestCase):
     def test_prune_audit_log_entries_with_all_and_is_sent(self):
         with self.assertRaises(SystemExit):
             call_command("prune_audit_log_entries", all=True, is_sent=True)
+
+    def test_dry_run_with_days(self):
+        call_command("prune_audit_log_entries", days=3, dry_run=True)
+
+        # Assert that no entries were actually deleted
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry1.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry2.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry3.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry4.pk).exists())
+
+    def test_dry_run_with_all(self):
+        call_command("prune_audit_log_entries", all=True, dry_run=True)
+
+        # Assert that no entries were actually deleted
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry1.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry2.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry3.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry4.pk).exists())
+
+    def test_dry_run_with_days_and_is_sent(self):
+        call_command("prune_audit_log_entries", days=3, is_sent=True, dry_run=True)
+
+        # Assert that no entries were actually deleted
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry1.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry2.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry3.pk).exists())
+        self.assertTrue(AuditLogEntry.objects.filter(pk=self.entry4.pk).exists())
