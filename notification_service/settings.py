@@ -119,7 +119,7 @@ INSTALLED_APPS = [
     "api",
     "social_django",
     "users",
-    "utils",
+    "common",
     "custom_health_checks",
     "audit_log",
 ]
