@@ -42,7 +42,7 @@ services:
     env_file:
       - docker-compose.env.yaml
     volumes:
-      - djangodata:/app
+      - .:/app
       # Prevent sharing the following directories between host and container
       # to avoid ownership and/or platform issues:
       - /app/.ruff_cache
@@ -58,8 +58,6 @@ services:
     container_name: notification_service-api
 
 volumes:
-  djangodata:
-    driver: local
   pgdata:
     driver: local
 #networks:
