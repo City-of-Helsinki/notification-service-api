@@ -86,6 +86,7 @@ def send_message(request):
                 request=request,
                 operation=Operation.CREATE.value,
                 object_ids=[str(log.pk)],
+                new_objects=[log],
             )
         )
     except Exception as e:  # This Exception handling was especially wanted in a review.
@@ -109,6 +110,7 @@ def get_delivery_log(request, id):
             request=request,
             operation=Operation.READ.value,
             object_ids=[str(id)],
+            old_objects=[log],
         )
     )
 
@@ -132,6 +134,7 @@ def delivery_log_webhook(request, id):
             request=request,
             operation=Operation.UPDATE.value,
             object_ids=[str(id)],
+            new_objects=[log],
         )
     )
 

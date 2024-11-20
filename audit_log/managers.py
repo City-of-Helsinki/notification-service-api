@@ -6,7 +6,11 @@ from django.http import HttpRequest
 from audit_log.enums import Operation, Status
 from audit_log.services import audit_log_service
 from audit_log.types import AuditCommitMessage
-from audit_log.utils import create_commit_message, get_remote_address
+from audit_log.utils import (
+    create_commit_message,
+    create_object_states,
+    get_remote_address,
+)
 
 if TYPE_CHECKING:
     from django.contrib.auth.models import AbstractUser
@@ -21,6 +25,7 @@ class AuditLogQuerySet(models.QuerySet):
         ip_address="",
         path="",
         _type: Optional[str] = None,
+        force_disable_object_states=False,
     ):
         if not user:
             raise ValueError("User cannot be set to None.")
@@ -38,13 +43,23 @@ class AuditLogQuerySet(models.QuerySet):
         # Get the affected object ids as a list of strings
         object_ids = [str(pk) for pk in self.values_list("pk", flat=True)]
 
+        object_states = None
+        if (
+            audit_log_service.should_store_object_state()
+            and not force_disable_object_states
+        ):
+            object_states = create_object_states(new_objects=self)
+
         # Log the queryset retrieval
         message = create_commit_message(
             status=status,
             operation=operation,
             actor=audit_log_service._get_actor_data(user=user, ip_address=ip_address),
             target=audit_log_service._get_target(
-                path=path, _type=_type, object_ids=object_ids
+                path=path,
+                _type=_type,
+                object_ids=object_ids,
+                object_states=object_states,
             ),
         )
         audit_log_service._commit_to_audit_log(message=AuditCommitMessage(**message))
@@ -55,6 +70,7 @@ class AuditLogQuerySet(models.QuerySet):
         request: HttpRequest,
         operation: Operation,
         status: Union[Status, str] = Status.SUCCESS.value,
+        force_disable_object_states=False,
     ):
         return self.with_audit_log(
             user=request.user,
@@ -62,6 +78,7 @@ class AuditLogQuerySet(models.QuerySet):
             status=status,
             ip_address=get_remote_address(request),
             path=request.path,
+            force_disable_object_states=force_disable_object_states,
         )
 
 

@@ -51,6 +51,7 @@ env = environ.Env(
     USE_X_FORWARDED_HOST=(bool, False),
     APP_RELEASE=(str, ""),
     AUDIT_LOG_ENABLED=(bool, True),
+    AUDIT_LOG_STORE_OBJECT_STATE=(str, "none"),
 )
 
 if os.path.exists(env_file):
@@ -250,5 +251,6 @@ APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
 # Audit logging
 AUDIT_LOG = {
     "ENABLED": env("AUDIT_LOG_ENABLED"),
+    "STORE_OBJECT_STATE": env("AUDIT_LOG_STORE_OBJECT_STATE"),
     "ORIGIN": "notification_service",
 }

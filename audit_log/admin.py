@@ -31,7 +31,9 @@ class AuditLogModelAdminMixin:
         page = paginator.get_page(page_number)
         current_page_queryset = page.object_list
         current_page_queryset.with_audit_log_and_request(
-            request=request, operation=Operation.READ.value
+            request=request,
+            operation=Operation.READ.value,
+            force_disable_object_states=True,
         )
         return changelist
 
@@ -47,6 +49,7 @@ class AuditLogModelAdminMixin:
                 operation=Operation.READ.value,
                 object_ids=[str(obj.pk)],
                 _type=obj._meta.model_name,
+                old_objects=[obj],
             )
             audit_log_service._commit_to_audit_log(message=message)
         return obj
@@ -62,6 +65,7 @@ class AuditLogModelAdminMixin:
             operation=Operation.UPDATE.value if change else Operation.CREATE.value,
             object_ids=[str(obj.pk)],
             _type=obj._meta.model_name,
+            new_objects=[obj],
         )
         super().save_model(request, obj, form, change)
         audit_log_service._commit_to_audit_log(message=message)
@@ -76,6 +80,7 @@ class AuditLogModelAdminMixin:
             operation=Operation.DELETE.value,
             object_ids=[str(obj.pk)],
             _type=obj._meta.model_name,
+            old_objects=[obj],
         )
         super().delete_model(request, obj)
         audit_log_service._commit_to_audit_log(message=message)
