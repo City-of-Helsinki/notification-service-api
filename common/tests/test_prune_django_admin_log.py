@@ -8,7 +8,7 @@ from django.core.management import call_command
 from django.db import IntegrityError
 from freezegun import freeze_time
 
-from api.factories import LogEntryFactory
+from common.factories import LogEntryFactory
 from common.utils import utc_datetime
 
 _TEST_TIME = utc_datetime(2022, 8, 1)
