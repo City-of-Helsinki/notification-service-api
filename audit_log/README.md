@@ -3,12 +3,14 @@
 This module provides a comprehensive audit logging service for Django applications. It allows you to track user actions, data changes, and system events, providing valuable insights into application activity and ensuring accountability.
 
 ## Table of Contents
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Features](#features)
 - [Core Components](#core-components)
-   * [Audit Log Model](#audit-log-model)
-   * [Audit Log Message Format](#audit-log-message-format)
+  - [Audit Log Model](#audit-log-model)
+  - [Audit Log Message Format](#audit-log-message-format)
+- [Django Audit Log Settings](#django-audit-log-settings)
 - [Usage](#usage)
 - [Management Command](#management-command)
 
@@ -125,6 +127,46 @@ Fields:
     - `type`: Type of the traced object, e.g. a model name.
 
 This standardized format ensures consistency and facilitates analysis of audit log data.
+
+## Django Audit Log Settings
+
+This module provides a way to configure settings for the Django Audit Log application. It allows you to customize various aspects of the audit logging functionality. The settings are accessed through the `audit_logging_settings` object. This object provides access to the following settings:
+
+- **`ENABLED`:** A boolean indicating whether audit logging is enabled. Defaults to `True`.
+- **`ORIGIN`:** A string representing the origin of the audit log. Defaults to `"service"`.
+- **`LOGGED_ENDPOINTS_RE`:** A compiled regular expression that matches API endpoints to be logged. Defaults to `re.compile(r"^/(v1|gdpr-api)/")`.
+- **`REQUEST_AUDIT_LOG_VAR`:** A string representing the name of the request variable used to store logged object IDs. Defaults to `"_audit_logged_object_ids"`.
+- **`LOG_TO_DB_ENABLED`:** A boolean indicating whether to store audit logs in the database. Defaults to `True`.
+- **`LOG_TO_LOGGER_ENABLED`:** A boolean indicating whether to log audit events to a logger. Defaults to `False`.
+- **`STORE_OBJECT_STATE`:** An enum value from `audit_log.enums.StoreObjectState` that specifies how object state should be stored. Defaults to `StoreObjectState.NONE`. Other options are `"none", "old-only", "new-only", "old-and-new", "diff", "all"`.
+
+```python
+class StoreObjectState(Enum):
+    # Do not store object state
+    NONE = "none"
+    # Store only the old object state
+    OLD_ONLY = "old-only"
+    # Store only the new object state
+    NEW_ONLY = "new-only"
+    # Store the old and the new object states
+    OLD_AND_NEW_BOTH = "old-and-new"
+    # Store only diff
+    DIFF = "diff"
+    # Store the old and the new object states and also the diff
+    ALL = "all"
+```
+
+You can override the default settings by defining an `AUDIT_LOG` dictionary in your Django settings module. For example:
+
+```python
+AUDIT_LOG = {
+    "ENABLED": True,
+    "ORIGIN": "notification_service",
+    "LOGGED_ENDPOINTS_RE": re.compile(r"^/api/"),
+    "LOG_TO_LOGGER_ENABLED": True,
+    "STORE_OBJECT_STATE": StoreObjectState.ALL,
+}
+```
 
 ## Usage
 

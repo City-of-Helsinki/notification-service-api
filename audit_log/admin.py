@@ -33,6 +33,7 @@ class AuditLogModelAdminMixin:
         current_page_queryset.with_audit_log_and_request(
             request=request,
             operation=Operation.READ.value,
+            # Writing object states of all the objects of 1 page is too intensive.
             force_disable_object_states=True,
         )
         return changelist

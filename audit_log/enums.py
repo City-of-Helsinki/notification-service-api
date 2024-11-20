@@ -25,9 +25,15 @@ class Status(TextChoices):
 
 
 class StoreObjectState(Enum):
+    # Do not store object state
     NONE = "none"
+    # Store only the old object state
     OLD_ONLY = "old-only"
+    # Store only the new object state
     NEW_ONLY = "new-only"
+    # Store the old and the new object states
     OLD_AND_NEW_BOTH = "old-and-new"
+    # Store only diff
     DIFF = "diff"
+    # Store the old and the new object states and also the diff
     ALL = "all"
