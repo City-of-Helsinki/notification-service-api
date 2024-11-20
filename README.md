@@ -5,6 +5,46 @@
 
 The Notification service API is a Django REST Framework API for sending notifications via SMS, email, and push notifications. The API is designed to be used by other services to send notifications to users.
 
+## Table of Contents
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Service environments](#service-environments)
+- [Prerequisites](#prerequisites)
+   * [Docker](#docker)
+   * [Docker Compose](#docker-compose)
+- [Dependencies](#dependencies)
+   * [Python](#python)
+   * [PostgreSQL](#postgresql)
+   * [Keycloak](#keycloak)
+   * [Quriiri](#quriiri)
+   * [Other](#other)
+- [Getting started](#getting-started)
+   * [Setup the environment configuration file.](#setup-the-environment-configuration-file)
+   * [Configure the keycloak hostname into /etc/hosts](#configure-the-keycloak-hostname-into-etchosts)
+      + [TODO: ideally get rid of this step!](#todo-ideally-get-rid-of-this-step)
+   * [Run the compose file](#run-the-compose-file)
+   * [Inspect the services.](#inspect-the-services)
+      + [The Keycloak admin interface should be available at:](#the-keycloak-admin-interface-should-be-available-at)
+      + [The API should be available at:](#the-api-should-be-available-at)
+- [About Keycloak](#about-keycloak)
+   * [Configuration of additional parameters](#configuration-of-additional-parameters)
+   * [Configuration](#configuration)
+   * [API Authentication](#api-authentication)
+- [API Documentation](#api-documentation)
+   * [Phone Number Processing](#phone-number-processing)
+   * [TODO: FIXME!](#todo-fixme)
+- [Keeping Python requirements up to date](#keeping-python-requirements-up-to-date)
+- [Code formatting](#code-formatting)
+- [Releases, changelogs and deployments](#releases-changelogs-and-deployments)
+   * [Conventional Commits](#conventional-commits)
+   * [Releasable units](#releasable-units)
+   * [Configuration](#configuration-1)
+   * [Troubleshoting release-please](#troubleshoting-release-please)
+      + [Fix merge conflicts by running release-please -action manually](#fix-merge-conflicts-by-running-release-please--action-manually)
+   * [Deployments](#deployments)
+
+<!-- TOC end -->
+
 ## Service environments
 
 The environments:

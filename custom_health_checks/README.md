@@ -1,6 +1,17 @@
 # Custom health checks
 
-Requires: [django-health-check](https://pypi.org/project/django-health-check/).
+## Table of Contents
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Requirements](#requirements)
+- [What it does](#what-it-does)
+- [Installation](#installation)
+
+<!-- TOC end -->
+
+## Requirements
+
+- [django-health-check](https://pypi.org/project/django-health-check/)
 
 ## What it does
 

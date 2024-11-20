@@ -1,10 +1,24 @@
-# NOTE: These instructions are not verified being up to date.
+## Development without Docker
+
+**NOTE: These instructions are not verified being up to date.**
 
 Please refer to the [main README](/README.md) for the latest instructions.
 
-## Development without Docker
+## Table of Contents
 
-Prerequisites:
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Prerequisites](#prerequisites)
+   * [Installing Python requirements](#installing-python-requirements)
+   * [Database](#database)
+   * [Keycloak](#keycloak)
+      + [Helsinki Keycloak theme](#helsinki-keycloak-theme)
+      + [Original Keycloak](#original-keycloak)
+   * [Daily running, Debugging](#daily-running-debugging)
+
+<!-- TOC end -->
+
+## Prerequisites
 
 - PostgreSQL 13
 - Python 3.11
