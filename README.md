@@ -6,42 +6,44 @@
 The Notification service API is a Django REST Framework API for sending notifications via SMS, email, and push notifications. The API is designed to be used by other services to send notifications to users.
 
 ## Table of Contents
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Service environments](#service-environments)
 - [Prerequisites](#prerequisites)
-   * [Docker](#docker)
-   * [Docker Compose](#docker-compose)
+  - [Docker](#docker)
+  - [Docker Compose](#docker-compose)
 - [Dependencies](#dependencies)
-   * [Python](#python)
-   * [PostgreSQL](#postgresql)
-   * [Keycloak](#keycloak)
-   * [Quriiri](#quriiri)
-   * [Other](#other)
+  - [Python](#python)
+  - [PostgreSQL](#postgresql)
+  - [Keycloak](#keycloak)
+  - [Quriiri](#quriiri)
+  - [Other](#other)
 - [Getting started](#getting-started)
-   * [Setup the environment configuration file.](#setup-the-environment-configuration-file)
-   * [Configure the keycloak hostname into /etc/hosts](#configure-the-keycloak-hostname-into-etchosts)
-      + [TODO: ideally get rid of this step!](#todo-ideally-get-rid-of-this-step)
-   * [Run the compose file](#run-the-compose-file)
-   * [Inspect the services.](#inspect-the-services)
-      + [The Keycloak admin interface should be available at:](#the-keycloak-admin-interface-should-be-available-at)
-      + [The API should be available at:](#the-api-should-be-available-at)
+  - [Setup the environment configuration file.](#setup-the-environment-configuration-file)
+  - [Configure the keycloak hostname into /etc/hosts](#configure-the-keycloak-hostname-into-etchosts)
+    - [TODO: ideally get rid of this step!](#todo-ideally-get-rid-of-this-step)
+  - [Run the compose file](#run-the-compose-file)
+  - [Inspect the services.](#inspect-the-services)
+    - [The Keycloak admin interface should be available at:](#the-keycloak-admin-interface-should-be-available-at)
+    - [The API should be available at:](#the-api-should-be-available-at)
 - [About Keycloak](#about-keycloak)
-   * [Configuration of additional parameters](#configuration-of-additional-parameters)
-   * [Configuration](#configuration)
-   * [API Authentication](#api-authentication)
+  - [Configuration of additional parameters](#configuration-of-additional-parameters)
+  - [Configuration](#configuration)
+  - [API Authentication](#api-authentication)
 - [API Documentation](#api-documentation)
-   * [Phone Number Processing](#phone-number-processing)
-   * [TODO: FIXME!](#todo-fixme)
+  - [Phone Number Processing](#phone-number-processing)
+  - [Audit logging](#audit-logging)
+  - [TODO: FIXME!](#todo-fixme)
 - [Keeping Python requirements up to date](#keeping-python-requirements-up-to-date)
 - [Code formatting](#code-formatting)
 - [Releases, changelogs and deployments](#releases-changelogs-and-deployments)
-   * [Conventional Commits](#conventional-commits)
-   * [Releasable units](#releasable-units)
-   * [Configuration](#configuration-1)
-   * [Troubleshoting release-please](#troubleshoting-release-please)
-      + [Fix merge conflicts by running release-please -action manually](#fix-merge-conflicts-by-running-release-please--action-manually)
-   * [Deployments](#deployments)
+  - [Conventional Commits](#conventional-commits)
+  - [Releasable units](#releasable-units)
+  - [Configuration](#configuration-1)
+  - [Troubleshoting release-please](#troubleshoting-release-please)
+    - [Fix merge conflicts by running release-please -action manually](#fix-merge-conflicts-by-running-release-please-action-manually)
+  - [Deployments](#deployments)
 
 <!-- TOC end -->
 
@@ -226,6 +228,25 @@ Features:
 - **Error Handling:** Includes robust error handling to gracefully manage invalid input and provide informative logging for debugging.
 
 > The phone numbers that are set as destination but are not valid, are filtered out from the list of recipients.
+
+### Audit logging
+
+The audit logging is done with the `audit_log` app (which is maintained as an internal dependency, but will probably later moved to it's own repository). [See Audit log docs](./audit_log/README.md).
+
+The audit log is writing READ and WRITE logs of all CRUD actions of
+
+1. [Admin views](./api/admin.py) of DeliveryLog model
+2. Views in [Messages API endpoint](./api/views.py).
+
+The audit logging can be enabled with the `AUDIT_LOG_ENABLED` env variable. The level of stored object states can be configured with `AUDIT_LOG_STORE_OBJECT_STATE`.
+
+```python
+AUDIT_LOG = {
+    "ENABLED": env("AUDIT_LOG_ENABLED"),
+    "STORE_OBJECT_STATE": env("AUDIT_LOG_STORE_OBJECT_STATE"),
+    "ORIGIN": "notification_service",
+}
+```
 
 ### TODO: FIXME!
 

@@ -22,11 +22,33 @@ class AuditLogQuerySet(models.QuerySet):
         user: "AbstractUser",
         operation: Operation,
         status: Union[Status, str] = Status.SUCCESS.value,
-        ip_address="",
-        path="",
+        ip_address: str = "",
+        path: str = "",
         _type: Optional[str] = None,
-        force_disable_object_states=False,
-    ):
+        force_disable_object_states: bool = False,
+    ) -> "AuditLogQuerySet":
+        """
+        Logs the retrieval of this queryset.
+
+        Args:
+            user: The user who performed the retrieval.
+            operation: The operation that was performed (e.g., "read", "update",
+                "delete").
+            status: The status of the operation (e.g., "success", "failure").
+            ip_address: The IP address of the user who performed the retrieval.
+            path: The path of the request that triggered the retrieval.
+            _type: The type of object being retrieved. If not specified, the model name
+                is used.
+            force_disable_object_states: Whether to disable the inclusion of object
+                states in the log message. Some times it might be unnecessary to write
+                object states in the audit event message.
+
+        Returns:
+            The queryset itself, to allow for chaining.
+
+        Raises:
+            ValueError: If any of the required arguments are missing or invalid.
+        """
         if not user:
             raise ValueError("User cannot be set to None.")
 
@@ -70,8 +92,24 @@ class AuditLogQuerySet(models.QuerySet):
         request: HttpRequest,
         operation: Operation,
         status: Union[Status, str] = Status.SUCCESS.value,
-        force_disable_object_states=False,
-    ):
+        force_disable_object_states: bool = False,
+    ) -> "AuditLogQuerySet":
+        """
+        Logs the retrieval of this queryset, extracting information from the given
+        request.
+
+        Args:
+            request: The HTTP request that triggered the retrieval.
+            operation: The operation that was performed (e.g., "read", "update",
+                "delete").
+            status: The status of the operation (e.g., "success", "failure").
+            force_disable_object_states: Whether to disable the inclusion of object
+                states in the log message. Some times it might be unnecessary to write
+                object states in the audit event message.
+
+        Returns:
+            The queryset itself, to allow for chaining.
+        """
         return self.with_audit_log(
             user=request.user,
             operation=operation,

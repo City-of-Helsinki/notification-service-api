@@ -89,7 +89,7 @@ def send_message(request):
                 new_objects=[log],
             )
         )
-    except Exception as e:  # This Exception handling was especially wanted in a review.
+    except Exception as e:
         logger.error(f"Committing to audit log failed: {e}")
 
     return Response(DeliveryLogSerializer(log).data)

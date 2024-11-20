@@ -107,6 +107,8 @@ def diff_dicts(old_dict: Dict[str, Any], new_dict: Dict[str, Any]) -> Dict[str, 
     """Calculates the difference between two dictionaries.
 
     Returns a new dictionary containing only the changed keys and values.
+
+    NOTE: The deleted keys are not included in the output.
     """
     diff = {}
     for key in new_dict:
