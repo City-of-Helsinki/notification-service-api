@@ -2,6 +2,20 @@
 
 This module provides a comprehensive audit logging service for Django applications. It allows you to track user actions, data changes, and system events, providing valuable insights into application activity and ensuring accountability.
 
+## Table of Contents
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Features](#features)
+- [Core Components](#core-components)
+   * [Audit Log Model](#audit-log-model)
+   * [Audit Log Message Format](#audit-log-message-format)
+- [Usage](#usage)
+- [Management Command](#management-command)
+
+<!-- TOC end -->
+
+## Features
+
 | Feature               | Description                                                                                                                                                                         |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Flexible Logging      | Logs audit events to a dedicated logger, a database, or both, allowing you to choose the storage that best suits your needs.                                                        |
