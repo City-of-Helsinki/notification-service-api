@@ -18,7 +18,7 @@ services:
     image: quay.io/keycloak/keycloak
     restart: on-failure
     env_file:
-      - keycloak/docker-compose.keycloak.env.yaml
+      - keycloak/docker-compose.keycloak.env
     command:
       - start-dev
       - --http-port=8180
@@ -40,7 +40,7 @@ services:
       target: ${DOCKER_TARGET:-development}
     restart: on-failure
     env_file:
-      - docker-compose.env.yaml
+      - docker-compose.env
     volumes:
       - .:/app
       # Prevent sharing the following directories between host and container
