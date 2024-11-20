@@ -56,7 +56,7 @@ If you encounter deprecation warnings on newer versions, you may need to downgra
 
 Postgresql 13 is the minimum version required. You can check your version by running `psql --version`.
 
-If you are running the project without Docker, you may need to install and configure PostgreSQL manually. The default configuration file is `docker-compose.env.yaml`, which you may need to adjust for your local setup.
+If you are running the project without Docker, you may need to install and configure PostgreSQL manually. The default configuration file is `docker-compose.env`, which you may need to adjust for your local setup.
 
 ### Keycloak
 
@@ -64,7 +64,7 @@ Keycloak is used for authentication and authorization. You can check your versio
 
 ### Quriiri
 
-Quriiri is a Finnish SMS gateway service. You can check your version by running `curl https://api.quriiri.fi/v1/ --header "Authorization: Bearer <your_api_key>"`. You need to have an API key to use the service. The API key is set in the `docker-compose.env.yaml` file.
+Quriiri is a Finnish SMS gateway service. You can check your version by running `curl https://api.quriiri.fi/v1/ --header "Authorization: Bearer <your_api_key>"`. You need to have an API key to use the service. The API key is set in the `docker-compose.env` file.
 
 ### Other
 
@@ -76,7 +76,7 @@ These are instructions of running the project with Docker. If you are running th
 
 ### Setup the environment configuration file.
 
-Copy `docker-compose.env.yaml.example` to `docker-compose.env.yaml`. It does work out of the box by default, but modify it according to your specific needs, if any.
+Copy `docker-compose.env.example` to `docker-compose.env`. It does work out of the box by default, but modify it according to your specific needs, if any.
 
 If you are not running postgresql as a part of the docker compose set, ensure the database variables `DATABASE_URL` and `DATABASE_HOST` are set correctly.
 
@@ -108,7 +108,7 @@ Use `docker compose up --force-recreate --build` if you have made changes to env
 
 - http://notification-service-keycloak:8180/admin
 - The keycloak interface defaults to username "admin" and password "keycloak".
-- The defaults are initially set in the [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) file.
+- The defaults are initially set in the [`docker-compose.keycloak.env`](./keycloak/docker-compose.keycloak.env) file.
 
 #### The API should be available at:
 
@@ -121,7 +121,7 @@ An admin user can be created with `python manage.py add_admin_user -u admin -p a
 
 The Keycloak development realm for this project is preconfigured with the name "local-dev". The basic configuration is derived from the file [`realm.json`](./keycloak/realm.json), which is imported during the build process.
 
-The Realm parameters can be modified through environmental variables in [`docker-compose.keycloak.env.yaml`](./keycloak/docker-compose.keycloak.env.yaml) and [`docker-compose.env.yaml`](./docker-compose.env.yaml).
+The Realm parameters can be modified through environmental variables in [`docker-compose.keycloak.env`](./keycloak/docker-compose.keycloak.env) and [`docker-compose.env`](./docker-compose.env).
 
 It's important to ensure matching parameters between the configuration files and the running Keycloak instance. Otherwise, the default authentication flow won't work correctly.
 
@@ -137,7 +137,7 @@ NOTE: Keep in mind that any changes made to parameters will be lost if you recre
 
 At the moment the API only integrate with Quriiri SMS gateway.
 
-To use the Quriiri sender, you need to have Quriiri API Key and API URL, then add them to the [docker-compose.env.yaml](./docker-compose.env.yaml). If running locally, to your local `.env`:
+To use the Quriiri sender, you need to have Quriiri API Key and API URL, then add them to the [docker-compose.env](./docker-compose.env). If running locally, to your local `.env`:
 
 ```
 QURIIRI_API_KEY = <your_quriiri_api_key>
