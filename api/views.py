@@ -2,12 +2,13 @@ import logging
 
 from django.db import transaction
 from django.http import HttpResponseBadRequest
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.models import DeliveryLog
-from api.serializers import DeliveryLogSerializer
+from api.serializers import DeliveryLogSerializer, SendMessagePayloadSerializer
 from api.types import SendMessagePayload
 from api.utils import (
     collect_destinations,
@@ -25,31 +26,38 @@ logger = logging.getLogger(__name__)
 sms_sender = Sender(QURIIRI_API_KEY, QURIIRI_API_URL)
 
 
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-@transaction.atomic
-def send_message(request):
-    """
-    Payload example
+@extend_schema(
+    request=SendMessagePayloadSerializer,
+    responses={200: DeliveryLogSerializer},
+    description="""
+    Send an SMS message.
+    Payload example:
+    ```json
     {
         "sender": "Hel.fi",
         "to": [
             {
                 "destination": "string",
-                "format": "MOBILE",
+                "format": "MOBILE"
             },
             {
                 "destination": "string",
-                "format": "MOBILE",
+                "format": "MOBILE"
             },
             {
                 "destination": "string",
-                "format": "MOBILE",
+                "format": "MOBILE"
             }
         ],
         "text": "SMS message"
     }
-    """
+    ```
+    """,
+)
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@transaction.atomic
+def send_message(request):
     data: SendMessagePayload = request.data
     try:
         validate_send_message_payload(data)
@@ -57,7 +65,6 @@ def send_message(request):
         return HttpResponseBadRequest(e)
 
     destinations = collect_destinations(recipients=data["to"], number_type=None)
-    # Get unique list of phone numbers converted to international format
     unique_valid_destinations = list(
         set(
             filter_valid_destinations(
@@ -80,7 +87,6 @@ def send_message(request):
     log.save()
 
     try:
-        # Write audit log of the action
         audit_log_service._commit_to_audit_log(
             message=create_api_commit_message_from_request(
                 request=request,
@@ -95,6 +101,15 @@ def send_message(request):
     return Response(DeliveryLogSerializer(log).data)
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            "id", OpenApiTypes.INT, OpenApiParameter.PATH, description="Delivery log ID"
+        )
+    ],
+    responses={200: DeliveryLogSerializer},
+    description="Retrieve a delivery log.",
+)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_delivery_log(request, id):
@@ -104,7 +119,6 @@ def get_delivery_log(request, id):
     except DeliveryLog.DoesNotExist:
         return Response(status=404, data={"error": f" Message ID: {id} does not exist"})
 
-    # Write audit log of the action
     audit_log_service._commit_to_audit_log(
         message=create_api_commit_message_from_request(
             request=request,
@@ -118,17 +132,23 @@ def get_delivery_log(request, id):
     return Response(data=data)
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            "id", OpenApiTypes.INT, OpenApiParameter.PATH, description="Delivery log ID"
+        )
+    ],
+    description="Webhook for delivery log updates.",
+)
 @api_view(["POST"])
 # TODO: We probably need some basic authentication before writing data
 def delivery_log_webhook(request, id):
     try:
         log = DeliveryLog.objects.get(id=id)
     except DeliveryLog.DoesNotExist:
-        # Response error so Quriiri will retry to send the report several times
         return Response(status=404, data={"error": f" Message ID: {id} does not exist"})
     log.update_report(request.data)
 
-    # Write audit log of the action
     audit_log_service._commit_to_audit_log(
         message=create_api_commit_message_from_request(
             request=request,
