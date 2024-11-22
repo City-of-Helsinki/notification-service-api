@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: Notification Service API
+  version: 0.4.1
+  description: "\n        The Notification service API is a Django REST Framework\
+    \ API for sending\n        notifications via SMS, email, and push notifications.\
+    \ The API is designed\n        to be used by other services to send notifications\
+    \ to users.\n    "
+paths:
+  /v1/message/{id}:
+    get:
+      operationId: v1_message_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /v1/message/send:
+    post:
+      operationId: v1_message_send_create
+      description: |-
+        Payload example
+        {
+            "sender": "Hel.fi",
+            "to": [
+                {
+                    "destination": "string",
+                    "format": "MOBILE",
+                },
+                {
+                    "destination": "string",
+                    "format": "MOBILE",
+                },
+                {
+                    "destination": "string",
+                    "format": "MOBILE",
+                }
+            ],
+            "text": "SMS message"
+        }
+      tags:
+      - v1
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /v1/message/webhook/{id}:
+    post:
+      operationId: v1_message_webhook_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

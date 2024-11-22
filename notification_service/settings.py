@@ -9,6 +9,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from notification_service.constants import CSP
 
+from . import __version__ as VERSION
+
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
 
@@ -122,6 +124,7 @@ INSTALLED_APPS = [
     "common",
     "custom_health_checks",
     "audit_log",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -203,7 +206,21 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Notification Service API",
+    "DESCRIPTION": """
+        The Notification service API is a Django REST Framework API for sending
+        notifications via SMS, email, and push notifications. The API is designed
+        to be used by other services to send notifications to users.
+    """,
+    "VERSION": VERSION,
+    "OAS_VERSION": "3.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
 }
 
 SITE_ID = 1
