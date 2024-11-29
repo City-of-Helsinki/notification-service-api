@@ -215,6 +215,24 @@ NOTE: You have to create API client user first, by login to Django Admin interfa
 
 ## API Documentation
 
+
+### OpenAPI documentation
+
+You can refer to the openapi.yaml documentation file in the root directory of the project.
+
+There are docker-based utilities for using it. You can use the swagger-ui to view the API documentation by running the following command:
+```shell
+  docker compose up swagger-ui
+```
+After that, you can access the documentation at http://localhost:8082.
+
+If you edit the openapi.yaml, you can validate the  by running the following command:
+```shell
+  docker compose run --rm validator
+```
+
+
+
 ### Phone Number Processing
 
 This application provides tools for validating and formatting phone numbers using the [phonenumberslite](https://pypi.org/project/phonenumberslite/) library. It's designed to handle a variety of phone number formats and ensure accurate processing.
