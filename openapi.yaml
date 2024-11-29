@@ -1,0 +1,184 @@
+---
+openapi: 3.1.0
+info:
+  version: 0.4.1
+  title: Notification Service API
+  description: The Notification service API is a Django REST Framework API for sending notifications via SMS. The API is designed to be used by other services to send notifications to users and to be extended to other formats. It used to have email sending, but no longer does.
+servers:
+  - url: http://notification-service-keycloak:8180/
+    description: Default address of local development server. Remember to add notification-service-keycloak to your hosts file pointing to 127.0.0.1 or another address you've configured the local instance to.
+  - url: https://kuva-notification-service.api.test.hel.ninja/v1/
+    description: Testing; The environment that is built and deployed every time when a new commit to master code branch is pushed.
+  - url: https://kuva-notification-service.api.stage.hel.ninja/v1/
+    description: Staging; A released version (triggered with tag) is first deployed to the staging server, where the version can be tested before deploying it to production.
+  - url: https://kuva-notification-service.api.hel.fi/v1/
+    description: Production.
+paths:
+  /message/send:
+    post:
+      operationId: api/views/send_message
+      security:
+        - IsAuthenticated: []
+      summary: Send notification
+      description: Send an SMS message to a list of recipients.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryLogSerializer'
+        '400':
+          description: Bad Request (Payload-related validation or other handling failed)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /message/{id}:
+    get:
+      operationId: api/views/get_delivery_log
+      security:
+        - IsAuthenticated: []
+      summary: Get delivery log
+      description: Get a delivery log by message id.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the notification
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryLogSerializer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Message does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /message/webhook/{id}:
+    post:
+      operationId: api/views/delivery_log_webhook
+      summary: Receive a webhook callback from the Quriiri service
+      description: Receive a webhook callback from the Quriiri service, simply logs response.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the object
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookData'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        '404':
+          description: Message does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Recipient:
+      type: object
+      description: The phone number of the recipient, full international format without extra formatting, such as `+358401234567`.
+      properties:
+        destination:
+          type: string
+          description: The phone number of the recipient
+        format:
+          type: string
+          description: The format of the message. Always the fixed string `MOBILE`.
+          enum:
+            - MOBILE
+    Payload:
+      type: object
+      description: The payload for sending an SMS notification
+      properties:
+        sender:
+          type: string
+          description: The Sender ID of the sender. Either a phone number or a short name, such as `Hel.fi`.
+        to:
+          type: array
+          description: The list of SMS recipients
+          items:
+            $ref: '#/components/schemas/Recipient'
+        text:
+          type: string
+          description: The message to send.
+    WebhookData:
+      type: object
+      description: The Webhook received as a callback from the Quriiri service
+      properties:
+        sender:
+          type: string
+          description: The Sender ID of the sender. Either a phone number or a short name, such as `Hel.fi`.
+        status:
+          type: string
+          description: The status of the message
+          enum:
+            - DELIVERED
+            - FAILED
+            - PENDING
+        statustime:
+          type: string
+          format: date-time
+          description: The date and time of the status, in ISO 8601 format; eg. '2021-10-12T09:00:00Z'.
+        smscount:
+          type: string
+          description: The number of SMS messages sent. Usually 1.
+        billingref:
+          type: string
+          description: The billing reference of the message, such as `Palvelutarjotin`.
+    DeliveryLogSerializer:
+      type: object
+    BasicResponse:
+      type: object
+    Error:
+      type: object
+      description: Generic error response
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    IsAuthenticated:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: DRF TokenAuthentication. You need to generate an API token for each client.
+
