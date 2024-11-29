@@ -232,7 +232,6 @@ If you edit the openapi.yaml, you can validate the  by running the following com
 ```
 
 
-
 ### Phone Number Processing
 
 This application provides tools for validating and formatting phone numbers using the [phonenumberslite](https://pypi.org/project/phonenumberslite/) library. It's designed to handle a variety of phone number formats and ensure accurate processing.
@@ -265,10 +264,6 @@ AUDIT_LOG = {
     "ORIGIN": "notification_service",
 }
 ```
-
-### TODO: FIXME!
-
-- [Swagger Hub](https://app.swaggerhub.com/apis-docs/t0mim/NotificationService/1.0.1)
 
 ## Keeping Python requirements up to date
 
