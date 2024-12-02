@@ -1,6 +1,52 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.5.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.4.1...notification-service-api-v0.5.0) (2024-12-02)
+
+
+### Features
+
+* Add prune_(delivery_log|django_admin_log) management commands ([76e1450](https://github.com/City-of-Helsinki/notification-service-api/commit/76e1450dce6d9d99f889ebcef3229a6a6d1ab20a))
+* Add Table of Contents to all Markdown files except CHANGELOG.md ([c15e08c](https://github.com/City-of-Helsinki/notification-service-api/commit/c15e08c15eb2f02b5426ed29512beedf4464cd90))
+* **auditlog:** Add "user_id" field to audit actor ([a4af758](https://github.com/City-of-Helsinki/notification-service-api/commit/a4af758bdb8a4c7954fbabe202753a3770ec041d))
+* **auditlog:** Add a management command to prune the audit logs ([186b1bc](https://github.com/City-of-Helsinki/notification-service-api/commit/186b1bc1af152e6fb48b0553b698a2dcb9a4bda1))
+* **auditlog:** Add audit log admin view mixin ([ccb9979](https://github.com/City-of-Helsinki/notification-service-api/commit/ccb9979d4826810fbe3ee75f447e78769b0c5d85))
+* **auditlog:** Add AuditLogManager and AuditLogQuerySet ([51ee0a2](https://github.com/City-of-Helsinki/notification-service-api/commit/51ee0a2b10c34bb3e4cd420a0173a7763c508f77))
+* **auditlog:** Add dry_run option to prune audit logs command ([1e39326](https://github.com/City-of-Helsinki/notification-service-api/commit/1e3932622f995d1ef2c4cb3f04f118673ad6e793))
+* **auditlog:** Add is_sent option to prune audit logs command ([c3d2482](https://github.com/City-of-Helsinki/notification-service-api/commit/c3d2482d759ea809a5ba3f929c0b14d2e16707a8))
+* **auditlog:** Add model_name in the audit log target ([33af4b9](https://github.com/City-of-Helsinki/notification-service-api/commit/33af4b947c7b76a2d6e22d2e449c88f1a69e1021))
+* **auditlog:** Extend DeliveryLog admin view with audit logging ([f53ca5b](https://github.com/City-of-Helsinki/notification-service-api/commit/f53ca5b80fbdadb55e917552391134fc9664c140))
+* **auditlog:** Install and init audit_log app ([f5e95c7](https://github.com/City-of-Helsinki/notification-service-api/commit/f5e95c7ca152f4926c71229a31e631787be4cdcc))
+* **auditlog:** Message columns and filters to admin list view ([2c43e4f](https://github.com/City-of-Helsinki/notification-service-api/commit/2c43e4f69ac219b5bca6d798748bcc317da2787a))
+* **auditlog:** Start writing the object states to audit log ([92384e4](https://github.com/City-of-Helsinki/notification-service-api/commit/92384e4993be1c575e04789200d9ea0960b6d2f9))
+* **auditlog:** Store object states and diffs to audit event target ([ad8454c](https://github.com/City-of-Helsinki/notification-service-api/commit/ad8454ca49a13e6899c7358e8c702c6a663e023a))
+* **auditlog:** Write audit log from delivery log api actions ([d5038a5](https://github.com/City-of-Helsinki/notification-service-api/commit/d5038a56e7f7e1ef3b1127a4b55c7ae7cc0d4e67))
+* Delivery log admin search from report field ([8fd461e](https://github.com/City-of-Helsinki/notification-service-api/commit/8fd461e7bdb92aba95d5ac4ed06c611a9e060b59))
+* Filter message logs with created at date ([3bf7e28](https://github.com/City-of-Helsinki/notification-service-api/commit/3bf7e2819519319d23f526706535d04c69505030))
+* Improve user admin view ([a8e7d23](https://github.com/City-of-Helsinki/notification-service-api/commit/a8e7d23eafeb2fa613637339edb98ca441ae0bb3))
+* Install and configure django-csp ([12875c4](https://github.com/City-of-Helsinki/notification-service-api/commit/12875c4bdce988011ca3885f70ff202cedc4ab7e))
+* Message logs admin default ordering set to descending created at ([fd5a3d4](https://github.com/City-of-Helsinki/notification-service-api/commit/fd5a3d4420c776edeb43668cbdbfc03c201539c1))
+* Message logs admin filter with status ([d9fe2c1](https://github.com/City-of-Helsinki/notification-service-api/commit/d9fe2c1a96ea04970ca9ea295ef4184974ba66ea))
+* Prune audit/delivery/Django admin logs using uwsgi cron at night ([66cf503](https://github.com/City-of-Helsinki/notification-service-api/commit/66cf503e7365bce15ed9ff4c66d9b0d4c007d606))
+* Search message logs with user email ([5687125](https://github.com/City-of-Helsinki/notification-service-api/commit/5687125f28f030d51c7bbbc63e9b7386539fe682))
+* Validate input of send message and filter invalid phone numbers ([b8a8485](https://github.com/City-of-Helsinki/notification-service-api/commit/b8a8485675da5595cbb5ed5c0d2123c076ba760e))
+* Whitelist only the auth service for CORS ([889e7a4](https://github.com/City-of-Helsinki/notification-service-api/commit/889e7a4fddda00b73bc0e49ff2f4cd8674f80f5d))
+
+
+### Bug Fixes
+
+* **auditlog:** Audit log model admin mixin save model operation value ([f45dda1](https://github.com/City-of-Helsinki/notification-service-api/commit/f45dda1ae61effa488bc159c2ed19aab37ce8862))
+* **auditlog:** Write readlog only of current admin list page objects ([f140128](https://github.com/City-of-Helsinki/notification-service-api/commit/f140128ed8aa0960271d8cf581abfbb1f774b241))
+* Hot reload when using docker compose by using .:/app volume mapping ([90d6f28](https://github.com/City-of-Helsinki/notification-service-api/commit/90d6f28908c347705b2d8aea3ab1e43a32d4e469))
+* Remove cronjobs from uwsgi.ini, OpenShift is wanted for cronjobs ([5979301](https://github.com/City-of-Helsinki/notification-service-api/commit/5979301d92a06cf9d306b6577d48a8a36f294cb2))
+
+
+### Documentation
+
+* **auditlog:** Add a reference to structued log transfer ([a4ae0af](https://github.com/City-of-Helsinki/notification-service-api/commit/a4ae0af059a060a5f4ecd34ae577c58ac510b923))
+* **auditlog:** Audit log object state storing ([ba07f41](https://github.com/City-of-Helsinki/notification-service-api/commit/ba07f41540999e2c007de4250dddb92f929e616a))
+* **auditlog:** Init readme for audit log ([ea0a9ff](https://github.com/City-of-Helsinki/notification-service-api/commit/ea0a9ff077f9e7b2540588761c5d7f6c2c5c2355))
+
 ## [0.4.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.4.0...notification-service-api-v0.4.1) (2024-10-31)
 
 
