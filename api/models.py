@@ -1,4 +1,3 @@
-# Create your models here.
 from copy import deepcopy
 
 from django.db import models
@@ -35,7 +34,7 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         updated_messages = deepcopy(report["messages"])
         destination = report_data["destination"]
         for k, v in report["messages"].items():
-            if k == destination or v["converted"] == destination:
+            if k == destination or ("converted" in v and v["converted"] == destination):
                 updated_messages[k] = report_data
         report["messages"] = updated_messages
         self.report = report
