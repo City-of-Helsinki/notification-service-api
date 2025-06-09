@@ -27,7 +27,7 @@ defusedxml==0.8.0rc2
     #   social-auth-core
 deprecation==2.1.0
     # via django-helusers
-django==5.1.9
+django==5.1.10
     # via
     #   -r requirements.in
     #   django-axes
