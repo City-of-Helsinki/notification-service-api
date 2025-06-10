@@ -84,7 +84,7 @@ python-jose==3.4.0
     # via django-helusers
 python3-openid==3.2.0
     # via social-auth-core
-requests==2.32.3
+requests==2.32.4
     # via
     #   django-helusers
     #   requests-oauthlib
