@@ -1,6 +1,14 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.5.3](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.5.2...notification-service-api-v0.5.3) (2025-06-11)
+
+
+### Dependencies
+
+* Bump django from 5.1.10 to 5.1.11 ([981470b](https://github.com/City-of-Helsinki/notification-service-api/commit/981470bddf621914de46c55fdc16dfc123b9cee0))
+* Bump requests from 2.32.3 to 2.32.4 ([462d835](https://github.com/City-of-Helsinki/notification-service-api/commit/462d835f78d9f388b1750abff0e66fed721a8608))
+
 ## [0.5.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.5.1...notification-service-api-v0.5.2) (2025-06-09)
 
 
