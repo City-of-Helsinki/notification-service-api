@@ -107,7 +107,7 @@ sqlparse==0.5.1
     # via django
 typing-extensions==4.12.2
     # via faker
-urllib3==2.2.3
+urllib3==2.5.0
     # via
     #   requests
     #   sentry-sdk
