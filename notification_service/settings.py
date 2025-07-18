@@ -23,8 +23,8 @@ else:
 env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     CACHE_URL=(str, "locmemcache://"),
-    CORS_ORIGIN_ALLOW_ALL=(bool, False),
-    CORS_ORIGIN_WHITELIST=(list, []),
+    CORS_ALLOW_ALL_ORIGINS=(bool, False),
+    CORS_ALLOWED_ORIGINS=(list, []),
     DATABASE_URL=(str, ""),
     DEBUG=(bool, False),
     DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
@@ -157,8 +157,8 @@ TEMPLATES = [
     }
 ]
 
-CORS_ALLOWED_ORIGINS = env.list("CORS_ORIGIN_WHITELIST")
-CORS_ORIGIN_ALLOW_ALL = env.bool("CORS_ORIGIN_ALLOW_ALL")
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
 
 # Configure the default CSP rule for different source types
