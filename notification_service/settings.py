@@ -26,6 +26,7 @@ env = environ.Env(
     CORS_ALLOW_ALL_ORIGINS=(bool, False),
     CORS_ALLOWED_ORIGINS=(list, []),
     DATABASE_URL=(str, ""),
+    DATABASE_PASSWORD=(str, ""),
     DEBUG=(bool, False),
     DEFAULT_FROM_EMAIL=(str, "no-reply@hel.ninja"),
     HELUSERS_PASSWORD_LOGIN_DISABLED=(bool, False),
@@ -67,6 +68,9 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 USE_X_FORWARDED_HOST = env.bool("USE_X_FORWARDED_HOST")
 
 DATABASES = {"default": env.db()}
+
+if env("DATABASE_PASSWORD"):
+    DATABASES["default"]["PASSWORD"] = env("DATABASE_PASSWORD")
 
 CACHES = {"default": env.cache()}
 
