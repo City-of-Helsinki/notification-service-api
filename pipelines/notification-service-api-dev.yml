@@ -33,7 +33,6 @@ resources:
     # Azure DevOps repository
     - repository: kuva-notification-service-api-pipelines
       type: git
-      ref: refs/heads/ansible_automation_update
       # Azure DevOps project/repository
       name: kuva-notification-service-api/kuva-notification-service-api-pipelines
 
