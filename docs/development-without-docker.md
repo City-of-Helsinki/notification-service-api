@@ -21,7 +21,7 @@ Please refer to the [main README](/README.md) for the latest instructions.
 ## Prerequisites
 
 - PostgreSQL 13
-- Python 3.11
+- Python 3.12
 - Keycloak
 
 ### Installing Python requirements

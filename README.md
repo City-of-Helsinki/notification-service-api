@@ -90,7 +90,7 @@ These are the basic internal dependencies of the project. If you are running the
 
 ### Python
 
-Python 3.11 is the minimum version required. You can check your version by running `python --version`.
+Python 3.12 is the minimum version required. You can check your version by running `python --version`.
 
 If you encounter deprecation warnings on newer versions, you may need to downgrade to Python 3.11, but ideally fix the deprecation warnings and upgrade the container's python base version.
 
@@ -267,30 +267,26 @@ AUDIT_LOG = {
 
 ## Keeping Python requirements up to date
 
-1. Install `pip-tools`:
+1. Add new packages to `requirements.in` or `requirements-dev.in`
 
-   - `pip install pip-tools`
-
-2. Add new packages to `requirements.in` or `requirements-dev.in`
-
-3. Update `.txt` file for the changed requirements file:
+2. Update `.txt` file for the changed requirements file:
 
    - `pip-compile requirements.in`
    - `pip-compile requirements-dev.in`
 
-4. If you want to update dependencies to their newest versions, run:
+3. If you want to update dependencies to their newest versions, run:
 
    - `pip-compile --upgrade requirements.in`
 
-5. To install Python requirements run:
+4. To install Python requirements run:
 
    - `pip-sync requirements.txt`
 
-6. To install Python development requirements run:
+5. To install Python development requirements run:
 
    - `pip-sync requirements-dev.txt`
 
-7. To install Python production requirements run:
+6. To install Python production requirements run:
 
    - `pip-sync requirements.txt requirements-prod.txt`
 
