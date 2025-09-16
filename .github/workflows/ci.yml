@@ -12,7 +12,7 @@ jobs:
     uses: City-of-Helsinki/.github/.github/workflows/ci-django-api.yml@main
     secrets: inherit
     with:
-      python-version: 3.11
       postgres-major-version: 13
+      python-version: 3.12
       extra-commands: |
         echo 'SECRET_KEY=topsecret123' >> .env
