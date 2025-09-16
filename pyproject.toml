@@ -44,3 +44,10 @@ doctest_optionflags = [
     "IGNORE_EXCEPTION_DETAIL",
     "ALLOW_UNICODE",
 ]
+
+# pip-tools options:
+# https://pip-tools.readthedocs.io/en/stable/#configuration
+[tool.pip-tools.compile]
+generate-hashes = true
+strip-extras = true
+allow-unsafe = true
