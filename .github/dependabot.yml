@@ -8,5 +8,3 @@ updates:
       prefix: "deps"
     # Disable version updates and only allow security updates
     open-pull-requests-limit: 0
-      - "City-of-Helsinki/kuva-backend"
-      - "City-of-Helsinki/kuva-developers"
