@@ -1,0 +1,61 @@
+# serializer version: 1
+# name: test_get_delivery_log
+  dict({
+    'errors': list([
+    ]),
+    'messages': dict({
+      '+358461231231': dict({
+        'converted': '+358461231231',
+        'status': 'CREATED',
+      }),
+    }),
+    'warnings': list([
+    ]),
+  })
+# ---
+# name: test_send_sms
+  dict({
+    'errors': list([
+    ]),
+    'messages': dict({
+      '+358461231231': dict({
+        'converted': '+358461231231',
+        'status': 'CREATED',
+      }),
+    }),
+    'warnings': list([
+    ]),
+  })
+# ---
+# name: test_webhook_delivery_log
+  dict({
+    'errors': list([
+    ]),
+    'messages': dict({
+      '+358461231231': dict({
+        'converted': '+358461231231',
+        'status': 'CREATED',
+      }),
+    }),
+    'warnings': list([
+    ]),
+  })
+# ---
+# name: test_webhook_delivery_log.1
+  dict({
+    'errors': list([
+    ]),
+    'messages': dict({
+      '+358461231231': dict({
+        'billingref': 'Palvelutarjotin',
+        'destination': '+358461231231',
+        'sender': 'hel.fi',
+        'smscount': '1',
+        'status': 'DELIVERED',
+        'statustime': '2020-07-21T09:18:00Z',
+      }),
+    }),
+    'warnings': list([
+    ]),
+  })
+# ---
