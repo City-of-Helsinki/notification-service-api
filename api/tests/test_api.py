@@ -13,7 +13,6 @@ from common.tests.mock_data import QURIIRI_SMS_RESPONSE
 @pytest.fixture(autouse=True)
 def autouse_db(db):
     """Rename the db fixture"""
-    pass
 
 
 SMS_PAYLOAD: SendMessagePayload = {
