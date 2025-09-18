@@ -161,9 +161,9 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
     client = Client()
     client.force_login(admin_user)
 
-    COUNT = 3
+    count = 3
 
-    delivery_logs = DeliveryLogFactory.create_batch(COUNT)
+    delivery_logs = DeliveryLogFactory.create_batch(count)
     object_ids = [str(log.pk) for log in delivery_logs]
 
     # Get the URL for the changelist view
@@ -187,7 +187,7 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == COUNT
+    assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == count
     assert sorted(
         audit_log_entry.message["audit_event"]["target"]["object_ids"]
     ) == sorted(object_ids)

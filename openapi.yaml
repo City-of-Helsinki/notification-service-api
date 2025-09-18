@@ -181,4 +181,3 @@ components:
       in: header
       name: Authorization
       description: DRF TokenAuthentication. You need to generate an API token for each client.
-

@@ -72,7 +72,7 @@ def test_valid_months(
     dry_run_msg = "Running in dry-run mode i.e. not committing changes!\n"
     del_msg = (
         f"Deleted {expected_deletion_count} Django admin logs "
-        f"created at least {5*12 if months is None else months} months ago"
+        f"created at least {5 * 12 if months is None else months} months ago"
     )
     assert captured.err == ""
     assert del_msg in captured.out
