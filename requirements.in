@@ -7,7 +7,7 @@ django-health-check
 django-axes
 djangorestframework
 factory-boy
-psycopg2
+psycopg[c]
 sentry-sdk[django]
 social-auth-app-django
 phonenumberslite
