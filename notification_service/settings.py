@@ -4,10 +4,9 @@ from datetime import datetime
 
 import environ
 import sentry_sdk
+from csp.constants import SELF
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
-
-from notification_service.constants import CSP
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
@@ -165,11 +164,15 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
 
-# Configure the default CSP rule for different source types
-CSP_DEFAULT_SRC = [CSP.SELF]
+# Configure default CSP rules for different source types
 # NOTE: CSP_STYLE_SRC="'unsafe-inline'" is needed for the inline styles that are added
 # by the `django-helusers` to the base_admin_site.html
-CSP_STYLE_SRC = [CSP.SELF, CSP.UNSAFE_INLINE]
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "style-src": [SELF, "'unsafe-inline'"],
+    }
+}
 
 AUTHENTICATION_BACKENDS = [
     "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
