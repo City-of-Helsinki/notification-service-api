@@ -1,27 +1,25 @@
-# Pre-commit hook documentation:
-# - https://pre-commit.com/
-# - https://pre-commit.com/hooks.html
-#
-# Ruff pre-commit hook documentation:
-# - https://github.com/astral-sh/ruff-pre-commit
+# Keep tool versions in sync with the versions in requirements-dev.txt
 default_language_version:
-  python: python3.12
+    python: python3
+default_install_hook_types: [pre-commit, commit-msg]
+default_stages: [pre-commit, manual]
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version
-    rev: v0.5.2
+    rev: v0.13.0
     hooks:
-      # Run the linter
+      # Run the linter.
       - id: ruff
-        args: [ --fix ]
-      # Run the formatter
+        args: [ "--fix" ]
+      # Run the formatter.
       - id: ruff-format
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v3.4.0
-    hooks:
-      - id: conventional-pre-commit
-        stages: [commit-msg]
-        args: []
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.22.0
     hooks:

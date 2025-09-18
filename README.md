@@ -290,41 +290,20 @@ AUDIT_LOG = {
 
    - `pip-sync requirements.txt requirements-prod.txt`
 
-## Code formatting
+## Code format
 
-This project uses [`ruff`](https://docs.astral.sh/ruff/formatter/) for Python code formatting. Basic `ruff` commands:
+This project uses [Ruff](https://docs.astral.sh/ruff/) for code formatting and quality checking.
 
-`ruff format` is the primary entrypoint to the formatter. It accepts a list of files or directories, and formats all discovered Python files:
+Basic `ruff` commands:
 
-```
+* lint: `ruff check`
+* apply safe lint fixes: `ruff check --fix`
+* check formatting: `ruff format --check`
+* format: `ruff format`
 
-ruff format # Format all files in the current directory.
-ruff format path/to/code/ # Format all files in `path/to/code` (and any subdirectories).
-ruff format path/to/file.py # Format a single file.
-
-```
-
-> Similar to Black, running ruff format /path/to/file.py will format the given file or directory in-place, while ruff format --check /path/to/file.py will avoid writing any formatted files back, and instead exit with a non-zero status code upon detecting any unformatted files.
-
-To run the Ruff Linter use `ruff check`.
-
-> `ruff check` is the primary entrypoint to the Ruff linter. It accepts a list of files or directories, and lints all discovered Python files, optionally fixing any fixable errors:
-
-```
-
-ruff check # Lint all files in the current directory.
-ruff check --fix # Lint all files in the current directory, and fix any fixable errors.
-ruff check --watch # Lint all files in the current directory, and re-lint on change.
-ruff check path/to/code/ # Lint all files in `path/to/code` (and any subdirectories).
-
-```
-
-1. Install `pre-commit` (there are many ways to do but let's use pip as an example):
-   - `pip install pre-commit`
-2. Set up git hooks from `.pre-commit-config.yaml`, run this command from project root:
-   - `pre-commit install`
-
-After that, formatting hooks will run against all changed files before committing
+[`pre-commit`](https://pre-commit.com/) can be used to install and
+run all the formatting tools as git hooks automatically before a
+commit.
 
 ## Releases, changelogs and deployments
 
