@@ -3,6 +3,6 @@ ipython
 pytest
 pytest-cov
 pytest-django
-snapshottest
+syrupy
 ruff
 pip-tools
