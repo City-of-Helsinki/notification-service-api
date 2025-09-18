@@ -20,7 +20,7 @@ Please refer to the [main README](/README.md) for the latest instructions.
 
 ## Prerequisites
 
-- PostgreSQL 13
+- PostgreSQL 17
 - Python 3.12
 - Keycloak
 
