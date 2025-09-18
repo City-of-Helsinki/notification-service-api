@@ -36,7 +36,6 @@ env = environ.Env(
     QURIIRI_REPORT_URL=(str, ""),
     SECRET_KEY=(str, ""),
     SENTRY_DSN=(str, None),
-    SENTRY_ENABLE_TRACING=(bool, False),
     SENTRY_ENVIRONMENT=(str, ""),
     SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
     SOCIAL_AUTH_TUNNISTAMO_KEY=(str, "KEY_UNSET"),
@@ -86,7 +85,6 @@ sentry = sentry_sdk.init(
     dsn=env.str("SENTRY_DSN"),
     release=REVISION,
     environment=env("SENTRY_ENVIRONMENT"),
-    enable_tracing=env.bool("SENTRY_ENABLE_TRACING"),
     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE"),
     integrations=[DjangoIntegration()],
 )
