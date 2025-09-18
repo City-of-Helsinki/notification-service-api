@@ -4,5 +4,6 @@ pytest
 pytest-cov
 pytest-django
 syrupy
-ruff
+ruff==0.13.0  # sync with .pre-commit-config.yaml
 pip-tools
+pre-commit
