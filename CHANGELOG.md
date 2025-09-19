@@ -1,6 +1,33 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.6.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.5.5...notification-service-api-v0.6.0) (2025-09-19)
+
+
+### Features
+
+* Migrate to django-csp 4.0 ([ac20b9f](https://github.com/City-of-Helsinki/notification-service-api/commit/ac20b9f123af785028b1f6bbc38f5cf5adf7c315))
+
+
+### Bug Fixes
+
+* **dependabot:** Update configuration ([5837a18](https://github.com/City-of-Helsinki/notification-service-api/commit/5837a18218dac5958a9e00323cf8d3978fa124f6))
+* Remove deprecated sentry tracing flag ([b8d9658](https://github.com/City-of-Helsinki/notification-service-api/commit/b8d9658f1f3f2929117e4d84ce410f5e9bc24154))
+
+
+### Dependencies
+
+* Bump django 5.2 and requirements ([e0e2137](https://github.com/City-of-Helsinki/notification-service-api/commit/e0e213746cf3a122e3c67d9a8f8c5ef21ac66a4e))
+* Generate hashes for requirements ([3e66283](https://github.com/City-of-Helsinki/notification-service-api/commit/3e66283ad9379014c924d760dca63ef5babd242e))
+* Update ruff and pre-commit configurations ([44cb538](https://github.com/City-of-Helsinki/notification-service-api/commit/44cb538577764224f006b7d023761ecd20bd3bcd))
+* Upgrade to python 3.12 ([d75bb44](https://github.com/City-of-Helsinki/notification-service-api/commit/d75bb446711c60ad64524b123d65f3dd67e968a4))
+* Use psycopg-c instead of psycopg2 ([1a227d4](https://github.com/City-of-Helsinki/notification-service-api/commit/1a227d48e8cdd53038444dc3b4162f74b91c1b80))
+
+
+### Documentation
+
+* Update README and Docker docs ([e84245b](https://github.com/City-of-Helsinki/notification-service-api/commit/e84245bd6b7fed33002f80330d93a5e477e9858c))
+
 ## [0.5.5](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.5.4...notification-service-api-v0.5.5) (2025-09-10)
 
 
