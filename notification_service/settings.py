@@ -4,9 +4,11 @@ from datetime import datetime
 
 import environ
 import sentry_sdk
+from corsheaders.defaults import default_headers
 from csp.constants import SELF
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.types import SamplingContext
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
@@ -35,9 +37,11 @@ env = environ.Env(
     QURIIRI_API_URL=(str, "https://api.quriiri.fi/v1/"),
     QURIIRI_REPORT_URL=(str, ""),
     SECRET_KEY=(str, ""),
-    SENTRY_DSN=(str, None),
-    SENTRY_ENVIRONMENT=(str, ""),
-    SENTRY_TRACES_SAMPLE_RATE=(float, 0.1),
+    SENTRY_DSN=(str, ""),
+    SENTRY_ENVIRONMENT=(str, "local"),
+    SENTRY_PROFILE_SESSION_SAMPLE_RATE=(float, None),
+    SENTRY_RELEASE=(str, None),
+    SENTRY_TRACES_SAMPLE_RATE=(float, None),
     SOCIAL_AUTH_TUNNISTAMO_KEY=(str, "KEY_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT=(str, "OIDC_ENDPOINT_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_SECRET=(str, "SECRET_UNSET"),
@@ -81,13 +85,34 @@ try:
 except Exception:
     REVISION = "n/a"
 
-sentry = sentry_sdk.init(
-    dsn=env.str("SENTRY_DSN"),
-    release=REVISION,
-    environment=env("SENTRY_ENVIRONMENT"),
-    traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE"),
-    integrations=[DjangoIntegration()],
-)
+SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE")
+
+
+def sentry_traces_sampler(sampling_context: SamplingContext) -> float:
+    # Respect parent sampling decision if one exists. Recommended by Sentry.
+    if (parent_sampled := sampling_context.get("parent_sampled")) is not None:
+        return float(parent_sampled)
+
+    # Exclude health check endpoints from tracing
+    path = sampling_context.get("wsgi_environ", {}).get("PATH_INFO", "")
+    if path.rstrip("/") in ["/healthz", "/readiness"]:
+        return 0
+
+    # Use configured sample rate for all other requests
+    return SENTRY_TRACES_SAMPLE_RATE or 0
+
+
+if env("SENTRY_DSN"):
+    sentry_sdk.init(
+        dsn=env.str("SENTRY_DSN"),
+        environment=env.str("SENTRY_ENVIRONMENT"),
+        release=env.str("SENTRY_RELEASE"),
+        integrations=[DjangoIntegration()],
+        traces_sampler=sentry_traces_sampler,
+        profile_session_sample_rate=env.str("SENTRY_PROFILE_SESSION_SAMPLE_RATE"),
+        profile_lifecycle="trace",
+    )
+
 
 MEDIA_ROOT = env("MEDIA_ROOT")
 STATIC_ROOT = env("STATIC_ROOT")
@@ -161,6 +186,11 @@ TEMPLATES = [
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "baggage",
+    "sentry-trace",
+)
 
 # Configure default CSP rules for different source types
 # NOTE: CSP_STYLE_SRC="'unsafe-inline'" is needed for the inline styles that are added
