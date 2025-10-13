@@ -1,6 +1,14 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.6.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.6.0...notification-service-api-v0.6.1) (2025-10-13)
+
+
+### Dependencies
+
+* Bump django from 5.2.6 to 5.2.7 ([2e1c1f3](https://github.com/City-of-Helsinki/notification-service-api/commit/2e1c1f37afdabef2dd4e8bd790c7b427a1d11296))
+* Bump social-auth-app-django from 5.5.1 to 5.6.0 ([f069d5a](https://github.com/City-of-Helsinki/notification-service-api/commit/f069d5a4afae4b894d81d1ee3ef9374da9b62d36))
+
 ## [0.6.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.5.5...notification-service-api-v0.6.0) (2025-09-19)
 
 
