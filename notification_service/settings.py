@@ -42,6 +42,7 @@ env = environ.Env(
     SENTRY_PROFILE_SESSION_SAMPLE_RATE=(float, None),
     SENTRY_RELEASE=(str, None),
     SENTRY_TRACES_SAMPLE_RATE=(float, None),
+    SENTRY_TRACES_IGNORE_PATHS=(list, ["/healthz", "/readiness"]),
     SOCIAL_AUTH_TUNNISTAMO_KEY=(str, "KEY_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT=(str, "OIDC_ENDPOINT_UNSET"),
     SOCIAL_AUTH_TUNNISTAMO_SECRET=(str, "SECRET_UNSET"),
@@ -86,6 +87,7 @@ except Exception:
     REVISION = "n/a"
 
 SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE")
+SENTRY_TRACES_IGNORE_PATHS = env.list("SENTRY_TRACES_IGNORE_PATHS")
 
 
 def sentry_traces_sampler(sampling_context: SamplingContext) -> float:
@@ -95,7 +97,7 @@ def sentry_traces_sampler(sampling_context: SamplingContext) -> float:
 
     # Exclude health check endpoints from tracing
     path = sampling_context.get("wsgi_environ", {}).get("PATH_INFO", "")
-    if path.rstrip("/") in ["/healthz", "/readiness"]:
+    if path.rstrip("/") in SENTRY_TRACES_IGNORE_PATHS:
         return 0
 
     # Use configured sample rate for all other requests
