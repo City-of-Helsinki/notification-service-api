@@ -1,6 +1,22 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.7.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.6.1...notification-service-api-v0.7.0) (2025-11-06)
+
+
+### Features
+
+* Allow dynamic sentry trace ignore paths ([4fd68bc](https://github.com/City-of-Helsinki/notification-service-api/commit/4fd68bccdb094acbbfd026cf380f2012124de24f))
+* Enable sentry logging for uWSGI ([f4b5a07](https://github.com/City-of-Helsinki/notification-service-api/commit/f4b5a07f1a93d37a0af7c486a0137e0b3e8c2073))
+* **sentry:** Update sentry configuration ([d93746b](https://github.com/City-of-Helsinki/notification-service-api/commit/d93746b8d66ee30df7d6231ea1d5bb7014b3ef3a))
+
+
+### Dependencies
+
+* Bump django from 5.2.7 to 5.2.8 ([8dc9f6e](https://github.com/City-of-Helsinki/notification-service-api/commit/8dc9f6e344fe104388385d94ab0a6ebedcaf18dd))
+* Bump pip from 25.2 to 25.3 ([340d371](https://github.com/City-of-Helsinki/notification-service-api/commit/340d371aa803a199794d90da7f8aeba8c829a069))
+* Bump sentry-sdk from 2.38.0 to 2.41.0 ([b912669](https://github.com/City-of-Helsinki/notification-service-api/commit/b912669ea4bcf5fc9e2effcf52af1464284daca4))
+
 ## [0.6.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.6.0...notification-service-api-v0.6.1) (2025-10-13)
 
 
