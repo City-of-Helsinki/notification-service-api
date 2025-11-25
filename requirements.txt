@@ -298,6 +298,7 @@ django==5.2.8 \
     #   django-csp
     #   django-health-check
     #   django-helusers
+    #   django-logger-extra
     #   djangorestframework
     #   sentry-sdk
     #   social-auth-app-django
@@ -324,6 +325,10 @@ django-health-check==3.20.0 \
 django-helusers==0.14.0 \
     --hash=sha256:424f97e7aa6792ae255de56344f765795444849ea82e9d4e01666494c28e960c \
     --hash=sha256:79b922d51278a9e9793a00279782e5455b72e9e9d0f261dd17be2f0dbcbaa1f9
+    # via -r requirements.in
+django-logger-extra==1.1.0 \
+    --hash=sha256:bc9450ead1e87aad1866210657d1a9f8efe9e21bfea9b53618d9fd0c829f1179 \
+    --hash=sha256:f44ab408c812474163a21b13a7acba48407ba52b128260370e8f4ccb2ecab89b
     # via -r requirements.in
 djangorestframework==3.16.1 \
     --hash=sha256:166809528b1aced0a17dc66c24492af18049f2c9420dbd0be29422029cfc3ff7 \
