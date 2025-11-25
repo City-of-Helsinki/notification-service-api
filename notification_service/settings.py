@@ -151,12 +151,14 @@ INSTALLED_APPS = [
     "common",
     "custom_health_checks",
     "audit_log",
+    "logger_extra",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "logger_extra.middleware.XRequestIdMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -256,8 +258,29 @@ QURIIRI_REPORT_URL = env.str("QURIIRI_REPORT_URL")
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "loggers": {"django": {"handlers": ["console"], "level": "ERROR"}},
+    "filters": {
+        "context": {
+            "()": "logger_extra.filter.LoggerContextFilter",
+        }
+    },
+    "formatters": {
+        "json": {
+            "()": "logger_extra.formatter.JSONFormatter",
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "json",
+            "filters": ["context"],
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "ERROR",
+        },
+    },
 }
 
 # local_settings.py can be used to override environment-specific settings

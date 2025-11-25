@@ -2,6 +2,9 @@
 FROM registry.access.redhat.com/ubi9/python-312 AS appbase
 # ==============================
 
+# Branch or tag used to pull python-uwsgi-common.
+ARG UWSGI_COMMON_REF=main
+
 USER root
 WORKDIR /app
 
@@ -22,6 +25,15 @@ RUN dnf update -y && dnf install -y nc \
     # - starts the server (runs manage.py or wsgi)
     && mkdir /entrypoint \
     && dnf clean all
+
+# Build and copy specific python-uwsgi-common files.
+ADD https://github.com/City-of-Helsinki/python-uwsgi-common/archive/${UWSGI_COMMON_REF}.tar.gz /usr/src/
+RUN mkdir -p /usr/src/python-uwsgi-common && \
+    tar --strip-components=1 -xzf /usr/src/${UWSGI_COMMON_REF}.tar.gz -C /usr/src/python-uwsgi-common && \
+    cp /usr/src/python-uwsgi-common/uwsgi-base.ini /app && \
+    uwsgi --build-plugin /usr/src/python-uwsgi-common && \
+    rm -rf /usr/src/${UWSGI_COMMON_REF}.tar.gz && \
+    rm -rf /usr/src/python-uwsgi-common
 
 COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
