@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.8.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.7.0...notification-service-api-v0.8.0) (2025-11-26)
+
+
+### Features
+
+* Change log format to json ([f66447e](https://github.com/City-of-Helsinki/notification-service-api/commit/f66447eacc74504fd767007755a6cf9737abf509))
+
 ## [0.7.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.6.1...notification-service-api-v0.7.0) (2025-11-06)
 
 
