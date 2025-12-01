@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.9.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.8.0...notification-service-api-v0.9.0) (2025-12-01)
+
+
+### Features
+
+* Allow Sentry uWSGI-plugin to be optional ([51e9b72](https://github.com/City-of-Helsinki/notification-service-api/commit/51e9b729eec209ce5c53774aa388f9467da9685e))
+
 ## [0.8.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.7.0...notification-service-api-v0.8.0) (2025-11-26)
 
 
