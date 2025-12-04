@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.9.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.9.0...notification-service-api-v0.9.1) (2025-12-04)
+
+
+### Dependencies
+
+* Bump django from 5.2.8 to 5.2.9 ([603307d](https://github.com/City-of-Helsinki/notification-service-api/commit/603307da26bc62d85c7a3fc9847d0bf92f80e38c))
+
 ## [0.9.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.8.0...notification-service-api-v0.9.0) (2025-12-01)
 
 
