@@ -1,6 +1,15 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.9.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.9.1...notification-service-api-v0.9.2) (2025-12-19)
+
+
+### Dependencies
+
+* Bump urllib3 ([5044b31](https://github.com/City-of-Helsinki/notification-service-api/commit/5044b311254c47eafd92b7d974fd16c54bf3379b))
+* Move ipython to main requirements for better console ([44f5998](https://github.com/City-of-Helsinki/notification-service-api/commit/44f59980fad44fe8a831c26d864a2e908e5b9f7a))
+* Move uwsgi to main requirements ([2c4af38](https://github.com/City-of-Helsinki/notification-service-api/commit/2c4af3814bd13589f48d447f361050d8fdcaa6dd))
+
 ## [0.9.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.9.0...notification-service-api-v0.9.1) (2025-12-04)
 
 
