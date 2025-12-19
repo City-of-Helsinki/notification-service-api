@@ -12,4 +12,5 @@ psycopg[c]
 sentry-sdk[django]
 social-auth-app-django
 phonenumberslite
+ipython
 uwsgi
