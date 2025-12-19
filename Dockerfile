@@ -9,12 +9,10 @@ USER root
 WORKDIR /app
 
 COPY --chown=default:root requirements.txt /app/requirements.txt
-COPY --chown=default:root requirements-prod.txt /app/requirements-prod.txt
 
 RUN dnf update -y && dnf install -y nc \
     && pip install -U pip setuptools wheel \
     && pip install --no-cache-dir -r /app/requirements.txt \
-    && pip install --no-cache-dir  -r /app/requirements-prod.txt \
     && uwsgi --build-plugin https://github.com/City-of-Helsinki/uwsgi-sentry \
     && mkdir -p /usr/local/lib/uwsgi/plugins \
     && mv sentry_plugin.so /usr/local/lib/uwsgi/plugins/ \

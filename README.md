@@ -286,10 +286,6 @@ AUDIT_LOG = {
 
    - `pip-sync requirements-dev.txt`
 
-6. To install Python production requirements run:
-
-   - `pip-sync requirements.txt requirements-prod.txt`
-
 ## Code format
 
 This project uses [Ruff](https://docs.astral.sh/ruff/) for code formatting and quality checking.
