@@ -3,14 +3,14 @@ django-axes
 django-cors-headers
 django-csp
 django-environ
-django-helusers
 django-health-check
+django-helusers
 django-logger-extra
 djangorestframework
 factory-boy
+ipython
+phonenumberslite
 psycopg[c]
 sentry-sdk[django]
 social-auth-app-django
-phonenumberslite
-ipython
 uwsgi

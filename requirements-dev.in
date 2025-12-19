@@ -1,8 +1,8 @@
 -c requirements.txt
 
 freezegun
+pip-tools
 pytest
 pytest-cov
 pytest-django
 syrupy
-pip-tools
