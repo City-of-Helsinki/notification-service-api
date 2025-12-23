@@ -11,7 +11,6 @@ _defaults = dict(
     ORIGIN="service",
     LOGGED_ENDPOINTS_RE=re.compile(r"^/(v1|gdpr-api)/"),
     REQUEST_AUDIT_LOG_VAR="_audit_logged_object_ids",
-    LOG_TO_DB_ENABLED=True,
     STORE_OBJECT_STATE=StoreObjectState.NONE,
 )
 
