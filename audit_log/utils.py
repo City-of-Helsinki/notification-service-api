@@ -49,20 +49,21 @@ def get_remote_address(request):
     Returns:
         str: The client's IP address.
     """
-    if not (x_forwarded_for := request.headers.get("x-forwarded-for")):
-        return request.META.get("REMOTE_ADDR")
+    forwarded_for = request.headers.get("x-forwarded-for", "")
+    client_ip = forwarded_for.split(",")[0] or None
 
-    remote_addr = x_forwarded_for.split(",")[0]
+    if not client_ip:
+        client_ip = request.META.get("REMOTE_ADDR")
 
-    # Remove port number from remote_addr
-    if "." in remote_addr and ":" in remote_addr:
-        # IPv4 with port (`x.x.x.x:x`)
-        remote_addr = remote_addr.split(":")[0]
-    elif "[" in remote_addr:
-        # IPv6 with port (`[:::]:x`)
-        remote_addr = remote_addr[1:].split("]")[0]
-
-    return remote_addr
+    if client_ip:
+        # Strip port from ip address if present
+        if "[" in client_ip:
+            # Bracketed IPv6 like [2001:db8::1]:1234
+            client_ip = client_ip.lstrip("[").split("]")[0]
+        elif "." in client_ip and client_ip.count(":") == 1:
+            # IPv4 with port
+            client_ip = client_ip.split(":")[0]
+    return client_ip
 
 
 def get_user_role(user):
