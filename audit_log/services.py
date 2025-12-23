@@ -121,8 +121,7 @@ class AuditLogServiceBase:
         if not self.is_audit_logging_enabled():
             raise AuditLoggingDisabledError("Audit logging is disabled.")
 
-        if self.is_log_to_db_enabled():
-            AuditLogEntry.objects.create(message=asdict(message))
+        AuditLogEntry.objects.create(message=asdict(message))
 
     def is_audit_logging_enabled(self) -> bool:
         """
@@ -132,9 +131,6 @@ class AuditLogServiceBase:
             bool: True if enabled, False otherwise.
         """
         return bool(audit_logging_settings.ENABLED)
-
-    def is_log_to_db_enabled(self) -> bool:
-        return bool(audit_logging_settings.LOG_TO_DB_ENABLED)
 
     def should_store_object_state(self) -> bool:
         return audit_logging_settings.STORE_OBJECT_STATE != StoreObjectState.NONE
