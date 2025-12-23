@@ -137,7 +137,6 @@ This module provides a way to configure settings for the Django Audit Log applic
 - **`LOGGED_ENDPOINTS_RE`:** A compiled regular expression that matches API endpoints to be logged. Defaults to `re.compile(r"^/(v1|gdpr-api)/")`.
 - **`REQUEST_AUDIT_LOG_VAR`:** A string representing the name of the request variable used to store logged object IDs. Defaults to `"_audit_logged_object_ids"`.
 - **`LOG_TO_DB_ENABLED`:** A boolean indicating whether to store audit logs in the database. Defaults to `True`.
-- **`LOG_TO_LOGGER_ENABLED`:** A boolean indicating whether to log audit events to a logger. Defaults to `False`.
 - **`STORE_OBJECT_STATE`:** An enum value from `audit_log.enums.StoreObjectState` that specifies how object state should be stored. Defaults to `StoreObjectState.NONE`. Other options are `"none", "old-only", "new-only", "old-and-new", "diff", "all"`.
 
 ```python
@@ -163,7 +162,6 @@ AUDIT_LOG = {
     "ENABLED": True,
     "ORIGIN": "notification_service",
     "LOGGED_ENDPOINTS_RE": re.compile(r"^/api/"),
-    "LOG_TO_LOGGER_ENABLED": True,
     "STORE_OBJECT_STATE": StoreObjectState.ALL,
 }
 ```

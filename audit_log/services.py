@@ -1,5 +1,3 @@
-import json
-import logging
 import re
 from dataclasses import asdict
 from typing import List, Optional, Union
@@ -123,10 +121,6 @@ class AuditLogServiceBase:
         if not self.is_audit_logging_enabled():
             raise AuditLoggingDisabledError("Audit logging is disabled.")
 
-        if self.is_log_to_logger_enabled():
-            logger = logging.getLogger("audit")
-            logger.info(json.dumps(message))
-
         if self.is_log_to_db_enabled():
             AuditLogEntry.objects.create(message=asdict(message))
 
@@ -141,9 +135,6 @@ class AuditLogServiceBase:
 
     def is_log_to_db_enabled(self) -> bool:
         return bool(audit_logging_settings.LOG_TO_DB_ENABLED)
-
-    def is_log_to_logger_enabled(self) -> bool:
-        return bool(audit_logging_settings.LOG_TO_LOGGER_ENABLED)
 
     def should_store_object_state(self) -> bool:
         return audit_logging_settings.STORE_OBJECT_STATE != StoreObjectState.NONE
