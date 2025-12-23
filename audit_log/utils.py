@@ -4,7 +4,6 @@ from typing import Any, Dict, List, Optional, Union
 
 from django.db.models import Model, QuerySet
 from django.http import HttpResponse
-from django.utils import timezone
 from rest_framework import status
 
 from audit_log.enums import Operation, Role, Status, StoreObjectState
@@ -170,13 +169,8 @@ def create_commit_message(
     actor: Optional[AuditActorData] = None,
     target: Optional[AuditTarget] = None,
 ):
-    current_time = timezone.now()
-    iso_8601_datetime = f"{current_time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"  # noqa: E501
     return {
         "audit_event": {
-            "origin": audit_logging_settings.ORIGIN,
-            "date_time_epoch": int(current_time.timestamp() * 1000),
-            "date_time": iso_8601_datetime,
             "status": status,
             "operation": operation,
             "actor": asdict(actor) if actor else None,

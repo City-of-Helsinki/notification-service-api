@@ -8,7 +8,6 @@ from audit_log.enums import StoreObjectState
 
 _defaults = dict(
     ENABLED=True,
-    ORIGIN="service",
     LOGGED_ENDPOINTS_RE=re.compile(r"^/(v1|gdpr-api)/"),
     REQUEST_AUDIT_LOG_VAR="_audit_logged_object_ids",
     STORE_OBJECT_STATE=StoreObjectState.NONE,

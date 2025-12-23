@@ -1,13 +1,14 @@
+import logging
 import re
 from dataclasses import asdict
 from typing import List, Optional, Union
 
 from django.db.models import Model, QuerySet
 from django.http import HttpRequest, HttpResponse
+from resilient_logger.sources import ResilientLogSource
 
 from audit_log.enums import Operation, Status, StoreObjectState
 from audit_log.exceptions import AuditLoggingDisabledError
-from audit_log.models import AuditLogEntry
 from audit_log.settings import audit_logging_settings
 from audit_log.types import (
     AuditActorData,
@@ -121,7 +122,14 @@ class AuditLogServiceBase:
         if not self.is_audit_logging_enabled():
             raise AuditLoggingDisabledError("Audit logging is disabled.")
 
-        AuditLogEntry.objects.create(message=asdict(message))
+        ResilientLogSource.create_structured(
+            level=logging.NOTSET,
+            message=message.audit_event.status,
+            actor=asdict(message.audit_event.actor),
+            operation=message.audit_event.operation,
+            target=asdict(message.audit_event.target),
+            extra={"status": message.audit_event.status},
+        )
 
     def is_audit_logging_enabled(self) -> bool:
         """
@@ -316,7 +324,7 @@ audit_log_service = AuditLogApiService()
 
 def create_api_commit_message_from_request(
     request: HttpRequest,
-    operation: Operation,
+    operation: Union[Operation, str],
     object_ids: List[str],
     _type: Optional[str] = None,
     new_objects: Optional[Union[QuerySet, List[Model]]] = None,

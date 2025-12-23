@@ -31,9 +31,6 @@ def valid_target():
 @pytest.fixture
 def valid_event(valid_actor, valid_target):
     return AuditEvent(
-        origin="test",
-        date_time_epoch=1234567890,
-        date_time="2024-11-14T16:00:00Z",
         status="success",
         actor=valid_actor,
         operation=Operation.CREATE,
@@ -83,9 +80,6 @@ def test_audit_target_invalid_types(path, object_ids):
 
 # Tests for AuditEvent
 def test_audit_event_valid(valid_event):
-    assert valid_event.origin == "test"
-    assert valid_event.date_time_epoch == 1234567890
-    assert valid_event.date_time == "2024-11-14T16:00:00Z"
     assert valid_event.status == "success"
     assert isinstance(valid_event.actor, AuditActorData)
     assert valid_event.operation == Operation.CREATE
@@ -94,9 +88,6 @@ def test_audit_event_valid(valid_event):
 
 def test_audit_event_valid_actor_dict(valid_target):
     event = AuditEvent(
-        origin="test",
-        date_time_epoch=1234567890,
-        date_time="2024-11-14T16:00:00Z",
         status="success",
         actor={
             "role": "user",
@@ -112,9 +103,6 @@ def test_audit_event_valid_actor_dict(valid_target):
 
 def test_audit_event_valid_target_dict(valid_actor):
     event = AuditEvent(
-        origin="test",
-        date_time_epoch=1234567890,
-        date_time="2024-11-14T16:00:00Z",
         status="success",
         actor=valid_actor,
         operation=Operation.CREATE,
@@ -146,9 +134,6 @@ def test_audit_event_valid_target_dict(valid_actor):
 )
 def test_audit_event_valid_target_dict_with_object_states(object_states, valid_actor):
     event = AuditEvent(
-        origin="test",
-        date_time_epoch=1234567890,
-        date_time="2024-11-14T16:00:00Z",
         status="success",
         actor=valid_actor,
         operation=Operation.CREATE,
@@ -164,9 +149,6 @@ def test_audit_event_valid_target_dict_with_object_states(object_states, valid_a
 @pytest.mark.parametrize(
     "field, invalid_value",
     [
-        ("origin", 123),
-        ("date_time_epoch", "1234567890"),
-        ("date_time", 1234567890),
         ("status", 123),
         ("actor", "user"),
         ("operation", 123),
@@ -175,9 +157,6 @@ def test_audit_event_valid_target_dict_with_object_states(object_states, valid_a
 )
 def test_audit_event_invalid_fields(valid_actor, valid_target, field, invalid_value):
     kwargs = {
-        "origin": "test",
-        "date_time_epoch": 1234567890,
-        "date_time": "2024-11-14T16:00:00Z",
         "status": "success",
         "actor": valid_actor,
         "operation": Operation.CREATE,
@@ -226,9 +205,6 @@ def test_audit_commit_message_valid(valid_event):
 def test_audit_commit_message_valid_event_dict(valid_actor, valid_target):
     message = AuditCommitMessage(
         audit_event={
-            "origin": "test",
-            "date_time_epoch": 1234567890,
-            "date_time": "2024-11-14T16:00:00Z",
             "status": "success",
             "actor": valid_actor,
             "operation": Operation.CREATE,

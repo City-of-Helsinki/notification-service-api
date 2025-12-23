@@ -10,16 +10,6 @@ class AuditLogEntry(models.Model):
     class Meta:
         verbose_name_plural = "audit log entries"
 
-        # NOTE: GinIndex could improve the search performance
-        # https://docs.djangoproject.com/en/5.1/ref/contrib/postgres/indexes/.
-        # indexes = [
-        #       GinIndex(fields=["message"], name="message_gin_idx"),
-        #       # Example partial GinIndex:
-        #       # GinIndex(
-        #       #   fields=["message__audit_event__actor"],
-        #       #   name="message_audit_event_actor_gin_idx"),
-        # ]
-
 
 class DummyTestModel(models.Model):
     """

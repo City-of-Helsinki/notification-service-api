@@ -1,10 +1,10 @@
 from django.test import Client
 from django.urls import reverse
+from resilient_logger.models import ResilientLogEntry
 
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
 from audit_log.enums import Operation
-from audit_log.models import AuditLogEntry
 
 
 def test_visiting_delivery_log_admin_view_writes_read_log(admin_user):
@@ -21,21 +21,18 @@ def test_visiting_delivery_log_admin_view_writes_read_log(admin_user):
     response = client.get(url)
     assert response.status_code == 200
 
-    # Assert that an AuditLogEntry was created for each DeliveryLog object
-    qs = AuditLogEntry.objects.filter(message__audit_event__target__path=url)
+    # Assert that a ResilientLogEntry was created for each DeliveryLog object
+    qs = ResilientLogEntry.objects.filter(context__target__path=url)
     # There should be just 1 audit log entry
     assert qs.count() == 1
     audit_log_entry = qs.first()
     # The audit log entry should have all the delivery log ids in it
-    assert sorted(
-        audit_log_entry.message["audit_event"]["target"]["object_ids"]
-    ) == sorted([str(log.pk) for log in delivery_logs])
-    assert audit_log_entry.message["audit_event"]["target"]["path"] == url
-    assert (
-        audit_log_entry.message["audit_event"]["target"]["type"]
-        == DeliveryLog._meta.model_name
+    assert sorted(audit_log_entry.context["target"]["object_ids"]) == sorted(
+        [str(log.pk) for log in delivery_logs]
     )
-    assert audit_log_entry.message["audit_event"]["operation"] == Operation.READ.value
+    assert audit_log_entry.context["target"]["path"] == url
+    assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
+    assert audit_log_entry.context["operation"] == Operation.READ.value
 
 
 def test_creating_delivery_log_writes_create_log(admin_user):
@@ -57,24 +54,18 @@ def test_creating_delivery_log_writes_create_log(admin_user):
     # Find the newly created DeliveryLog object
     delivery_log = DeliveryLog.objects.latest("pk")
 
-    # Assert that an AuditLogEntry was created for the creation
-    qs = AuditLogEntry.objects.filter(
-        message__audit_event__target__path=url,
-        message__audit_event__operation=Operation.CREATE.value,
+    # Assert that a ResilientLogEntry was created for the creation
+    qs = ResilientLogEntry.objects.filter(
+        context__target__path=url, context__operation=Operation.CREATE.value
     )
     assert qs.count() == 1
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert audit_log_entry.message["audit_event"]["target"]["object_ids"] == [
-        str(delivery_log.pk)
-    ]
-    assert audit_log_entry.message["audit_event"]["target"]["path"] == url
-    assert (
-        audit_log_entry.message["audit_event"]["target"]["type"]
-        == DeliveryLog._meta.model_name
-    )
-    assert audit_log_entry.message["audit_event"]["operation"] == Operation.CREATE.value
+    assert audit_log_entry.context["target"]["object_ids"] == [str(delivery_log.pk)]
+    assert audit_log_entry.context["target"]["path"] == url
+    assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
+    assert audit_log_entry.context["operation"] == Operation.CREATE.value
 
 
 def test_updating_delivery_log_writes_update_log(admin_user):
@@ -97,24 +88,18 @@ def test_updating_delivery_log_writes_update_log(admin_user):
     response = client.post(url, updated_data)
     assert response.status_code == 302  # Redirect after successful update
 
-    # Assert that an AuditLogEntry was created for the update
-    qs = AuditLogEntry.objects.filter(
-        message__audit_event__target__path=url,
-        message__audit_event__operation=Operation.UPDATE.value,
+    # Assert that a ResilientLogEntry was created for the update
+    qs = ResilientLogEntry.objects.filter(
+        context__target__path=url, context__operation=Operation.UPDATE.value
     )
     assert qs.count() == 1
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert audit_log_entry.message["audit_event"]["target"]["object_ids"] == [
-        str(delivery_log.pk)
-    ]
-    assert audit_log_entry.message["audit_event"]["target"]["path"] == url
-    assert (
-        audit_log_entry.message["audit_event"]["target"]["type"]
-        == DeliveryLog._meta.model_name
-    )
-    assert audit_log_entry.message["audit_event"]["operation"] == Operation.UPDATE.value
+    assert audit_log_entry.context["target"]["object_ids"] == [str(delivery_log.pk)]
+    assert audit_log_entry.context["target"]["path"] == url
+    assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
+    assert audit_log_entry.context["operation"] == Operation.UPDATE.value
 
 
 def test_deleting_delivery_log_writes_delete_log(admin_user):
@@ -133,24 +118,18 @@ def test_deleting_delivery_log_writes_delete_log(admin_user):
     response = client.post(url, {"post": "yes"})
     assert response.status_code == 302  # Redirect after successful deletion
 
-    # Assert that an AuditLogEntry was created for the deletion
-    qs = AuditLogEntry.objects.filter(
-        message__audit_event__target__path=url,
-        message__audit_event__operation=Operation.DELETE.value,
+    # Assert that a ResilientLogEntry was created for the deletion
+    qs = ResilientLogEntry.objects.filter(
+        context__target__path=url, context__operation=Operation.DELETE.value
     )
     assert qs.count() == 1
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert audit_log_entry.message["audit_event"]["target"]["object_ids"] == [
-        str(delivery_log.pk)
-    ]
-    assert audit_log_entry.message["audit_event"]["target"]["path"] == url
-    assert (
-        audit_log_entry.message["audit_event"]["target"]["type"]
-        == DeliveryLog._meta.model_name
-    )
-    assert audit_log_entry.message["audit_event"]["operation"] == Operation.DELETE.value
+    assert audit_log_entry.context["target"]["object_ids"] == [str(delivery_log.pk)]
+    assert audit_log_entry.context["target"]["path"] == url
+    assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
+    assert audit_log_entry.context["operation"] == Operation.DELETE.value
     assert DeliveryLog.objects.count() == 0
 
 
@@ -178,22 +157,16 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
     response = client.post(url, data)
     assert response.status_code == 302  # Redirect after successful deletion
 
-    # Assert that an AuditLogEntry was created for the bulk deletion
-    qs = AuditLogEntry.objects.filter(
-        message__audit_event__target__path=url,
-        message__audit_event__operation=Operation.DELETE.value,
+    # Assert that a ResilientLogEntry was created for the bulk deletion
+    qs = ResilientLogEntry.objects.filter(
+        context__target__path=url, context__operation=Operation.DELETE.value
     )
     assert qs.count() == 1
     audit_log_entry = qs.first()
 
     # Verify the audit log entry details
-    assert len(audit_log_entry.message["audit_event"]["target"]["object_ids"]) == count
-    assert sorted(
-        audit_log_entry.message["audit_event"]["target"]["object_ids"]
-    ) == sorted(object_ids)
-    assert audit_log_entry.message["audit_event"]["target"]["path"] == url
-    assert (
-        audit_log_entry.message["audit_event"]["target"]["type"]
-        == DeliveryLog._meta.model_name
-    )
-    assert audit_log_entry.message["audit_event"]["operation"] == Operation.DELETE.value
+    assert len(audit_log_entry.context["target"]["object_ids"]) == count
+    assert sorted(audit_log_entry.context["target"]["object_ids"]) == sorted(object_ids)
+    assert audit_log_entry.context["target"]["path"] == url
+    assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
+    assert audit_log_entry.context["operation"] == Operation.DELETE.value

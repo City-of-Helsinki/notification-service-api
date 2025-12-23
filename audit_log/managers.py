@@ -40,7 +40,7 @@ class AuditLogQuerySet(models.QuerySet):
             _type: The type of object being retrieved. If not specified, the model name
                 is used.
             force_disable_object_states: Whether to disable the inclusion of object
-                states in the log message. Some times it might be unnecessary to write
+                states in the log message. Sometimes it might be unnecessary to write
                 object states in the audit event message.
 
         Returns:
@@ -104,7 +104,7 @@ class AuditLogQuerySet(models.QuerySet):
                 "delete").
             status: The status of the operation (e.g., "success", "failure").
             force_disable_object_states: Whether to disable the inclusion of object
-                states in the log message. Some times it might be unnecessary to write
+                states in the log message. Sometimes it might be unnecessary to write
                 object states in the audit event message.
 
         Returns:

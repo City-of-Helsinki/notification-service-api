@@ -60,21 +60,12 @@ class AuditTarget:
 
 @dataclass
 class AuditEvent:
-    origin: str
-    date_time_epoch: int
-    date_time: str
     status: str
     actor: Union[AuditActorData, dict]
     operation: Union[Operation, str]
     target: Union[AuditTarget, dict]
 
     def __post_init__(self):
-        if not isinstance(self.origin, str):
-            raise TypeError("Origin must be a string")
-        if not isinstance(self.date_time_epoch, int):
-            raise TypeError("Date_time_epoch must be an integer")
-        if not isinstance(self.date_time, str):
-            raise TypeError("Date_time must be a string")
         if not isinstance(self.status, str):
             raise TypeError("Status must be a string")
         if not isinstance(self.actor, (AuditActorData, dict)):

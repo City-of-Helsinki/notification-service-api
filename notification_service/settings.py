@@ -56,6 +56,12 @@ env = environ.Env(
     APP_RELEASE=(str, ""),
     AUDIT_LOG_ENABLED=(bool, True),
     AUDIT_LOG_STORE_OBJECT_STATE=(str, "none"),
+    # Resilient logger config
+    AUDIT_LOG_ENV=(str, ""),
+    AUDIT_LOG_ES_URL=(str, ""),
+    AUDIT_LOG_ES_INDEX=(str, ""),
+    AUDIT_LOG_ES_USERNAME=(str, ""),
+    AUDIT_LOG_ES_PASSWORD=(str, ""),
 )
 
 if os.path.exists(env_file):
@@ -152,6 +158,7 @@ INSTALLED_APPS = [
     "custom_health_checks",
     "audit_log",
     "logger_extra",
+    "resilient_logger",
 ]
 
 MIDDLEWARE = [
@@ -312,5 +319,28 @@ APP_BUILD_TIME = datetime.fromtimestamp(os.path.getmtime(__file__))
 AUDIT_LOG = {
     "ENABLED": env("AUDIT_LOG_ENABLED"),
     "STORE_OBJECT_STATE": env("AUDIT_LOG_STORE_OBJECT_STATE"),
-    "ORIGIN": "notification_service",
+}
+
+RESILIENT_LOGGER = {
+    "origin": "notification-service-api",
+    "environment": env("AUDIT_LOG_ENV"),
+    "sources": [
+        {
+            "class": "resilient_logger.sources.ResilientLogSource",
+        }
+    ],
+    "targets": [
+        {
+            "class": "resilient_logger.targets.ElasticsearchLogTarget",
+            "es_url": env("AUDIT_LOG_ES_URL"),
+            "es_username": env("AUDIT_LOG_ES_USERNAME"),
+            "es_password": env("AUDIT_LOG_ES_PASSWORD"),
+            "es_index": env("AUDIT_LOG_ES_INDEX"),
+            "required": True,
+        }
+    ],
+    "batch_limit": 5000,
+    "chunk_size": 500,
+    "submit_unsent_entries": True,
+    "clear_sent_entries": True,
 }

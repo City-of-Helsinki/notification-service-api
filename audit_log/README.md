@@ -1,6 +1,7 @@
 # Audit Log Service
 
 This module provides a comprehensive audit logging service for Django applications. It allows you to track user actions, data changes, and system events, providing valuable insights into application activity and ensuring accountability.
+It uses https://github.com/City-of-Helsinki/django-resilient-logger/ for storing, sending and cleaning audit logs.
 
 ## Table of Contents
 
@@ -49,91 +50,11 @@ This module provides a comprehensive audit logging service for Django applicatio
   - Automatically logs read, create, update, and delete operations performed through the admin interface.
   - Integrates with `AuditLogApiService` to commit audit log messages.
 
-- **`LargeTablePaginator`:**
-
-  - A custom paginator optimized for large tables in Django admin.
-  - Uses PostgreSQL's `reltuples` to estimate queryset size for improved performance.
-  - Falls back to the default `Paginator` if `reltuples` is unavailable or unreliable.
-
-- **`AuditLogEntryAdmin`:**
-  - A Django admin class for managing `AuditLogEntry` objects.
-  - Provides a read-only interface for viewing audit log entries.
-  - Uses `LargeTablePaginator` for efficient pagination of potentially large datasets.
-  - Disables creation, modification, and deletion of audit logs through the admin interface.
-  - Displays the audit log message in a user-friendly format.
-
-### Audit Log Model
-
-> A reference to structure requirements is here https://github.com/City-of-Helsinki/structured-log-transfer.
-
-The `AuditLogEntry` [model](./models.py) stores audit log entries in the database. Each entry represents a single audit event and contains the following fields:
-
-- `is_sent`: Indicates whether the audit log entry has been sent to an external system or processed in any way.
-- `message`: Stores the audit log message in a JSON format (see the ["Audit Log Message Format"](#audit-log-message-format) section for details). This field contains the core information about the audit event, including the actor, action, target, and timestamp.
-- `created_at`: Records the timestamp when the audit log entry was created.
-
-This model provides a structured way to store and retrieve audit log data, allowing for efficient querying and analysis.
-
-### Audit Log Message Format
-
-Audit log messages are stored in a JSON format with the following structure:
-
-```json
-{
-  "audit_event": {
-    "actor": {
-      "ip_address": "127.0.0.1",
-      "role": "ADMIN",
-      "uuid": "7a52666c-9b5b-11ef-91f6-e2cd5b1fb5ac"
-    },
-    "date_time": "2024-11-13T14:13:57.853Z",
-    "date_time_epoch": 1731507237853,
-    "operation": "READ",
-    "origin": "notification_service",
-    "status": "SUCCESS",
-    "target": {
-      "object_ids": [
-        "bd6a5d06-8828-47a7-bb5b-fdf4559da56e",
-        "9fb9cfa1-23f4-4401-b66a-8cc9a3277175",
-        "ee444103-f145-4282-8768-28cdee52c3a4",
-        "f928162d-6d27-4fab-a084-fd83a3dd1c5a",
-        "c1bf4a0d-0ae3-4191-8948-94bec1742b41",
-        "33935ff8-e8db-43e6-8939-15974dfd6d74",
-        "e77c9e36-1f24-49dd-a700-2191caf594a4",
-        "77e74bab-91ca-48b3-8245-cfd08196af80"
-      ],
-      "path": "/admin/api/deliverylog/"
-    }
-  }
-}
-```
-
-Fields:
-
-- `audit_event`: Contains the details of the audit event.
-  - `actor`: Information about the user who performed the action.
-    - `ip_address`: The IP address of the actor.
-    - `role`: The role of the actor (e.g., "ADMIN", "USER").
-    - `uuid`: The unique identifier of the actor. UUID is provided by the `django-helusers`.
-    - `user_id`: The unique database primary key identifier of the actor.
-  - `date_time`: The date and time of the event in ISO 8601 format.
-  - `date_time_epoch`: The date and time of the event in Unix epoch milliseconds.
-  - `operation`: The type of operation performed (e.g., "READ", "CREATE", "UPDATE", "DELETE").
-  - `origin`: The origin of the event (e.g., "notification_service").
-  - `status`: The status of the operation (e.g., "SUCCESS", "FAILURE").
-  - `target`: Information about the object(s) affected by the operation.
-    - `object_ids`: A list of unique identifiers of the affected objects.
-    - `path`: The request path associated with the operation.
-    - `type`: Type of the traced object, e.g. a model name.
-
-This standardized format ensures consistency and facilitates analysis of audit log data.
-
 ## Django Audit Log Settings
 
 This module provides a way to configure settings for the Django Audit Log application. It allows you to customize various aspects of the audit logging functionality. The settings are accessed through the `audit_logging_settings` object. This object provides access to the following settings:
 
 - **`ENABLED`:** A boolean indicating whether audit logging is enabled. Defaults to `True`.
-- **`ORIGIN`:** A string representing the origin of the audit log. Defaults to `"service"`.
 - **`LOGGED_ENDPOINTS_RE`:** A compiled regular expression that matches API endpoints to be logged. Defaults to `re.compile(r"^/(v1|gdpr-api)/")`.
 - **`REQUEST_AUDIT_LOG_VAR`:** A string representing the name of the request variable used to store logged object IDs. Defaults to `"_audit_logged_object_ids"`.
 - **`STORE_OBJECT_STATE`:** An enum value from `audit_log.enums.StoreObjectState` that specifies how object state should be stored. Defaults to `StoreObjectState.NONE`. Other options are `"none", "old-only", "new-only", "old-and-new", "diff", "all"`.
@@ -159,7 +80,6 @@ You can override the default settings by defining an `AUDIT_LOG` dictionary in y
 ```python
 AUDIT_LOG = {
     "ENABLED": True,
-    "ORIGIN": "notification_service",
     "LOGGED_ENDPOINTS_RE": re.compile(r"^/api/"),
     "STORE_OBJECT_STATE": StoreObjectState.ALL,
 }

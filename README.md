@@ -248,7 +248,7 @@ Features:
 
 ### Audit logging
 
-The audit logging is done with the `audit_log` app (which is maintained as an internal dependency, but will probably later moved to it's own repository). [See Audit log docs](./audit_log/README.md).
+The audit logging is done with the `audit_log` app (which is maintained as an internal dependency). [See Audit log docs](./audit_log/README.md).
 
 The audit log is writing READ and WRITE logs of all CRUD actions of
 
@@ -261,7 +261,6 @@ The audit logging can be enabled with the `AUDIT_LOG_ENABLED` env variable. The 
 AUDIT_LOG = {
     "ENABLED": env("AUDIT_LOG_ENABLED"),
     "STORE_OBJECT_STATE": env("AUDIT_LOG_STORE_OBJECT_STATE"),
-    "ORIGIN": "notification_service",
 }
 ```
 
