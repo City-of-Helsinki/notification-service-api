@@ -1,6 +1,24 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.10.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.9.1...notification-service-api-v0.10.0) (2026-01-12)
+
+
+### Features
+
+* Remove logging audit logs to a logger ([10ea145](https://github.com/City-of-Helsinki/notification-service-api/commit/10ea14597836601b7a2babaa0c62579fccdc759a))
+* Use a similar get_remote_address from other projects ([2827fed](https://github.com/City-of-Helsinki/notification-service-api/commit/2827fed95d4861a0fb0a80ac8e9bb31ff7ad8e5a))
+* Use django-resilient-logger for audit logging ([3bfe35d](https://github.com/City-of-Helsinki/notification-service-api/commit/3bfe35de20e8939e4288758d27eed764d746bdd7))
+* When audit logging is enabled logs will be put to DB ([e842ab6](https://github.com/City-of-Helsinki/notification-service-api/commit/e842ab6e2336d26a320fca559fd1a4a000438693))
+
+
+### Dependencies
+
+* Bump urllib3 ([5044b31](https://github.com/City-of-Helsinki/notification-service-api/commit/5044b311254c47eafd92b7d974fd16c54bf3379b))
+* Bump urllib3 from 2.6.2 to 2.6.3 ([#124](https://github.com/City-of-Helsinki/notification-service-api/issues/124)) ([9b9d7bd](https://github.com/City-of-Helsinki/notification-service-api/commit/9b9d7bde4b6b9a5824b3dd32d88fc9be38969bc3))
+* Move ipython to main requirements for better console ([44f5998](https://github.com/City-of-Helsinki/notification-service-api/commit/44f59980fad44fe8a831c26d864a2e908e5b9f7a))
+* Move uwsgi to main requirements ([2c4af38](https://github.com/City-of-Helsinki/notification-service-api/commit/2c4af3814bd13589f48d447f361050d8fdcaa6dd))
+
 ## [0.9.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.9.0...notification-service-api-v0.9.1) (2025-12-04)
 
 
