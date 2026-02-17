@@ -3,12 +3,12 @@
   dict({
     'errors': list([
     ]),
-    'messages': dict({
-      '+358461231231': dict({
+    'messages': list([
+      dict({
         'converted': '+358461231231',
         'status': 'CREATED',
       }),
-    }),
+    ]),
     'warnings': list([
     ]),
   })
@@ -17,12 +17,12 @@
   dict({
     'errors': list([
     ]),
-    'messages': dict({
-      '+358461231231': dict({
+    'messages': list([
+      dict({
         'converted': '+358461231231',
         'status': 'CREATED',
       }),
-    }),
+    ]),
     'warnings': list([
     ]),
   })
@@ -31,12 +31,12 @@
   dict({
     'errors': list([
     ]),
-    'messages': dict({
-      '+358461231231': dict({
+    'messages': list([
+      dict({
         'converted': '+358461231231',
         'status': 'CREATED',
       }),
-    }),
+    ]),
     'warnings': list([
     ]),
   })
@@ -45,8 +45,8 @@
   dict({
     'errors': list([
     ]),
-    'messages': dict({
-      '+358461231231': dict({
+    'messages': list([
+      dict({
         'billingref': 'Palvelutarjotin',
         'destination': '+358461231231',
         'sender': 'hel.fi',
@@ -54,7 +54,7 @@
         'status': 'DELIVERED',
         'statustime': '2020-07-21T09:18:00Z',
       }),
-    }),
+    ]),
     'warnings': list([
     ]),
   })

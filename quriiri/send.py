@@ -27,11 +27,9 @@ class Sender:
         self.session.close()
 
     def _fill_messages(self, resp, destinations, status):
-        messages = resp.setdefault("messages", {})
+        messages = resp.setdefault("messages", [])
         for destination in destinations:
-            messages.setdefault(
-                destination, {"converted": destination, "status": status}
-            )
+            messages.append({"converted": destination, "status": status})
 
     def send_sms(self, sender, destination, text, **optional):
         if isinstance(destination, str):

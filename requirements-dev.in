@@ -1,5 +1,6 @@
 -c requirements.txt
 
+django-test-migrations
 freezegun
 pip-tools
 pytest

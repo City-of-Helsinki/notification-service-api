@@ -34,9 +34,9 @@ class DeliveryLog(UUIDPrimaryKeyModel, TimestampedModel):
         report = self.report
         updated_messages = deepcopy(report["messages"])
         destination = report_data["destination"]
-        for k, v in report["messages"].items():
-            if k == destination or v["converted"] == destination:
-                updated_messages[k] = report_data
+        for i, message in enumerate(report["messages"]):
+            if message.get("converted") == destination:
+                updated_messages[i] = report_data
         report["messages"] = updated_messages
         self.report = report
         self.save()
