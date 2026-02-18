@@ -16,6 +16,33 @@ class ObjectStateSerializer:
     """
 
     @classmethod
+    def _normalize_delivery_log_messages(cls, report: Dict[str, Any]) -> None:
+        """
+        Convert DeliveryLog report messages from dict to list format in-place.
+
+        This prevents Elasticsearch field limit issues when audit logs are indexed.
+        DeliveryLog stores messages as dict in the database, but audit logs need
+        list format to avoid creating unlimited dynamic fields in Elasticsearch.
+
+        Converts:
+            {"messages": {"+358...": {"converted": "+358...", "status": "..."}}}
+        To:
+            {"messages": [{"converted": "+358...", "status": "..."}]}
+
+        Args:
+            report: The report dict that may contain a 'messages' field
+        """
+        if not report or "messages" not in report:
+            return
+
+        messages = report["messages"]
+
+        # Only convert if it's a dict (not already a list)
+        if isinstance(messages, dict):
+            # Convert dict values to list, preserving message data
+            report["messages"] = list(messages.values())
+
+    @classmethod
     def serialize(cls, obj: Union[QuerySet, List]) -> str:
         """
         Serializes a QuerySet or list of model instances to a JSON string.
@@ -61,6 +88,11 @@ class ObjectStateSerializer:
         json_str = cls.serialize(obj)
         serialized_objects = cls.to_python(json_str)
         fields_dicts = [entry["fields"] for entry in serialized_objects]
+
+        # Normalize DeliveryLog messages for Elasticsearch compatibility
+        for field_dict in fields_dicts:
+            if "report" in field_dict:
+                cls._normalize_delivery_log_messages(field_dict["report"])
 
         if fields:
             return cls.filter_dicts(fields_dicts, desired_keys=fields)
