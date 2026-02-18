@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from audit_log.models import DummyTestModel
 from audit_log.serializers import ObjectStateSerializer
 
@@ -63,3 +65,99 @@ class TestObjectStateSerializer:
             {"c": 5},
             {"a": 7, "c": 8},
         ]
+
+    def test_normalize_delivery_log_messages_dict_to_list(self):
+        """Test that DeliveryLog messages are converted from dict to list format."""
+        # Dict format (how DeliveryLog stores it)
+        report_dict = {
+            "errors": [],
+            "warnings": [],
+            "messages": {
+                "+358401234567": {"converted": "+358401234567", "status": "CREATED"},
+                "+358407654321": {"converted": "+358407654321", "status": "DELIVERED"},
+            },
+        }
+
+        # Convert in place
+        ObjectStateSerializer._normalize_delivery_log_messages(report_dict)
+
+        # Verify it was converted to list
+        assert isinstance(report_dict["messages"], list)
+        assert len(report_dict["messages"]) == 2
+
+        # Verify message data is preserved
+        converted_numbers = {msg["converted"] for msg in report_dict["messages"]}
+        assert "+358401234567" in converted_numbers
+        assert "+358407654321" in converted_numbers
+
+        # Verify status fields are preserved
+        for msg in report_dict["messages"]:
+            assert "converted" in msg
+            assert "status" in msg
+
+    def test_normalize_delivery_log_messages_already_list(self):
+        """Test that already-list messages are not modified."""
+        # List format (already normalized)
+        report_list = {
+            "errors": [],
+            "warnings": [],
+            "messages": [
+                {"converted": "+358401234567", "status": "CREATED"},
+                {"converted": "+358407654321", "status": "DELIVERED"},
+            ],
+        }
+
+        original = report_list["messages"].copy()
+
+        # Convert (should be idempotent)
+        ObjectStateSerializer._normalize_delivery_log_messages(report_list)
+
+        # Verify it's still a list and unchanged
+        assert isinstance(report_list["messages"], list)
+        assert report_list["messages"] == original
+
+    def test_normalize_delivery_log_messages_no_messages(self):
+        """Test with report that has no messages field."""
+        report_empty = {"errors": [], "warnings": []}
+
+        # Should not raise an error
+        ObjectStateSerializer._normalize_delivery_log_messages(report_empty)
+
+        # Report should be unchanged
+        assert "messages" not in report_empty
+
+    @pytest.mark.django_db
+    def test_get_fields_states_converts_delivery_log_messages(self):
+        """Integration test: verify get_fields_states converts DeliveryLog messages."""
+        from api.models import DeliveryLog
+        from users.factories import UserFactory
+
+        # Create DeliveryLog with dict format (normal storage)
+        delivery_log = DeliveryLog.objects.create(
+            user=UserFactory(),
+            report={
+                "errors": [],
+                "warnings": [],
+                "messages": {
+                    "+358401234567": {
+                        "converted": "+358401234567",
+                        "status": "CREATED",
+                    },
+                },
+            },
+        )
+
+        # Serialize using ObjectStateSerializer (used by audit log)
+        serialized = ObjectStateSerializer.get_fields_states([delivery_log])
+
+        # Verify the serialized version has list format
+        assert len(serialized) == 1
+        assert "report" in serialized[0]
+        assert isinstance(serialized[0]["report"]["messages"], list)
+        assert len(serialized[0]["report"]["messages"]) == 1
+        assert serialized[0]["report"]["messages"][0]["converted"] == "+358401234567"
+
+        # Verify original DeliveryLog still has dict format in DB
+        delivery_log.refresh_from_db()
+        assert isinstance(delivery_log.report["messages"], dict)
+        assert "+358401234567" in delivery_log.report["messages"]

@@ -4,7 +4,7 @@ from resilient_logger.models import ResilientLogEntry
 
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
-from audit_log.enums import Operation
+from audit_log.enums import Operation, StoreObjectState
 
 
 def test_visiting_delivery_log_admin_view_writes_read_log(admin_user):
@@ -170,3 +170,64 @@ def test_bulk_deleting_delivery_logs_writes_delete_log(admin_user):
     assert audit_log_entry.context["target"]["path"] == url
     assert audit_log_entry.context["target"]["type"] == DeliveryLog._meta.model_name
     assert audit_log_entry.context["operation"] == Operation.DELETE.value
+
+
+def test_audit_log_converts_delivery_log_messages_to_list(admin_user, settings):
+    """
+    Test that ResilientLogEntry stores DeliveryLog messages as list format.
+
+    DeliveryLog stores messages as dict in the database, but audit logs
+    convert to list format to prevent Elasticsearch field limit issues.
+    """
+    import json
+
+    # Enable object state storage in audit logs
+    settings.AUDIT_LOG = {
+        **settings.AUDIT_LOG,
+        "STORE_OBJECT_STATE": StoreObjectState.OLD_AND_NEW_BOTH.value,
+    }
+
+    client = Client()
+    client.force_login(admin_user)
+
+    # Create a DeliveryLog with dict format messages
+    delivery_log = DeliveryLogFactory(
+        report={
+            "errors": [],
+            "warnings": [],
+            "messages": {
+                "+358401234567": {"converted": "+358401234567", "status": "CREATED"},
+            },
+        }
+    )
+
+    # Update it via admin to trigger audit log
+    url = reverse("admin:api_deliverylog_change", args=[delivery_log.pk])
+    response = client.post(
+        url, {"user": admin_user.pk, "report": json.dumps(delivery_log.report)}
+    )
+    assert response.status_code == 302
+
+    # Get the ResilientLogEntry for this specific update
+    qs = ResilientLogEntry.objects.filter(
+        context__operation=Operation.UPDATE.value,
+        context__target__path=url,
+    )
+    assert qs.count() == 1
+    audit_log = qs.first()
+
+    # Verify the audit log has list format (not dict)
+    object_states = audit_log.context["target"]["object_states"]
+    new_report = object_states[0]["new_object_state"]["report"]
+
+    assert isinstance(new_report["messages"], list), (
+        "Messages should be list in audit log"
+    )
+    assert len(new_report["messages"]) == 1
+    assert new_report["messages"][0]["converted"] == "+358401234567"
+
+    # Verify original DeliveryLog still has dict format
+    delivery_log.refresh_from_db()
+    assert isinstance(delivery_log.report["messages"], dict), (
+        "Messages should stay dict in DB"
+    )
