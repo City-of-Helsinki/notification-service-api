@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.10.3](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.2...notification-service-api-v0.10.3) (2026-02-18)
+
+
+### Bug Fixes
+
+* **audit_log:** Convert DeliveryLog messages report from dict to list ([24075a0](https://github.com/City-of-Helsinki/notification-service-api/commit/24075a0cacccb131b3a264d02dceafc7de4ec025))
+
 ## [0.10.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.1...notification-service-api-v0.10.2) (2026-02-04)
 
 
