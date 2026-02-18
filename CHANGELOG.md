@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.10.4](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.3...notification-service-api-v0.10.4) (2026-02-18)
+
+
+### Dependencies
+
+* Bump sqlparse from 0.5.3 to 0.5.4 ([564ab91](https://github.com/City-of-Helsinki/notification-service-api/commit/564ab91ab5421d0a79d951bce594daa68a1f44ce))
+
 ## [0.10.3](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.2...notification-service-api-v0.10.3) (2026-02-18)
 
 
