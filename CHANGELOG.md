@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.10.5](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.4...notification-service-api-v0.10.5) (2026-02-19)
+
+
+### Dependencies
+
+* Bump cryptography from 46.0.3 to 46.0.5 ([480df5c](https://github.com/City-of-Helsinki/notification-service-api/commit/480df5c7b24377af1076ca013700a5dd12963571))
+
 ## [0.10.4](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.3...notification-service-api-v0.10.4) (2026-02-18)
 
 
