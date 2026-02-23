@@ -153,21 +153,3 @@ In this example, the request object is available, so queryset can be called with
 ```
 
 In this example, we are in a context where there is no request object available. The queryset result can still be audit logged in to database with `with_audit_log`.
-
-## Management Command
-
-This module includes a management command for pruning (deleting) old AuditLogEntry objects from the database.
-
-`prune_audit_logs`: This command allows you to delete audit log entries based on their age or delete all entries.
-
-Usage:
-
-```shell
-python manage.py prune_audit_logs --days <number_of_days>
-python manage.py prune_audit_logs --all
-```
-
-- `--days`: Specifies the age in days of entries to be deleted.
-- `--all`: Deletes all audit log entries.
-
-This command is useful for managing the size of the audit log table and removing old entries that are no longer needed.
