@@ -1,6 +1,18 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.11.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.5...notification-service-api-v0.11.0) (2026-03-05)
+
+
+### Features
+
+* Remove AuditLogEntry ([d69b6d5](https://github.com/City-of-Helsinki/notification-service-api/commit/d69b6d531826c299155732dc4e067d38d7f94a9a))
+
+
+### Dependencies
+
+* Bump django from 5.2.11 to 5.2.12 ([23ec336](https://github.com/City-of-Helsinki/notification-service-api/commit/23ec3365effcecea603188ee7c031d400fc6436a))
+
 ## [0.10.5](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.4...notification-service-api-v0.10.5) (2026-02-19)
 
 
