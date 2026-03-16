@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.11.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.0...notification-service-api-v0.11.1) (2026-03-16)
+
+
+### Dependencies
+
+* Bump pyjwt from 2.10.1 to 2.12.0 ([9aef8b2](https://github.com/City-of-Helsinki/notification-service-api/commit/9aef8b26b0e1d7365e68aa7e2f0cae36446651c5))
+
 ## [0.11.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.10.5...notification-service-api-v0.11.0) (2026-03-05)
 
 
