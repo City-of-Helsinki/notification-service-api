@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.11.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.1...notification-service-api-v0.11.2) (2026-03-18)
+
+
+### Dependencies
+
+* Bump pyasn1 from 0.6.2 to 0.6.3 ([a40603b](https://github.com/City-of-Helsinki/notification-service-api/commit/a40603be872723f355123ac9ffd77771abde4649))
+
 ## [0.11.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.0...notification-service-api-v0.11.1) (2026-03-16)
 
 
