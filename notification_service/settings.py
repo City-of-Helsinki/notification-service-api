@@ -216,7 +216,7 @@ CONTENT_SECURITY_POLICY = {
 AUTHENTICATION_BACKENDS = [
     "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
     "axes.backends.AxesBackend",
-    "django.contrib.auth.backends.ModelBackend",
+    "helusers.auth.HelusersModelBackend",
 ]
 
 AUTH_USER_MODEL = "users.User"
