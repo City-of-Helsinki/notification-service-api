@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.2...notification-service-api-v0.12.0) (2026-03-19)
+
+
+### Features
+
+* Disable django admin password login ([e35d6e2](https://github.com/City-of-Helsinki/notification-service-api/commit/e35d6e2b865bb2bfc21e984caee853a73223835d))
+
 ## [0.11.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.1...notification-service-api-v0.11.2) (2026-03-18)
 
 
