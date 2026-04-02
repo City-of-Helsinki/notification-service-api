@@ -1,6 +1,16 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.1](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.0...notification-service-api-v0.12.1) (2026-04-02)
+
+
+### Dependencies
+
+* Bump cryptography from 46.0.5 to 46.0.6 ([0222f6f](https://github.com/City-of-Helsinki/notification-service-api/commit/0222f6fef99aadfb865686cf5e7b24e5e405b370))
+* Bump ecdsa from 0.19.1 to 0.19.2 ([44e3188](https://github.com/City-of-Helsinki/notification-service-api/commit/44e31883af68dea1764ea324d0488d2fea89e90c))
+* Bump pygments ([4620d39](https://github.com/City-of-Helsinki/notification-service-api/commit/4620d3992a1ef4a40779a220dbe750eb6f43d2a4))
+* Bump requests from 2.32.5 to 2.33.0 ([a9baf2b](https://github.com/City-of-Helsinki/notification-service-api/commit/a9baf2b5ac1d38634b68e8a1072e69f608d324c1))
+
 ## [0.12.0](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.11.2...notification-service-api-v0.12.0) (2026-03-19)
 
 
