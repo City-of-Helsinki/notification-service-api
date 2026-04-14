@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.3](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.2...notification-service-api-v0.12.3) (2026-04-14)
+
+
+### Dependencies
+
+* Bump pytest from 9.0.2 to 9.0.3 ([da14a3d](https://github.com/City-of-Helsinki/notification-service-api/commit/da14a3da4e9b88bc53cfb8840b4999b79c973153))
+
 ## [0.12.2](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.1...notification-service-api-v0.12.2) (2026-04-09)
 
 
