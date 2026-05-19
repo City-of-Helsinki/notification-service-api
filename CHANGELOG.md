@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.5](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.4...notification-service-api-v0.12.5) (2026-05-19)
+
+
+### Dependencies
+
+* Bump urllib3 from 2.6.3 to 2.7.0 ([8d0ecdb](https://github.com/City-of-Helsinki/notification-service-api/commit/8d0ecdbef6ad5a2e2f567bb487fabc208f463f92))
+
 ## [0.12.4](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.3...notification-service-api-v0.12.4) (2026-05-11)
 
 
