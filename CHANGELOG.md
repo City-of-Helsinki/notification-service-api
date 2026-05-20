@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.6](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.5...notification-service-api-v0.12.6) (2026-05-20)
+
+
+### Dependencies
+
+* Bump idna from 3.11 to 3.15 ([53e8e05](https://github.com/City-of-Helsinki/notification-service-api/commit/53e8e05cd1b1d1ac63e987fc27928d6785669b40))
+
 ## [0.12.5](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.4...notification-service-api-v0.12.5) (2026-05-19)
 
 
