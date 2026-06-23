@@ -35,7 +35,7 @@ The Notification service API is a Django REST Framework API for sending notifica
   - [Phone Number Processing](#phone-number-processing)
   - [Audit logging](#audit-logging)
   - [TODO: FIXME!](#todo-fixme)
-- [Keeping Python requirements up to date](#keeping-python-requirements-up-to-date)
+- [Keeping Python dependencies up to date](#keeping-python-dependencies-up-to-date)
 - [Code formatting](#code-formatting)
 - [Releases, changelogs and deployments](#releases-changelogs-and-deployments)
   - [Conventional Commits](#conventional-commits)
@@ -110,7 +110,7 @@ Quriiri is a Finnish SMS gateway service. You can check your version by running 
 
 ### Other
 
-Other dependencies are listed in the `requirements.txt` and `requirements-dev.txt` files. You can install them by running `pip install -r requirements.txt` and `pip install -r requirements-dev.txt`.
+Other dependencies are listed in `pyproject.toml`. You can install them by running `uv sync`.
 
 ## Getting started
 
@@ -264,26 +264,25 @@ AUDIT_LOG = {
 }
 ```
 
-## Keeping Python requirements up to date
+## Keeping Python dependencies up to date
 
-1. Add new packages to `requirements.in` or `requirements-dev.in`
+1. Add new packages to `pyproject.toml` under `[project].dependencies` (production) or `[dependency-groups].dev` (development)
 
-2. Update `.txt` file for the changed requirements file:
+2. Update `uv.lock` after changing dependencies:
 
-   - `pip-compile requirements.in`
-   - `pip-compile requirements-dev.in`
+   - `uv lock`
 
-3. If you want to update dependencies to their newest versions, run:
+3. If you want to update all dependencies to their newest versions, run:
 
-   - `pip-compile --upgrade requirements.in`
+   - `uv lock --upgrade`
 
-4. To install Python requirements run:
+4. To install dependencies (development):
 
-   - `pip-sync requirements.txt`
+   - `uv sync`
 
-5. To install Python development requirements run:
+5. To install production dependencies only:
 
-   - `pip-sync requirements-dev.txt`
+   - `uv sync --no-dev --group prod`
 
 ## Code format
 

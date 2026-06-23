@@ -2,6 +2,41 @@
 name = "notification-service"
 version = "0.12.7"
 requires-python = ">= 3.12"
+dependencies = [
+    "Django~=5.2",
+    "django-axes",
+    "django-cors-headers",
+    "django-csp",
+    "django-environ",
+    "django-health-check",
+    "django-helusers",
+    "django-logger-extra",
+    "django-resilient-logger",
+    "djangorestframework",
+    "factory-boy",
+    "ipython",
+    "phonenumberslite",
+    "psycopg[c]",
+    "sentry-sdk[django]",
+    "social-auth-app-django",
+]
+
+[dependency-groups]
+dev = [
+    "freezegun",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "syrupy",
+]
+prod = [
+    "uwsgi",
+    "uwsgitop",
+]
+
+[tool.uv]
+package = false
+exclude-newer = "P3D"
 
 [tool.ruff]
 target-version = "py312"
@@ -53,10 +88,3 @@ doctest_optionflags = [
     "IGNORE_EXCEPTION_DETAIL",
     "ALLOW_UNICODE",
 ]
-
-# pip-tools options:
-# https://pip-tools.readthedocs.io/en/stable/#configuration
-[tool.pip-tools.compile]
-generate-hashes = true
-strip-extras = true
-allow-unsafe = true
