@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from freezegun import freeze_time
 from resilient_logger.models import ResilientLogEntry
-from resilient_logger.sources import ResilientLogSource
+from resilient_logger.sources.resilient_log_source_entry import ResilientLogSourceEntry
 from rest_framework import status
 
 from audit_log.enums import Operation, Role, Status
@@ -25,7 +25,7 @@ def _assert_basic_log_entry_data(log_entry):
     current_time = datetime.now(tz=timezone.utc)
     iso_8601_date = f"{current_time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"  # noqa
 
-    document = ResilientLogSource(log_entry).get_document()
+    document = ResilientLogSourceEntry(log_entry).get_document()
 
     assert document["audit_event"]["origin"] == "notification-service-api"
     assert document["audit_event"]["date_time"] == iso_8601_date

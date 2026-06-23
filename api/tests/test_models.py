@@ -1,6 +1,6 @@
 import pytest
 from resilient_logger.models import ResilientLogEntry
-from resilient_logger.sources import ResilientLogSource
+from resilient_logger.sources.resilient_log_source_entry import ResilientLogSourceEntry
 
 from api.factories import DeliveryLogFactory
 from api.models import DeliveryLog
@@ -29,7 +29,7 @@ def test_delivery_log_manager_with_audit_log():
     )
     assert ResilientLogEntry.objects.count() == 1
     log_entry = ResilientLogEntry.objects.first()
-    document = ResilientLogSource(log_entry).get_document()
+    document = ResilientLogSourceEntry(log_entry).get_document()
 
     assert document["audit_event"]["origin"] == "notification-service-api"
     assert document["audit_event"]["operation"] == Operation.READ.value
