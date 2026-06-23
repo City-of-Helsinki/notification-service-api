@@ -76,6 +76,7 @@ sftp-config.json
 target/
 var/
 venv/
+.venv/
 .pytest_cache/
 .ruff_cache/
 docker-compose.env
