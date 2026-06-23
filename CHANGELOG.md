@@ -1,6 +1,14 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.7](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.6...notification-service-api-v0.12.7) (2026-06-23)
+
+
+### Dependencies
+
+* Bump cryptography from 46.0.7 to 48.0.1 ([23648f6](https://github.com/City-of-Helsinki/notification-service-api/commit/23648f6a25c493fe0eb4826ffb61b24dffc5f5a0))
+* Bump pyjwt from 2.12.0 to 2.13.0 ([2ab3d18](https://github.com/City-of-Helsinki/notification-service-api/commit/2ab3d186c96032315c47302196fed4b7c73c619b))
+
 ## [0.12.6](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.5...notification-service-api-v0.12.6) (2026-05-20)
 
 
