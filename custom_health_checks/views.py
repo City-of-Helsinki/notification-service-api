@@ -1,13 +1,13 @@
+import asyncio
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-from health_check.views import MainView
+from health_check.views import HealthCheckView
 
 
-class HealthCheckJSONView(MainView):
+class HealthCheckJSONView(HealthCheckView):
     """
-    The original `health_check` view uses format-attribute or headers to determine
-    what response type is used. The HealthCheckJSONView can be used to ensure
-    that a JSON Response is always used (for health check reporting).
+    Always returns a JSON response, regardless of the Accept header.
 
     To apply it, in project's `urls.py`, add the custom JSON view in use like this:
     >>> # doctest: +SKIP
@@ -17,17 +17,20 @@ class HealthCheckJSONView(MainView):
     ...     # ...
     ...     path(
     ...         r"healthz",
-    ...         views.HealthCheckCustomView.as_view(),
+    ...         views.HealthCheckJSONView.as_view(),
     ...         name="health_check_custom",
     ...     ),
     ... ]
     """
 
+    checks = ("custom_health_checks.backends.DatabaseHealthCheck",)
+
     @method_decorator(never_cache)
-    def get(self, request, *args, **kwargs):
-        subset = kwargs.get("subset", None)
-        health_check_has_error = self.check(subset)
-        status_code = 500 if health_check_has_error else 200
-        return self.render_to_response_json(
-            self.filter_plugins(subset=subset), status_code
-        )
+    async def get(self, request, *args, **kwargs):
+        with self.get_executor() as executor:
+            self.results = await asyncio.gather(
+                *(check.get_result(executor) for check in self.get_checks())
+            )
+        has_errors = any(result.error for result in self.results)
+        status_code = 500 if has_errors else 200
+        return self.render_to_response_json(status_code)
