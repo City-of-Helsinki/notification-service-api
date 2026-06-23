@@ -19,7 +19,14 @@
         { "type": "build", "section": "Build System", "hidden": true },
         { "type": "ci", "section": "Continuous Integration", "hidden": true }
       ],
-      "extra-files": ["pyproject.toml"]
+      "extra-files": [
+        {"path": "pyproject.toml", "type": "toml"},
+        {
+          "path": "uv.lock",
+          "type": "toml",
+          "jsonpath": "$.package[?(@.name=='notification-service')].version"
+        }
+      ]
     }
   },
   "plugins": ["sentence-case"]
