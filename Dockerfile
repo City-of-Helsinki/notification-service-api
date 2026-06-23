@@ -5,14 +5,21 @@ FROM registry.access.redhat.com/ubi9/python-312 AS appbase
 # Branch or tag used to pull python-uwsgi-common.
 ARG UWSGI_COMMON_REF=main
 
+COPY --from=ghcr.io/astral-sh/uv:0.11.24@sha256:99ea34acedc870ba4ad11a1f540a1c04267c9f30aadc465a94406f52dfda2c36 /uv /uvx /usr/local/bin/
+
 USER root
 WORKDIR /app
 
-COPY --chown=default:root requirements.txt /app/requirements.txt
+ENV UV_PROJECT_ENVIRONMENT=/opt/app-root \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_CACHE=1 \
+    UV_PYTHON_DOWNLOADS=never
+
+COPY --chown=default:root pyproject.toml uv.lock /app/
 
 RUN dnf update -y && dnf install -y nc \
-    && pip install -U pip setuptools wheel \
-    && pip install --no-cache-dir -r /app/requirements.txt \
+    && uv sync --frozen --no-dev --group prod \
     && uwsgi --build-plugin https://github.com/City-of-Helsinki/uwsgi-sentry \
     && mkdir -p /usr/local/lib/uwsgi/plugins \
     && mv sentry_plugin.so /usr/local/lib/uwsgi/plugins/ \
@@ -41,14 +48,12 @@ CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 FROM appbase AS development
 # ==============================
 
-COPY --chown=default:root requirements-dev.txt /app/requirements-dev.txt
-
 ENV DEV_SERVER=1
 
 COPY --chown=default:root . /app/
 
-RUN pip install --no-cache-dir -r /app/requirements-dev.txt && \
-    git config --system --add safe.directory /app
+RUN uv sync --frozen --group prod \
+    && git config --system --add safe.directory /app
 
 # Set permissions for cache directories
 RUN mkdir -p /app/.pytest_cache /app/.ruff_cache && \
