@@ -13,8 +13,6 @@ dependencies = [
     "django-logger-extra",
     "django-resilient-logger",
     "djangorestframework",
-    "factory-boy",
-    "ipython",
     "phonenumberslite",
     "psycopg[c]",
     "sentry-sdk[django]",
@@ -23,7 +21,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "factory-boy",
     "freezegun",
+    "ipython",
     "pytest",
     "pytest-cov",
     "pytest-django",

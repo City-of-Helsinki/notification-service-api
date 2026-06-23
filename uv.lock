@@ -657,8 +657,6 @@ dependencies = [
     { name = "django-logger-extra" },
     { name = "django-resilient-logger" },
     { name = "djangorestframework" },
-    { name = "factory-boy" },
-    { name = "ipython" },
     { name = "phonenumberslite" },
     { name = "psycopg", extra = ["c"] },
     { name = "sentry-sdk", extra = ["django"] },
@@ -667,7 +665,9 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "factory-boy" },
     { name = "freezegun" },
+    { name = "ipython" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
@@ -690,8 +690,6 @@ requires-dist = [
     { name = "django-logger-extra" },
     { name = "django-resilient-logger" },
     { name = "djangorestframework" },
-    { name = "factory-boy" },
-    { name = "ipython" },
     { name = "phonenumberslite" },
     { name = "psycopg", extras = ["c"] },
     { name = "sentry-sdk", extras = ["django"] },
@@ -700,7 +698,9 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "factory-boy" },
     { name = "freezegun" },
+    { name = "ipython" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
