@@ -20,11 +20,10 @@
         { "type": "ci", "section": "Continuous Integration", "hidden": true }
       ],
       "extra-files": [
-        {"path": "pyproject.toml", "type": "toml"},
         {
           "path": "uv.lock",
           "type": "toml",
-          "jsonpath": "$.package[?(@.name=='notification-service')].version"
+          "jsonpath": "$.package[?(@.name.value=='notification-service')].version"
         }
       ]
     }
