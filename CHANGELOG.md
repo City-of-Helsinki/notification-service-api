@@ -1,6 +1,21 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.8](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.7...notification-service-api-v0.12.8) (2026-06-26)
+
+
+### Bug Fixes
+
+* Migrate custom_health_checks to django-health-check v4 API ([ceb200d](https://github.com/City-of-Helsinki/notification-service-api/commit/ceb200da1ce513c4364c615b3aab0a706e13cb7e))
+* **release-please:** Update uv.lock TOML JSONPath ([2f071eb](https://github.com/City-of-Helsinki/notification-service-api/commit/2f071eb14a3f3d43adfbf5cd0aa4f3a401594993))
+* Update resilient_logger API usage after library upgrade ([831d4f4](https://github.com/City-of-Helsinki/notification-service-api/commit/831d4f4f53e65ab3774648094f9ee7543f665242))
+
+
+### Dependencies
+
+* Move ipython and factory-boy to dev-dependencies ([3454ed5](https://github.com/City-of-Helsinki/notification-service-api/commit/3454ed5f167c6ecfcc376ac4fd23cfa34efd293b))
+* Update pre-commit tool versions ([a6e4513](https://github.com/City-of-Helsinki/notification-service-api/commit/a6e4513c6c16d14d55f73bac157d00ac13afba4f))
+
 ## [0.12.7](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.6...notification-service-api-v0.12.7) (2026-06-23)
 
 
