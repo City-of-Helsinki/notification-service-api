@@ -1,6 +1,16 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.9](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.8...notification-service-api-v0.12.9) (2026-08-14)
+
+
+### Dependencies
+
+* Bump cryptography from 49.0.0 to 50.0.0 ([ccdc4ac](https://github.com/City-of-Helsinki/notification-service-api/commit/ccdc4ac0eac876fe4fd1a8ec6b35511f59a203cf))
+* Bump django from 5.2.15 to 5.2.16 ([d059ea6](https://github.com/City-of-Helsinki/notification-service-api/commit/d059ea66405f41ebf7656bb335c4717ac2dd4a94))
+* Bump django to latest 5.2.17 ([4a67574](https://github.com/City-of-Helsinki/notification-service-api/commit/4a67574c640fc41addfbd23598d9922e99a19f31))
+* Bump pyasn1 from 0.6.3 to 0.6.4 ([a54d8a5](https://github.com/City-of-Helsinki/notification-service-api/commit/a54d8a5fa277e00f33236e1ea367353df580fd1b))
+
 ## [0.12.8](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.7...notification-service-api-v0.12.8) (2026-06-26)
 
 
