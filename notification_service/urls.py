@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 from django.utils.translation import gettext
+from django.views.decorators.http import require_GET
 
 from custom_health_checks.views import HealthCheckJSONView
 from notification_service import __version__, settings
@@ -38,6 +39,7 @@ urlpatterns = [
 #
 # Kubernetes liveness & readiness probes
 #
+@require_GET
 def readiness(*args, **kwargs):
     response_json = {
         "status": "ok",
