@@ -41,7 +41,7 @@ RUN mkdir -p /usr/src/python-uwsgi-common && \
     rm -rf /usr/src/"${UWSGI_COMMON_REF}".tar.gz && \
     rm -rf /usr/src/python-uwsgi-common
 
-COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
+COPY --chown=root:root --chmod=755 docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 CMD ["/usr/bin/bash", "/entrypoint/docker-entrypoint.sh"]
 
 # ==============================
