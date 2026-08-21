@@ -1,18 +1,33 @@
-.venv/
-.git/
-.github/
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-.ruff_cache/
-.coverage
-.coverage.*
-htmlcov/
-dist/
-build/
-node_modules/
-docker-compose.env
-docker-compose.env.yaml
-.env
-.DS_Store
+#################################################
+# Exclude all by default
+#################################################
+*
+
+#################################################
+# Whitelisted folders
+#################################################
+!api/
+!audit_log/
+!common/
+!custom_health_checks/
+!notification_service/
+!quriiri/
+!users/
+!.prod/
+
+#################################################
+# Exclude generated files inside whitelisted folders
+#################################################
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.pytest_cache/
+**/.ruff_cache/
+
+#################################################
+# Whitelisted files
+#################################################
+!docker-entrypoint.sh
+!manage.py
+!pyproject.toml
+!uv.lock
