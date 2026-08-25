@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from audit_log.enums import Operation
 
@@ -61,9 +61,9 @@ class AuditTarget:
 @dataclass
 class AuditEvent:
     status: str
-    actor: Union[AuditActorData, dict]
-    operation: Union[Operation, str]
-    target: Union[AuditTarget, dict]
+    actor: AuditActorData | dict
+    operation: Operation | str
+    target: AuditTarget | dict
 
     def __post_init__(self):
         if not isinstance(self.status, str):
@@ -86,7 +86,7 @@ class AuditEvent:
 
 @dataclass
 class AuditCommitMessage:
-    audit_event: Union[AuditEvent, dict]
+    audit_event: AuditEvent | dict
 
     def __post_init__(self):
         if not isinstance(self.audit_event, (AuditEvent, dict)):

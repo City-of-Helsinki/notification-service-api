@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING, Union
+from typing import Optional, TYPE_CHECKING
 
 from django.db import models
 from django.http import HttpRequest
@@ -21,7 +21,7 @@ class AuditLogQuerySet(models.QuerySet):
         self,
         user: "AbstractUser",
         operation: Operation,
-        status: Union[Status, str] = Status.SUCCESS.value,
+        status: Status | str = Status.SUCCESS.value,
         ip_address: str = "",
         path: str = "",
         _type: Optional[str] = None,
@@ -91,7 +91,7 @@ class AuditLogQuerySet(models.QuerySet):
         self,
         request: HttpRequest,
         operation: Operation,
-        status: Union[Status, str] = Status.SUCCESS.value,
+        status: Status | str = Status.SUCCESS.value,
         force_disable_object_states: bool = False,
     ) -> "AuditLogQuerySet":
         """

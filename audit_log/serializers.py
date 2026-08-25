@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from django.core import serializers
 from django.db.models.query import QuerySet
@@ -43,7 +43,7 @@ class ObjectStateSerializer:
             report["messages"] = list(messages.values())
 
     @classmethod
-    def serialize(cls, obj: Union[QuerySet, List]) -> str:
+    def serialize(cls, obj: QuerySet | List) -> str:
         """
         Serializes a QuerySet or list of model instances to a JSON string.
 
@@ -70,7 +70,7 @@ class ObjectStateSerializer:
 
     @classmethod
     def get_fields_states(
-        cls, obj: Union[QuerySet, List], fields: Optional[List[str]] = None
+        cls, obj: QuerySet | List, fields: Optional[List[str]] = None
     ) -> List[Dict[str, Any]]:
         """
         Serializes a QuerySet or list of model instances to a JSON string,

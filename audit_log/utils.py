@@ -1,6 +1,6 @@
 from dataclasses import asdict
 from itertools import zip_longest
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from django.db.models import Model, QuerySet
 from django.http import HttpResponse
@@ -118,8 +118,8 @@ def diff_dicts(old_dict: Dict[str, Any], new_dict: Dict[str, Any]) -> Dict[str, 
 
 
 def create_object_states(
-    new_objects: Optional[Union[QuerySet, List[Model]]] = None,
-    old_objects: Optional[Union[QuerySet, List[Model]]] = None,
+    new_objects: QuerySet | List[Model] | None = None,
+    old_objects: QuerySet | List[Model] | None = None,
 ) -> Optional[List[ObjectState | ObjectStateDiff | ObjectStateWithDiff]]:
     if audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.NONE:
         return None
@@ -165,7 +165,7 @@ def create_object_states(
 
 def create_commit_message(
     status: Optional[str] = None,
-    operation: Optional[Union[Operation, str]] = None,
+    operation: Operation | str | None = None,
     actor: Optional[AuditActorData] = None,
     target: Optional[AuditTarget] = None,
 ):
