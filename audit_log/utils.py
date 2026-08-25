@@ -133,34 +133,30 @@ def create_object_states(
     old_object_state = (
         ObjectStateSerializer.get_fields_states(old_objects) if old_objects else []
     )
+    state_pairs = list(zip_longest(old_object_state, new_object_state, fillvalue={}))
 
     if audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.DIFF:
-        return [
+        object_states = [
             ObjectStateDiff(object_state_diff=diff_dicts(old_entry, new_entry))
-            for old_entry, new_entry in zip_longest(
-                old_object_state, new_object_state, fillvalue={}
-            )
+            for old_entry, new_entry in state_pairs
             if diff_dicts(old_entry, new_entry)
         ]
-
     elif audit_logging_settings.STORE_OBJECT_STATE == StoreObjectState.ALL:
-        return [
+        object_states = [
             ObjectStateWithDiff(
                 old_object_state=old_entry,
                 new_object_state=new_entry,
                 object_state_diff=diff_dicts(old_entry, new_entry),
             )
-            for old_entry, new_entry in zip_longest(
-                old_object_state, new_object_state, fillvalue={}
-            )
+            for old_entry, new_entry in state_pairs
+        ]
+    else:
+        object_states = [
+            ObjectState(old_object_state=old_entry, new_object_state=new_entry)
+            for old_entry, new_entry in state_pairs
         ]
 
-    return [
-        ObjectState(old_object_state=old_entry, new_object_state=new_entry)
-        for old_entry, new_entry in zip_longest(
-            old_object_state, new_object_state, fillvalue={}
-        )
-    ]
+    return object_states
 
 
 def create_commit_message(
