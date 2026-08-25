@@ -89,8 +89,8 @@ def send_message(request):
                 new_objects=[log],
             )
         )
-    except Exception as e:
-        logger.error(f"Committing to audit log failed: {e}")
+    except Exception:
+        logger.exception("Committing to audit log failed")
 
     return Response(DeliveryLogSerializer(log).data)
 
