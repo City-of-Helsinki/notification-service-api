@@ -1,6 +1,26 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.10](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.9...notification-service-api-v0.12.10) (2026-08-25)
+
+
+### Bug Fixes
+
+* Mark methods that don't access instance data as static ([47a63ff](https://github.com/City-of-Helsinki/notification-service-api/commit/47a63ff7854adb5a6cd26421426ac80e3ba83a11))
+* Reduce return points in create_object_states ([526d3c1](https://github.com/City-of-Helsinki/notification-service-api/commit/526d3c1d2f58206214c25c0f97e4352577fb02d2))
+* Remove try/except in database health check test ([f20ea8a](https://github.com/City-of-Helsinki/notification-service-api/commit/f20ea8ac576aa04723bce18214b0044b8df4886d))
+* Replace copy-only comprehension with list constructor ([1734f65](https://github.com/City-of-Helsinki/notification-service-api/commit/1734f65dd44def2375f45d859a13497e42d61f54))
+* Replace map/lambda with list comprehension ([3c76392](https://github.com/City-of-Helsinki/notification-service-api/commit/3c7639225f3f768398f7469d98382505143f179c))
+* Restrict readiness endpoint methods ([6aa9a2b](https://github.com/City-of-Helsinki/notification-service-api/commit/6aa9a2b9e789076c7598a242a14d806762bce35b))
+* Use dict literal instead of dict() constructor ([a16081f](https://github.com/City-of-Helsinki/notification-service-api/commit/a16081f69cc79c5820014e6e64225bbca97094f2))
+* Use logging.exception() for audit log commit failures ([0f1eb86](https://github.com/City-of-Helsinki/notification-service-api/commit/0f1eb8623cba0612baf70bb1fe9a083c30733877))
+* Use union type expressions for type hints ([8e31af6](https://github.com/City-of-Helsinki/notification-service-api/commit/8e31af6fe65117f4b818bbc0268f816aa08cba16))
+
+
+### Dependencies
+
+* Bump sqlparse from 0.5.5 to 0.6.0 ([de1932d](https://github.com/City-of-Helsinki/notification-service-api/commit/de1932dbec880f8c36272c2ad39837835fb64646))
+
 ## [0.12.9](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.8...notification-service-api-v0.12.9) (2026-08-14)
 
 
