@@ -36,8 +36,5 @@ def test_database_check_status_with_real_database(db):  # Use the 'db' fixture
     Test run with the actual database connection.
     This assumes your test database is set up correctly.
     """
-    try:
-        health_check = DatabaseHealthCheck()
-        health_check.run()  # Should not raise an exception
-    except ServiceUnavailable as e:
-        pytest.fail(f"Database health check failed: {e}")
+    health_check = DatabaseHealthCheck()
+    health_check.run()  # Should not raise an exception
