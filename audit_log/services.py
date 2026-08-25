@@ -50,7 +50,8 @@ class AuditLogServiceBase:
     service class.
     """
 
-    def _get_operation_name(self, method: str) -> str:
+    @staticmethod
+    def _get_operation_name(method: str) -> str:
         """
         Determine the operation name based on the request method.
 
@@ -65,7 +66,8 @@ class AuditLogServiceBase:
         except KeyError:
             return f"Unknown: {method}"
 
-    def _get_actor_data(self, user: User, ip_address: str) -> AuditActorData:
+    @staticmethod
+    def _get_actor_data(user: User, ip_address: str) -> AuditActorData:
         """
         Create an AuditActorData object from user and IP address information.
 
@@ -84,8 +86,8 @@ class AuditLogServiceBase:
             ip_address=ip_address,
         )
 
+    @staticmethod
     def _get_target(
-        self,
         path: str,
         object_ids: List[str],
         _type: Optional[str] = None,
@@ -131,7 +133,8 @@ class AuditLogServiceBase:
             extra={"status": message.audit_event.status},
         )
 
-    def is_audit_logging_enabled(self) -> bool:
+    @staticmethod
+    def is_audit_logging_enabled() -> bool:
         """
         Check if audit logging is enabled.
 
@@ -140,7 +143,8 @@ class AuditLogServiceBase:
         """
         return bool(audit_logging_settings.ENABLED)
 
-    def should_store_object_state(self) -> bool:
+    @staticmethod
+    def should_store_object_state() -> bool:
         return audit_logging_settings.STORE_OBJECT_STATE != StoreObjectState.NONE
 
 
