@@ -38,7 +38,7 @@ class DeliveryLogAdmin(AuditLogModelAdminMixin, admin.ModelAdmin):
 
     def get_number(self, obj):
         try:
-            return ", ".join([number for number in obj.report["messages"]])
+            return ", ".join(list(obj.report["messages"]))
         except (TypeError, KeyError):
             return ""
 
