@@ -26,7 +26,8 @@ class Sender:
     def __del__(self):
         self.session.close()
 
-    def _fill_messages(self, resp, destinations, status):
+    @staticmethod
+    def _fill_messages(resp, destinations, status):
         messages = resp.setdefault("messages", {})
         for destination in destinations:
             messages.setdefault(
