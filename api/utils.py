@@ -1,5 +1,5 @@
 import logging
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional
 
 import phonenumbers
 from django.urls import reverse
@@ -83,7 +83,7 @@ def filter_valid_destinations(
     return valid_destinations
 
 
-def validate_send_message_payload(post_data: Union[Any, SendMessagePayload]) -> None:
+def validate_send_message_payload(post_data: Any | SendMessagePayload) -> None:
     """
     Validates the data to ensure it conforms to the SendMessagePayload structure.
 

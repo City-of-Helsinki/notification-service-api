@@ -1,7 +1,7 @@
 import logging
 import re
 from dataclasses import asdict
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from django.db.models import Model, QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -324,11 +324,11 @@ audit_log_service = AuditLogApiService()
 
 def create_api_commit_message_from_request(
     request: HttpRequest,
-    operation: Union[Operation, str],
+    operation: Operation | str,
     object_ids: List[str],
     _type: Optional[str] = None,
-    new_objects: Optional[Union[QuerySet, List[Model]]] = None,
-    old_objects: Optional[Union[QuerySet, List[Model]]] = None,
+    new_objects: QuerySet | List[Model] | None = None,
+    old_objects: QuerySet | List[Model] | None = None,
 ) -> AuditCommitMessage:
     """Create an audit log message from an API request.
 
