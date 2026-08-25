@@ -21,7 +21,7 @@ class MessageStatusListFilter(admin.SimpleListFilter):
     parameter_name = "status"
 
     def lookups(self, request, model_admin):
-        return map(lambda o: (o, o.upper()), self.MESSAGE_STATUS_OPTIONS)
+        return [(o, o.upper()) for o in self.MESSAGE_STATUS_OPTIONS]
 
     def queryset(self, request, queryset):
         if self.value() in self.MESSAGE_STATUS_OPTIONS:
