@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.11](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.10...notification-service-api-v0.12.11) (2026-09-04)
+
+
+### Dependencies
+
+* Bump djangorestframework from 3.17.1 to 3.17.2 ([2c98c34](https://github.com/City-of-Helsinki/notification-service-api/commit/2c98c34c50d54a26eb846fc369ec7f7fa9d4b3e4))
+
 ## [0.12.10](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.9...notification-service-api-v0.12.10) (2026-08-25)
 
 
