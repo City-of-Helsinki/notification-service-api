@@ -1,6 +1,17 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.12](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.11...notification-service-api-v0.12.12) (2026-10-10)
+
+
+### Dependencies
+
+* Bump django-helusers from 1.1.0 to 1.3.0 ([79f18d3](https://github.com/City-of-Helsinki/notification-service-api/commit/79f18d3ebc4352d620df3da19700044859195eaf))
+* Bump oauthlib from 3.3.1 to 4.0.0 ([0485df8](https://github.com/City-of-Helsinki/notification-service-api/commit/0485df82494fe95a1d44fc1ce9029ac4612154b8))
+* Bump pyjwt from 2.13.0 to 2.15.0 ([6966ef9](https://github.com/City-of-Helsinki/notification-service-api/commit/6966ef947aa410923e64e51cdaef87dd48d21270))
+* Bump social-auth-core from 4.9.1 to 5.0.0 ([e84f9c5](https://github.com/City-of-Helsinki/notification-service-api/commit/e84f9c56156738ac3bd6273b5154b482ead298b6))
+* Bump urllib3 from 2.7.0 to 2.8.0 ([ce39f38](https://github.com/City-of-Helsinki/notification-service-api/commit/ce39f382173475d454b3effffcbbac52bb0c1c86))
+
 ## [0.12.11](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.10...notification-service-api-v0.12.11) (2026-09-04)
 
 
