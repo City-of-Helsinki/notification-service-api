@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.13](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.12...notification-service-api-v0.12.13) (2026-10-24)
+
+
+### Dependencies
+
+* Bump social-auth-core from 5.0.0 to 5.0.2 ([3a128a9](https://github.com/City-of-Helsinki/notification-service-api/commit/3a128a9f1cbf5c4eee5e243f49cd6fc7d0142a35))
+
 ## [0.12.12](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.11...notification-service-api-v0.12.12) (2026-10-13)
 
 
