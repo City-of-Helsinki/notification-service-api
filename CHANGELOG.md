@@ -1,6 +1,14 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.14](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.13...notification-service-api-v0.12.14) (2026-11-07)
+
+
+### Dependencies
+
+* Bump dnspython from 2.8.0 to 2.9.0 ([0adca94](https://github.com/City-of-Helsinki/notification-service-api/commit/0adca94561faa7314546c015c8db65929bbb7c46))
+* Bump oauthlib from 4.0.0 to 4.0.1 ([95e1158](https://github.com/City-of-Helsinki/notification-service-api/commit/95e1158e4a243d82ee437ad2a7eed08d63cc96b7))
+
 ## [0.12.13](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.12...notification-service-api-v0.12.13) (2026-10-26)
 
 
