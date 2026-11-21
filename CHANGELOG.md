@@ -1,6 +1,13 @@
 <!-- REMINDER: While updating changelog, also remember to update
 the version in notification_service/__init.py__ -->
 
+## [0.12.15](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.14...notification-service-api-v0.12.15) (2026-11-21)
+
+
+### Dependencies
+
+* Bump dnspython from 2.9.0 to 2.9.2 ([646e7fb](https://github.com/City-of-Helsinki/notification-service-api/commit/646e7fb993e79cb4e3bfd7f6cb06f6435b255d56))
+
 ## [0.12.14](https://github.com/City-of-Helsinki/notification-service-api/compare/notification-service-api-v0.12.13...notification-service-api-v0.12.14) (2026-11-10)
 
 
